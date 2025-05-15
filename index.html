@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Viking Dog Saga</title>
+    <title>SOKO Shiba</title>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
         body {
@@ -285,6 +285,13 @@
             z-index: 3000;
         }
 
+        .studio-credit {
+            font-size: 0.7em;
+            text-align: center;
+            color: #E0E0E0;
+            margin-top: 8px;
+        }
+
         @media (max-width: 360px) {
             h1 { font-size: 1.2em; }
             .game-container, .task-container, .shop-container, .inventory-container {
@@ -305,52 +312,53 @@
     <div id="game-content">
         <div class="wallet-button" id="ton-connect"></div>
         <div class="game-container active" id="mainContainer">
-            <h1>Viking Dog Saga</h1>
+            <h1 id="game-title">SOKO Shiba</h1>
             <div class="stats">
-                <div class="stat">Ранг: <span id="status">Бродяга</span></div>
-                <div class="stat">Руны: <span id="balance">0</span></div>
-                <div class="stat">Выносливость: <span id="energy">100</span></div>
-                <div class="stat">Голод: <span id="hunger">100</span></div>
-                <div class="stat">Дух: <span id="mood">100</span></div>
+                <div class="stat" id="stat-rank"></div>
+                <div class="stat" id="stat-runes"></div>
+                <div class="stat" id="stat-energy"></div>
+                <div class="stat" id="stat-hunger"></div>
+                <div class="stat" id="stat-mood"></div>
             </div>
             <div class="tabs">
-                <button class="tab-button active" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button" onclick="showSection('taskContainer')">Задания</button>
-                <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
+                <button class="tab-button active" onclick="showSection('mainContainer')" id="tab-main"></button>
+                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks"></button>
+                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop"></button>
+                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory"></button>
             </div>
+            <div class="studio-credit">Made by MATRIXON STD</div>
         </div>
 
         <div class="task-container" id="taskContainer">
-            <h1>Задания</h1>
+            <h1 id="tasks-title"></h1>
             <div class="task-list" id="taskList"></div>
             <div class="tabs">
-                <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button active" onclick="showSection('taskContainer')">Задания</button>
-                <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
+                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-tasks"></button>
+                <button class="tab-button active" onclick="showSection('taskContainer')" id="tab-tasks-tasks"></button>
+                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop-tasks"></button>
+                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory-tasks"></button>
             </div>
         </div>
 
         <div class="shop-container" id="shopContainer">
-            <h1>Рынок</h1>
+            <h1 id="shop-title"></h1>
             <div class="shop-list" id="shopList"></div>
             <div class="tabs">
-                <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button" onclick="showSection('taskContainer')">Задания</button>
-                <button class="tab-button active" onclick="showSection('shopContainer')">Рынок</button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
+                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-shop"></button>
+                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks-shop"></button>
+                <button class="tab-button active" onclick="showSection('shopContainer')" id="tab-shop-shop"></button>
+                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory-shop"></button>
             </div>
         </div>
 
         <div class="inventory-container" id="inventoryContainer">
-            <h1>Инвентарь</h1>
+            <h1 id="inventory-title"></h1>
             <div class="inventory-list" id="inventoryList"></div>
             <div class="tabs">
-                <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button" onclick="showSection('taskContainer')">Задания</button>
-                <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
-                <button class="tab-button active" onclick="showSection('inventoryContainer')">Инвентарь</button>
+                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-inventory"></button>
+                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks-inventory"></button>
+                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop-inventory"></button>
+                <button class="tab-button active" onclick="showSection('inventoryContainer')" id="tab-inventory-inventory"></button>
             </div>
         </div>
 
@@ -360,6 +368,348 @@
     </div>
 
     <script>
+        const translations = {
+            ru: {
+                game_title: "SOKO Shiba",
+                rank: "Ранг: <span id='status'>{0}</span>",
+                runes: "Руны: <span id='balance'>{0}</span>",
+                energy: "Выносливость: <span id='energy'>{0}</span>",
+                hunger: "Голод: <span id='hunger'>{0}</span>",
+                mood: "Дух: <span id='mood'>{0}</span>",
+                tab_main: "Главная",
+                tab_tasks: "Задания",
+                tab_shop: "Рынок",
+                tab_inventory: "Инвентарь",
+                tasks_title: "Задания",
+                shop_title: "Рынок",
+                inventory_title: "Инвентарь",
+                task_working: "Выполняется: {0} ({1}с)",
+                task_desc: "{0} рун, {1} выносливости",
+                shop_item: "{0} ({1} рун)",
+                inventory_empty: "Пусто",
+                consume: "Съесть",
+                statuses: {
+                    vagabond: "Бродяга",
+                    scout: "Разведчик",
+                    builder: "Строитель",
+                    chief: "Вождь",
+                    legend: "Легенда"
+                },
+                tasks: {
+                    chop_tree: "Рубить дерево",
+                    clean_island: "Чистить остров",
+                    collect_leaves: "Собирать листья",
+                    build_boat: "Строить лодку",
+                    clean_ocean: "Чистить океан",
+                    fish: "Рыбачить",
+                    recruit: "Привозить новых жителей",
+                    build_village: "Строить деревню",
+                    play_football: "Помогать детям играть в футбол",
+                    open_shop: "Открыть свою лавку"
+                },
+                social_tasks: {
+                    subscribe: "Задание 1: Подписаться на канал",
+                    share: "Задание 2: Распространить легенду",
+                    invite: "Задание 3: Созвать союзников"
+                },
+                shop_items: {
+                    fish: "Рыба",
+                    fish_desc: "Утоляет голод на 10 минут",
+                    meat: "Мясо",
+                    meat_desc: "Утоляет голод на 15 минут",
+                    honey: "Мед",
+                    honey_desc: "Восстанавливает 30 духа",
+                    axe: "Топор",
+                    axe_desc: "Задания +20% рун",
+                    hammer: "Молот",
+                    hammer_desc: "Задания +30% рун"
+                },
+                notifications: {
+                    new_rank: "Новый ранг: {0}!",
+                    task_started: "Начато: {0} ({1}с)",
+                    task_completed: "Завершено: {0}! +{1} рун",
+                    shop_opened: "Лавка открыта! Пассивный доход: 10 рун каждые 4 минуты!",
+                    shop_income: "Лавка принесла 10 рун!",
+                    task_in_progress: "Уже выполняешь задание!",
+                    low_energy: "Недостаточно выносливости! Отдохни или выпей мед.",
+                    low_hunger: "Слишком голоден! Съешь рыбу или мясо.",
+                    low_mood: "Недостаточно духа!",
+                    not_enough_runes: "Недостаточно рун!",
+                    item_bought: "Куплено: {0} за {1} рун!",
+                    item_already_bought: "Уже куплено!",
+                    mood_restored: "Дух +{0}!",
+                    hunger_satisfied: "Голод утолен на {0} минут!",
+                    hunger_reduced_income: "Голод снижает доход!",
+                    item_bonus: "Бонус от {0}: +{1}%!",
+                    social_task_done: "Задание \"{0}\" выполнено! +{1} рун",
+                    social_task_cooldown: "Задание на перезарядке!",
+                    social_invite: "Зови союзников через Telegram!",
+                    food_consumed: "{0} съедено! Голод утолен на {1} минут!",
+                    cannot_eat: "Это нельзя съесть!",
+                    hungry: "Голоден! Съешь рыбу или мясо."
+                }
+            },
+            en: {
+                game_title: "SOKO Shiba",
+                rank: "Rank: <span id='status'>{0}</span>",
+                runes: "Runes: <span id='balance'>{0}</span>",
+                energy: "Energy: <span id='energy'>{0}</span>",
+                hunger: "Hunger: <span id='hunger'>{0}</span>",
+                mood: "Mood: <span id='mood'>{0}</span>",
+                tab_main: "Home",
+                tab_tasks: "Tasks",
+                tab_shop: "Market",
+                tab_inventory: "Inventory",
+                tasks_title: "Tasks",
+                shop_title: "Market",
+                inventory_title: "Inventory",
+                task_working: "In progress: {0} ({1}s)",
+                task_desc: "{0} runes, {1} energy",
+                shop_item: "{0} ({1} runes)",
+                inventory_empty: "Empty",
+                consume: "Eat",
+                statuses: {
+                    vagabond: "Vagabond",
+                    scout: "Scout",
+                    builder: "Builder",
+                    chief: "Chief",
+                    legend: "Legend"
+                },
+                tasks: {
+                    chop_tree: "Chop tree",
+                    clean_island: "Clean island",
+                    collect_leaves: "Collect leaves",
+                    build_boat: "Build boat",
+                    clean_ocean: "Clean ocean",
+                    fish: "Fish",
+                    recruit: "Recruit new residents",
+                    build_village: "Build village",
+                    play_football: "Help kids play football",
+                    open_shop: "Open your shop"
+                },
+                social_tasks: {
+                    subscribe: "Task 1: Subscribe to channel",
+                    share: "Task 2: Spread the legend",
+                    invite: "Task 3: Call allies"
+                },
+                shop_items: {
+                    fish: "Fish",
+                    fish_desc: "Satisfies hunger for 10 minutes",
+                    meat: "Meat",
+                    meat_desc: "Satisfies hunger for 15 minutes",
+                    honey: "Honey",
+                    honey_desc: "Restores 30 mood",
+                    axe: "Axe",
+                    axe_desc: "Tasks +20% runes",
+                    hammer: "Hammer",
+                    hammer_desc: "Tasks +30% runes"
+                },
+                notifications: {
+                    new_rank: "New rank: {0}!",
+                    task_started: "Started: {0} ({1}s)",
+                    task_completed: "Completed: {0}! +{1} runes",
+                    shop_opened: "Shop opened! Passive income: 10 runes every 4 minutes!",
+                    shop_income: "Shop earned 10 runes!",
+                    task_in_progress: "Already performing a task!",
+                    low_energy: "Not enough energy! Rest or drink honey.",
+                    low_hunger: "Too hungry! Eat fish or meat.",
+                    low_mood: "Not enough mood!",
+                    not_enough_runes: "Not enough runes!",
+                    item_bought: "Bought: {0} for {1} runes!",
+                    item_already_bought: "Already bought!",
+                    mood_restored: "Mood +{0}!",
+                    hunger_satisfied: "Hunger satisfied for {0} minutes!",
+                    hunger_reduced_income: "Hunger reduces income!",
+                    item_bonus: "Bonus from {0}: +{1}%!",
+                    social_task_done: "Task \"{0}\" completed! +{1} runes",
+                    social_task_cooldown: "Task on cooldown!",
+                    social_invite: "Call allies via Telegram!",
+                    food_consumed: "{0} eaten! Hunger satisfied for {1} minutes!",
+                    cannot_eat: "This cannot be eaten!",
+                    hungry: "Hungry! Eat fish or meat."
+                }
+            },
+            ja: {
+                game_title: "SOKO Shiba",
+                rank: "ランク: <span id='status'>{0}</span>",
+                runes: "ルーン: <span id='balance'>{0}</span>",
+                energy: "エネルギー: <span id='energy'>{0}</span>",
+                hunger: "空腹: <span id='hunger'>{0}</span>",
+                mood: "気分: <span id='mood'>{0}</span>",
+                tab_main: "ホーム",
+                tab_tasks: "タスク",
+                tab_shop: "市場",
+                tab_inventory: "インベントリ",
+                tasks_title: "タスク",
+                shop_title: "市場",
+                inventory_title: "インベントリ",
+                task_working: "進行中: {0} ({1}秒)",
+                task_desc: "{0}ルーン、{1}エネルギー",
+                shop_item: "{0} ({1}ルーン)",
+                inventory_empty: "空",
+                consume: "食べる",
+                statuses: {
+                    vagabond: "放浪者",
+                    scout: "斥候",
+                    builder: "建築者",
+                    chief: "族長",
+                    legend: "伝説"
+                },
+                tasks: {
+                    chop_tree: "木を切る",
+                    clean_island: "島を掃除",
+                    collect_leaves: "葉を集める",
+                    build_boat: "ボートを作る",
+                    clean_ocean: "海を掃除",
+                    fish: "釣り",
+                    recruit: "新しい住民を連れてくる",
+                    build_village: "村を作る",
+                    play_football: "子供のサッカーを手伝う",
+                    open_shop: "店を開く"
+                },
+                social_tasks: {
+                    subscribe: "タスク1: チャンネル登録",
+                    share: "タスク2: 伝説を広める",
+                    invite: "タスク3: 同盟者を呼ぶ"
+                },
+                shop_items: {
+                    fish: "魚",
+                    fish_desc: "10分間空腹を満たす",
+                    meat: "肉",
+                    meat_desc: "15分間空腹を満たす",
+                    honey: "蜂蜜",
+                    honey_desc: "気分を30回復",
+                    axe: "斧",
+                    axe_desc: "タスク報酬+20%ルーン",
+                    hammer: "ハンマー",
+                    hammer_desc: "タスク報酬+30%ルーン"
+                },
+                notifications: {
+                    new_rank: "新しいランク: {0}！",
+                    task_started: "開始: {0} ({1}秒)",
+                    task_completed: "完了: {0}！ +{1}ルーン",
+                    shop_opened: "店を開いた！パッシブ収入: 4分ごとに10ルーン！",
+                    shop_income: "店で10ルーンを獲得！",
+                    task_in_progress: "すでにタスクを実行中！",
+                    low_energy: "エネルギーが不足！休息するか蜂蜜を飲む。",
+                    low_hunger: "空腹すぎる！魚か肉を食べる。",
+                    low_mood: "気分が足りない！",
+                    not_enough_runes: "ルーンが不足！",
+                    item_bought: "{0}を{1}ルーンで購入！",
+                    item_already_bought: "すでに購入済み！",
+                    mood_restored: "気分+{0}！",
+                    hunger_satisfied: "{0}分間空腹を満たした！",
+                    hunger_reduced_income: "空腹で収入が減少！",
+                    item_bonus: "{0}からのボーナス: +{1}%！",
+                    social_task_done: "タスク「{0}」完了！ +{1}ルーン",
+                    social_task_cooldown: "タスクはクールダウン中！",
+                    social_invite: "Telegramで同盟者を呼ぶ！",
+                    food_consumed: "{0}を食べた！{1}分間空腹を満たした！",
+                    cannot_eat: "これは食べられない！",
+                    hungry: "空腹！魚か肉を食べる。"
+                }
+            },
+            uk: {
+                game_title: "SOKO Shiba",
+                rank: "Звання: <span id='status'>{0}</span>",
+                runes: "Руни: <span id='balance'>{0}</span>",
+                energy: "Енергія: <span id='energy'>{0}</span>",
+                hunger: "Голод: <span id='hunger'>{0}</span>",
+                mood: "Настрій: <span id='mood'>{0}</span>",
+                tab_main: "Головна",
+                tab_tasks: "Завдання",
+                tab_shop: "Ринок",
+                tab_inventory: "Інвентар",
+                tasks_title: "Завдання",
+                shop_title: "Ринок",
+                inventory_title: "Інвентар",
+                task_working: "Виконується: {0} ({1}с)",
+                task_desc: "{0} рун, {1} енергії",
+                shop_item: "{0} ({1} рун)",
+                inventory_empty: "Порожньо",
+                consume: "З'їсти",
+                statuses: {
+                    vagabond: "Блукач",
+                    scout: "Розвідник",
+                    builder: "Будівельник",
+                    chief: "Вождь",
+                    legend: "Легенда"
+                },
+                tasks: {
+                    chop_tree: "Рубати дерево",
+                    clean_island: "Чистити острів",
+                    collect_leaves: "Збирати листя",
+                    build_boat: "Будувати човен",
+                    clean_ocean: "Чистити океан",
+                    fish: "Рибалити",
+                    recruit: "Привозити нових жителів",
+                    build_village: "Будувати село",
+                    play_football: "Допомагати дітям грати у футбол",
+                    open_shop: "Відкрити свою крамницю"
+                },
+                social_tasks: {
+                    subscribe: "Завдання 1: Підписатися на канал",
+                    share: "Завдання 2: Поширити легенду",
+                    invite: "Завдання 3: Покликати союзників"
+                },
+                shop_items: {
+                    fish: "Риба",
+                    fish_desc: "Втамовує голод на 10 хвилин",
+                    meat: "М'ясо",
+                    meat_desc: "Втамовує голод на 15 хвилин",
+                    honey: "Мед",
+                    honey_desc: "Відновлює 30 настрою",
+                    axe: "Сокира",
+                    axe_desc: "Завдання +20% рун",
+                    hammer: "Молот",
+                    hammer_desc: "Завдання +30% рун"
+                },
+                notifications: {
+                    new_rank: "Нове звання: {0}!",
+                    task_started: "Почато: {0} ({1}с)",
+                    task_completed: "Завершено: {0}! +{1} рун",
+                    shop_opened: "Крамницю відкрито! Пасивний дохід: 10 рун кожні 4 хвилини!",
+                    shop_income: "Крамниця принесла 10 рун!",
+                    task_in_progress: "Вже виконуєш завдання!",
+                    low_energy: "Недостатньо енергії! Відпочинь або випий мед.",
+                    low_hunger: "Занадто голодний! З'їж рибу або м'ясо.",
+                    low_mood: "Недостатньо настрою!",
+                    not_enough_runes: "Недостатньо рун!",
+                    item_bought: "Куплено: {0} за {1} рун!",
+                    item_already_bought: "Вже куплено!",
+                    mood_restored: "Настрій +{0}!",
+                    hunger_satisfied: "Голод втамовано на {0} хвилин!",
+                    hunger_reduced_income: "Голод зменшує дохід!",
+                    item_bonus: "Бонус від {0}: +{1}%!",
+                    social_task_done: "Завдання \"{0}\" виконано! +{1} рун",
+                    social_task_cooldown: "Завдання на перезарядці!",
+                    social_invite: "Клич союзників через Telegram!",
+                    food_consumed: "{0} з'їдено! Голод втамовано на {1} хвилин!",
+                    cannot_eat: "Це не можна з'їсти!",
+                    hungry: "Голодний! З'їж рибу або м'ясо."
+                }
+            }
+        };
+
+        let currentLang = localStorage.getItem('language') || navigator.language.slice(0, 2);
+        if (!translations[currentLang]) currentLang = 'en';
+
+        function setLanguage(lang) {
+            if (translations[lang]) {
+                currentLang = lang;
+                localStorage.setItem('language', lang);
+                render();
+            }
+        }
+
+        function t(key, ...args) {
+            let str = translations[currentLang][key] || translations.en[key] || key;
+            args.forEach((arg, i) => {
+                str = str.replace(`{${i}}`, arg);
+            });
+            return str;
+        }
+
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
             manifestUrl: 'https://safiyev.github.io/manigest/manifest.json',
             buttonRootId: 'ton-connect'
@@ -371,7 +721,7 @@
             hunger: 100,
             mood: 100,
             inventory: [],
-            status: "Бродяга",
+            status: "vagabond",
             isWorking: false,
             currentTask: null,
             taskStartTime: 0,
@@ -379,55 +729,53 @@
             lastSave: Date.now(),
             hungerSatisfiedUntil: 0,
             lastTick: Date.now(),
-            shopActive: false,
-            shopStartTime: 0,
             shopPassiveIncome: false,
             lastShopIncome: 0
         };
 
         const statuses = [
-            { name: "Бродяга", minBalance: 0, bg: "bg0.jpg" },
-            { name: "Разведчик", minBalance: 10000, bg: "bg1.jpg" },
-            { name: "Строитель", minBalance: 100000, bg: "bg2.jpg" },
-            { name: "Вождь", minBalance: 1000000, bg: "bg3.jpg" },
-            { name: "Легенда", minBalance: 10000000, bg: "bg4.jpg" }
+            { name: "vagabond", minBalance: 0, bg: "bg0.jpg" },
+            { name: "scout", minBalance: 10000, bg: "bg1.jpg" },
+            { name: "builder", minBalance: 100000, bg: "bg2.jpg" },
+            { name: "chief", minBalance: 1000000, bg: "bg3.jpg" },
+            { name: "legend", minBalance: 10000000, bg: "bg4.jpg" }
         ];
 
         const tasks = [
-            { id: 1, name: "Рубить дерево", pay: 0.005, energy: 10, duration: 60000, image: "task_icon.png", level: 0 },
-            { id: 2, name: "Чистить остров", pay: 0.006, energy: 10, duration: 70000, image: "task_icon.png", level: 0 },
-            { id: 3, name: "Собирать листья", pay: 0.007, energy: 10, duration: 80000, image: "task_icon.png", level: 0 },
-            { id: 4, name: "Строить лодку", pay: 0.008, energy: 15, duration: 90000, image: "task_icon.png", level: 1 },
-            { id: 5, name: "Чистить океан", pay: 0.009, energy: 15, duration: 100000, image: "task_icon.png", level: 1 },
-            { id: 6, name: "Рыбачить", pay: 0.01, energy: 15, duration: 110000, image: "task_icon.png", level: 1 },
-            { id: 7, name: "Привозить новых жителей", pay: 0.012, energy: 20, duration: 120000, image: "task_icon.png", level: 1 },
-            { id: 8, name: "Строить деревню", pay: 0.02, energy: 25, duration: 150000, image: "task_icon.png", level: 2 },
-            { id: 9, name: "Помогать детям играть в футбол", pay: 0.03, energy: 20, duration: 140000, image: "task_icon.png", level: 3 },
-            { id: 10, name: "Открыть свою лавку", pay: 0.05, energy: 30, duration: 180000, image: "task_icon.png", level: 4 }
+            { id: 1, name: "chop_tree", pay: 0.005, energy: 10, duration: 60000, image: "task_icon.png", level: 0 },
+            { id: 2, name: "clean_island", pay: 0.006, energy: 10, duration: 70000, image: "task_icon.png", level: 0 },
+            { id: 3, name: "collect_leaves", pay: 0.007, energy: 10, duration: 80000, image: "task_icon.png", level: 0 },
+            { id: 4, name: "build_boat", pay: 0.008, energy: 15, duration: 90000, image: "task_icon.png", level: 1 },
+            { id: 5, name: "clean_ocean", pay: 0.009, energy: 15, duration: 100000, image: "task_icon.png", level: 1 },
+            { id: 6, name: "fish", pay: 0.01, energy: 15, duration: 110000, image: "task_icon.png", level: 1 },
+            { id: 7, name: "recruit", pay: 0.012, energy: 20, duration: 120000, image: "task_icon.png", level: 1 },
+            { id: 8, name: "build_village", pay: 0.02, energy: 25, duration: 150000, image: "task_icon.png", level: 2 },
+            { id: 9, name: "play_football", pay: 0.03, energy: 20, duration: 140000, image: "task_icon.png", level: 3 },
+            { id: 10, name: "open_shop", pay: 0.05, energy: 30, duration: 180000, image: "task_icon.png", level: 4 }
         ];
 
         const socialTasks = [
-            { id: 1, name: "Задание 1: Подписаться на канал", pay: 0.005, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
+            { id: 1, name: "subscribe", pay: 0.005, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
                 if (window.Telegram?.WebApp) {
                     window.Telegram.WebApp.openTelegramLink('https://t.me/vikingdogsaga');
                 } else {
                     window.open('https://t.me/vikingdogsaga', '_blank');
                 }
             }},
-            { id: 2, name: "Задание 2: Распространить легенду", pay: 0.01, energy: 10, cooldown: 600000, image: "task_icon.png", action: () => {
-                window.open('https://t.me/share/url?url=VikingDogSaga', '_blank');
+            { id: 2, name: "share", pay: 0.01, energy: 10, cooldown: 600000, image: "task_icon.png", action: () => {
+                window.open('https://t.me/share/url?url=SOKOShiba', '_blank');
             }},
-            { id: 3, name: "Задание 3: Созвать союзников", pay: 0.02, energy: 15, cooldown: 86400000, image: "task_icon.png", action: () => {
-                showNotification("Зови союзников через Telegram!");
+            { id: 3, name: "invite", pay: 0.02, energy: 15, cooldown: 86400000, image: "task_icon.png", action: () => {
+                showNotification(t("notifications.social_invite"));
             }}
         ];
 
         const shopItems = [
-            { name: "Рыба", price: 5, desc: "Утоляет голод на 10 минут", effect: { hungerSatisfied: 600000 }, image: "fish_item.png", reusable: true },
-            { name: "Мясо", price: 10, desc: "Утоляет голод на 15 минут", effect: { hungerSatisfied: 900000 }, image: "meat.png", reusable: true },
-            { name: "Мед", price: 15, desc: "Восстанавливает 30 духа", effect: { mood: 30 }, image: "honey.png", reusable: true },
-            { name: "Топор", price: 100, desc: "Задания +20% рун", effect: { payMultiplier: 1.2 }, image: "axe.png" },
-            { name: "Молот", price: 500, desc: "Задания +30% рун", effect: { payMultiplier: 1.3 }, image: "hammer.png" }
+            { name: "fish", price: 5, desc: "fish_desc", effect: { hungerSatisfied: 600000 }, image: "fish_item.png", reusable: true },
+            { name: "meat", price: 10, desc: "meat_desc", effect: { hungerSatisfied: 900000 }, image: "meat.png", reusable: true },
+            { name: "honey", price: 15, desc: "honey_desc", effect: { mood: 30 }, image: "honey.png", reusable: true },
+            { name: "axe", price: 100, desc: "axe_desc", effect: { payMultiplier: 1.2 }, image: "axe.png" },
+            { name: "hammer", price: 500, desc: "hammer_desc", effect: { payMultiplier: 1.3 }, image: "hammer.png" }
         ];
 
         if (window.Telegram?.WebApp) {
@@ -446,7 +794,7 @@
         }
 
         function loadGame() {
-            const savedState = localStorage.getItem('vikingDogSagaState');
+            const savedState = localStorage.getItem('sokoShibaState');
             if (savedState) {
                 const parsed = JSON.parse(savedState);
                 Object.assign(state, parsed);
@@ -473,7 +821,7 @@
         function saveGame() {
             if (Date.now() - state.lastSave >= 1000) {
                 try {
-                    localStorage.setItem('vikingDogSagaState', JSON.stringify(state));
+                    localStorage.setItem('sokoShibaState', JSON.stringify(state));
                     state.lastSave = Date.now();
                 } catch (e) {
                     console.warn("Ошибка сохранения: ", e);
@@ -498,44 +846,54 @@
 
         function consumeFood(index) {
             const item = state.inventory[index];
-            if (item.name === "Рыба" || item.name === "Мясо") {
+            if (item.name === "fish" || item.name === "meat") {
                 state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
                 state.hunger = 100;
                 state.inventory.splice(index, 1);
-                showNotification(`${item.name} съедено! Голод утолен на ${item.effect.hungerSatisfied / 60000} минут!`);
+                showNotification(t("notifications.food_consumed", t(`shop_items.${item.name}`), item.effect.hungerSatisfied / 60000));
                 playSound("clickSound");
                 saveGame();
                 render();
             } else {
-                showNotification("Это нельзя съесть!");
+                showNotification(t("notifications.cannot_eat"));
             }
         }
 
         function render() {
-            document.getElementById("balance").textContent = state.balance.toFixed(3);
-            document.getElementById("status").textContent = state.status;
-            document.getElementById("energy").textContent = Math.floor(state.energy);
-            document.getElementById("hunger").textContent = Math.floor(state.hunger);
-            document.getElementById("mood").textContent = Math.floor(state.mood);
+            document.getElementById("game-title").textContent = t("game_title");
+            document.getElementById("stat-rank").innerHTML = t("rank", t(`statuses.${state.status}`));
+            document.getElementById("stat-runes").innerHTML = t("runes", state.balance.toFixed(3));
+            document.getElementById("stat-energy").innerHTML = t("energy", Math.floor(state.energy));
+            document.getElementById("stat-hunger").innerHTML = t("hunger", Math.floor(state.hunger));
+            document.getElementById("stat-mood").innerHTML = t("mood", Math.floor(state.mood));
+            document.getElementById("tasks-title").textContent = t("tasks_title");
+            document.getElementById("shop-title").textContent = t("shop_title");
+            document.getElementById("inventory-title").textContent = t("inventory_title");
+            ['tab-main', 'tab-tasks', 'tab-shop', 'tab-inventory', 
+             'tab-main-tasks', 'tab-tasks-tasks', 'tab-shop-tasks', 'tab-inventory-tasks',
+             'tab-main-shop', 'tab-tasks-shop', 'tab-shop-shop', 'tab-inventory-shop',
+             'tab-main-inventory', 'tab-tasks-inventory', 'tab-shop-inventory', 'tab-inventory-inventory'].forEach(id => {
+                document.getElementById(id).textContent = t(id.split('-')[1]);
+            });
 
             const currentLevel = statuses.findIndex(s => s.name === state.status);
             const taskList = document.getElementById("taskList");
             taskList.innerHTML = "";
             if (state.isWorking && state.currentTask) {
                 const remainingTime = Math.max(0, Math.floor((state.currentTask.duration - (Date.now() - state.taskStartTime)) / 1000));
-                taskList.innerHTML = `<div style="text-align: center; color: #FFD700; font-size: 0.9em;">Выполняется: ${state.currentTask.name} (${remainingTime}с)</div>`;
+                taskList.innerHTML = `<div style="text-align: center; color: #FFD700; font-size: 0.9em;">${t("task_working", t(`tasks.${state.currentTask.name}`), remainingTime)}</div>`;
             } else {
                 tasks.filter(task => task.level <= currentLevel).forEach(task => {
                     const itemDiv = document.createElement("div");
                     itemDiv.className = "task-item";
                     const img = document.createElement("img");
                     img.src = task.image;
-                    img.alt = task.name;
+                    img.alt = t(`tasks.${task.name}`);
                     img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
                     const desc = document.createElement("p");
-                    desc.textContent = `${task.pay.toFixed(3)} рун, ${task.energy} выносливости`;
+                    desc.textContent = t("task_desc", task.pay.toFixed(3), task.energy);
                     const button = document.createElement("button");
-                    button.textContent = task.name;
+                    button.textContent = t(`tasks.${task.name}`);
                     button.disabled = state.energy < task.energy || state.isWorking || state.hunger < 30;
                     button.onclick = () => startTask(task);
                     itemDiv.appendChild(img);
@@ -548,12 +906,12 @@
                     itemDiv.className = "task-item";
                     const img = document.createElement("img");
                     img.src = task.image;
-                    img.alt = task.name;
+                    img.alt = t(`social_tasks.${task.name}`);
                     img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
                     const desc = document.createElement("p");
-                    desc.textContent = `${task.pay.toFixed(3)} рун, ${task.energy} выносливости`;
+                    desc.textContent = t("task_desc", task.pay.toFixed(3), task.energy);
                     const button = document.createElement("button");
-                    button.textContent = task.name;
+                    button.textContent = t(`social_tasks.${task.name}`);
                     button.disabled = state.energy < task.energy || (state.socialTaskCooldowns[task.id] && Date.now() < state.socialTaskCooldowns[task.id]);
                     button.onclick = () => doSocialTask(task);
                     itemDiv.appendChild(img);
@@ -570,12 +928,12 @@
                 itemDiv.className = "shop-item";
                 const img = document.createElement("img");
                 img.src = item.image;
-                img.alt = item.name;
+                img.alt = t(`shop_items.${item.name}`);
                 img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
                 const desc = document.createElement("p");
-                desc.textContent = item.desc;
+                desc.textContent = t(`shop_items.${item.desc}`);
                 const button = document.createElement("button");
-                button.textContent = `${item.name} (${item.price.toLocaleString()} рун)`;
+                button.textContent = t("shop_item", t(`shop_items.${item.name}`), item.price.toLocaleString());
                 button.disabled = state.balance < item.price || (!item.reusable && state.inventory.some(i => i.name === item.name));
                 button.onclick = () => buyItem(item);
                 itemDiv.appendChild(img);
@@ -587,17 +945,17 @@
             const inventoryList = document.getElementById("inventoryList");
             inventoryList.innerHTML = "";
             if (state.inventory.length === 0) {
-                inventoryList.innerHTML = "Пусто";
+                inventoryList.innerHTML = t("inventory_empty");
             } else {
                 state.inventory.forEach((item, index) => {
                     const itemDiv = document.createElement("div");
                     itemDiv.className = "inventory-item";
                     const nameSpan = document.createElement("span");
-                    nameSpan.textContent = `${item.name} (${item.desc})`;
+                    nameSpan.textContent = `${t(`shop_items.${item.name}`)} (${t(`shop_items.${item.desc}`)})`;
                     itemDiv.appendChild(nameSpan);
-                    if (item.name === "Рыба" || item.name === "Мясо") {
+                    if (item.name === "fish" || item.name === "meat") {
                         const useButton = document.createElement("button");
-                        useButton.textContent = "Съесть";
+                        useButton.textContent = t("consume");
                         useButton.onclick = () => consumeFood(index);
                         itemDiv.appendChild(useButton);
                     }
@@ -613,7 +971,7 @@
             const newStatus = statuses.reduce((acc, s) => state.balance >= s.minBalance ? s : acc, statuses[0]);
             if (state.status !== newStatus.name) {
                 state.status = newStatus.name;
-                showNotification(`Новый ранг: ${state.status}!`);
+                showNotification(t("notifications.new_rank", t(`statuses.${state.status}`)));
                 playSound("runeSound");
                 document.body.classList.add('bg-transition');
                 setTimeout(() => document.body.classList.remove('bg-transition'), 1000);
@@ -622,15 +980,15 @@
 
         function startTask(task) {
             if (state.isWorking) {
-                showNotification("Уже выполняешь задание!");
+                showNotification(t("notifications.task_in_progress"));
                 return;
             }
             if (state.energy < task.energy) {
-                showNotification("Недостаточно выносливости! Отдохни или выпей мед.");
+                showNotification(t("notifications.low_energy"));
                 return;
             }
             if (state.hunger < 30 && Date.now() > state.hungerSatisfiedUntil) {
-                showNotification("Слишком голоден! Съешь рыбу или мясо.");
+                showNotification(t("notifications.low_hunger"));
                 return;
             }
             state.isWorking = true;
@@ -638,7 +996,7 @@
             state.taskStartTime = Date.now();
             state.energy -= task.energy;
             state.mood = Math.max(0, state.mood - 3);
-            showNotification(`Начато: ${task.name} (${Math.floor(task.duration / 1000)}с)`);
+            showNotification(t("notifications.task_started", t(`tasks.${task.name}`), Math.floor(task.duration / 1000)));
             playSound("clickSound");
             saveGame();
             render();
@@ -658,25 +1016,25 @@
             state.inventory.forEach(item => {
                 if (item.effect?.payMultiplier) {
                     pay *= item.effect.payMultiplier;
-                    showNotification(`Бонус от ${item.name}: +${((item.effect.payMultiplier - 1) * 100).toFixed(0)}%!`);
+                    showNotification(t("notifications.item_bonus", t(`shop_items.${item.name}`), ((item.effect.payMultiplier - 1) * 100).toFixed(0)));
                 }
             });
 
             if (state.hunger < 50 && Date.now() > state.hungerSatisfiedUntil) {
                 pay *= 0.75;
-                showNotification("Голод снижает доход!");
+                showNotification(t("notifications.hunger_reduced_income"));
             }
             pay = Number(pay.toFixed(3));
 
             state.balance += pay;
-            showNotification(`Завершено: ${task.name}! +${pay.toFixed(3)} рун`);
+            showNotification(t("notifications.task_completed", t(`tasks.${task.name}`), pay.toFixed(3)));
             playSound("runeSound");
             createCoinAnimation();
 
-            if (task.name === "Открыть свою лавку") {
+            if (task.name === "open_shop") {
                 state.shopPassiveIncome = true;
                 state.lastShopIncome = Date.now();
-                showNotification("Лавка открыта! Пассивный доход: 10 рун каждые 4 минуты!");
+                showNotification(t("notifications.shop_opened"));
             }
 
             state.isWorking = false;
@@ -689,11 +1047,11 @@
 
         function doSocialTask(task) {
             if (state.energy < task.energy) {
-                showNotification("Мало выносливости!");
+                showNotification(t("notifications.low_energy"));
                 return;
             }
             if (state.socialTaskCooldowns[task.id] && Date.now() < state.socialTaskCooldowns[task.id]) {
-                showNotification("Задание на перезарядке!");
+                showNotification(t("notifications.social_task_cooldown"));
                 return;
             }
             if (task.action) task.action();
@@ -701,7 +1059,7 @@
             let pay = task.pay;
             state.balance += pay;
             state.socialTaskCooldowns[task.id] = Date.now() + task.cooldown;
-            showNotification(`Задание "${task.name}" выполнено! +${pay.toFixed(3)} рун`);
+            showNotification(t("notifications.social_task_done", t(`social_tasks.${task.name}`), pay.toFixed(3)));
             playSound("runeSound");
             createCoinAnimation();
             updateStatus();
@@ -711,30 +1069,30 @@
 
         function buyItem(item) {
             if (state.balance < item.price) {
-                showNotification("Недостаточно рун!");
+                showNotification(t("notifications.not_enough_runes"));
                 return;
             }
             if (!item.reusable && state.inventory.some(i => i.name === item.name)) {
-                showNotification("Уже куплено!");
+                showNotification(t("notifications.item_already_bought"));
                 return;
             }
             state.balance -= item.price;
             state.inventory.push(item);
-            showNotification(`Куплено: ${item.name} за ${item.price.toLocaleString()} рун!`);
+            showNotification(t("notifications.item_bought", t(`shop_items.${item.name}`), item.price.toLocaleString()));
             if (item.effect) {
                 if (item.effect.mood) {
                     state.mood = Math.min(state.mood + item.effect.mood, 100);
-                    showNotification(`Дух +${item.effect.mood}!`);
+                    showNotification(t("notifications.mood_restored", item.effect.mood));
                 }
                 if (item.effect.hungerSatisfied) {
                     state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
                     state.hunger = 100;
-                    showNotification(`Голод утолен на ${item.effect.hungerSatisfied / 60000} минут!`);
+                    showNotification(t("notifications.hunger_satisfied", item.effect.hungerSatisfied / 60000));
                 }
             }
             playSound("runeSound");
             const itemDiv = Array.from(document.getElementById("shopList").children)
-                .find(div => div.querySelector("button").textContent.includes(item.name));
+                .find(div => div.querySelector("button").textContent.includes(t(`shop_items.${item.name}`)));
             if (itemDiv) itemDiv.classList.add("purchased");
             updateStatus();
             saveGame();
@@ -794,7 +1152,7 @@
                     state.hunger -= 0.0333 * deltaTime;
                     if (state.hunger < 0) state.hunger = 0;
                     if (state.hunger < 30) {
-                        showNotification("Голоден! Съешь рыбу или мясо.");
+                        showNotification(t("notifications.hungry"));
                     }
                 }
             } else {
@@ -816,7 +1174,7 @@
             if (state.shopPassiveIncome && (now - state.lastShopIncome) >= 240000) {
                 state.balance += 10;
                 state.lastShopIncome = now;
-                showNotification("Лавка принесла 10 рун!");
+                showNotification(t("notifications.shop_income"));
                 playSound("runeSound");
                 createCoinAnimation();
                 saveGame();
