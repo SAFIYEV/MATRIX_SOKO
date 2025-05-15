@@ -46,6 +46,8 @@
             display: none;
             width: 100%;
             height: 100%;
+            justify-content: center;
+            align-items: flex-end;
         }
 
         #game-content.loaded {
@@ -55,7 +57,7 @@
         .game-container, .task-container, .shop-container, .inventory-container {
             width: 100%;
             max-width: 360px;
-            margin: 8px;
+            margin: 8px auto;
             padding: 12px;
             background: rgba(20, 20, 30, 0.9);
             border-radius: 16px;
@@ -64,13 +66,14 @@
             box-sizing: border-box;
             position: fixed;
             bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
             z-index: 1;
             display: none;
             flex-direction: column;
             min-height: 200px;
             transition: opacity 0.3s ease, transform 0.3s ease;
             opacity: 0;
-            transform: translateY(20px);
         }
 
         .task-container, .shop-container, .inventory-container {
@@ -81,7 +84,7 @@
         .active {
             display: flex;
             opacity: 1;
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
         }
 
         h1 {
@@ -295,7 +298,7 @@
         @media (max-width: 360px) {
             h1 { font-size: 1.2em; }
             .game-container, .task-container, .shop-container, .inventory-container {
-                margin: 4px;
+                margin: 4px auto;
                 padding: 10px;
                 max-width: 320px;
             }
@@ -742,16 +745,16 @@
         ];
 
         const tasks = [
-            { id: 1, name: "chop_tree", pay: 0.005, energy: 10, duration: 60000, image: "task_icon.png", level: 0 },
-            { id: 2, name: "clean_island", pay: 0.006, energy: 10, duration: 70000, image: "task_icon.png", level: 0 },
-            { id: 3, name: "collect_leaves", pay: 0.007, energy: 10, duration: 80000, image: "task_icon.png", level: 0 },
-            { id: 4, name: "build_boat", pay: 0.008, energy: 15, duration: 90000, image: "task_icon.png", level: 1 },
-            { id: 5, name: "clean_ocean", pay: 0.009, energy: 15, duration: 100000, image: "task_icon.png", level: 1 },
-            { id: 6, name: "fish", pay: 0.01, energy: 15, duration: 110000, image: "task_icon.png", level: 1 },
-            { id: 7, name: "recruit", pay: 0.012, energy: 20, duration: 120000, image: "task_icon.png", level: 1 },
-            { id: 8, name: "build_village", pay: 0.02, energy: 25, duration: 150000, image: "task_icon.png", level: 2 },
-            { id: 9, name: "play_football", pay: 0.03, energy: 20, duration: 140000, image: "task_icon.png", level: 3 },
-            { id: 10, name: "open_shop", pay: 0.05, energy: 30, duration: 180000, image: "task_icon.png", level: 4 }
+            { id: 1, name: "chop_tree", pay: 0.005, energy: 10, duration: 60000, image: "chop_tree.png", level: 0 },
+            { id: 2, name: "clean_island", pay: 0.006, energy: 10, duration: 70000, image: "clean_island.png", level: 0 },
+            { id: 3, name: "collect_leaves", pay: 0.007, energy: 10, duration: 80000, image: "leaves.png", level: 0 },
+            { id: 4, name: "build_boat", pay: 0.008, energy: 15, duration: 90000, image: "build_boat.png", level: 1 },
+            { id: 5, name: "clean_ocean", pay: 0.009, energy: 15, duration: 100000, image: "clean_ocean.png", level: 1 },
+            { id: 6, name: "fish", pay: 0.01, energy: 15, duration: 110000, image: "fish.png", level: 1 },
+            { id: 7, name: "recruit", pay: 0.012, energy: 20, duration: 120000, image: "recruit.png", level: 1 },
+            { id: 8, name: "build_village", pay: 0.02, energy: 25, duration: 150000, image: "village.png", level: 2 },
+            { id: 9, name: "play_football", pay: 0.03, energy: 20, duration: 140000, image: "football.png", level: 3 },
+            { id: 10, name: "open_shop", pay: 0.05, energy: 30, duration: 180000, image: "shop.png", level: 4 }
         ];
 
         const socialTasks = [
@@ -787,31 +790,33 @@
 
         function enterFullscreen() {
             if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen().catch(err => {
-                    console.warn(`Ошибка полноэкранного режима: ${err.message}`);
-                });
+                document.documentElement.requestFullscreen().catch(err => console.warn(`Fullscreen error: ${err.message}`));
             }
         }
 
         function loadGame() {
-            const savedState = localStorage.getItem('sokoShibaState');
-            if (savedState) {
-                const parsed = JSON.parse(savedState);
-                Object.assign(state, parsed);
-                for (const task in state.socialTaskCooldowns) {
-                    if (Date.now() >= state.socialTaskCooldowns[task]) {
-                        delete state.socialTaskCooldowns[task];
+            try {
+                const savedState = localStorage.getItem('sokoShibaState');
+                if (savedState) {
+                    const parsed = JSON.parse(savedState);
+                    Object.assign(state, parsed);
+                    for (const task in state.socialTaskCooldowns) {
+                        if (Date.now() >= state.socialTaskCooldowns[task]) {
+                            delete state.socialTaskCooldowns[task];
+                        }
+                    }
+                    if (state.isWorking && !state.currentTask) {
+                        state.isWorking = false;
+                    }
+                    if (state.isWorking && state.currentTask) {
+                        const elapsed = Date.now() - state.taskStartTime;
+                        if (elapsed >= state.currentTask.duration) {
+                            completeTask(state.currentTask);
+                        }
                     }
                 }
-                if (state.isWorking && !state.currentTask) {
-                    state.isWorking = false;
-                }
-                if (state.isWorking && state.currentTask) {
-                    const elapsed = Date.now() - state.taskStartTime;
-                    if (elapsed >= state.currentTask.duration) {
-                        completeTask(state.currentTask);
-                    }
-                }
+            } catch (e) {
+                console.warn("Load error:", e);
             }
             state.lastSave = Date.now();
             state.lastTick = Date.now();
@@ -824,7 +829,7 @@
                     localStorage.setItem('sokoShibaState', JSON.stringify(state));
                     state.lastSave = Date.now();
                 } catch (e) {
-                    console.warn("Ошибка сохранения: ", e);
+                    console.warn("Save error:", e);
                 }
             }
         }
@@ -930,261 +935,262 @@
                 img.src = item.image;
                 img.alt = t(`shop_items.${item.name}`);
                 img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
-                const desc = document.createElement("p");
-                desc.textContent = t(`shop_items.${item.desc}`);
-                const button = document.createElement("button");
-                button.textContent = t("shop_item", t(`shop_items.${item.name}`), item.price.toLocaleString());
-                button.disabled = state.balance < item.price || (!item.reusable && state.inventory.some(i => i.name === item.name));
-                button.onclick = () => buyItem(item);
-                itemDiv.appendChild(img);
-                itemDiv.appendChild(desc);
-                itemDiv.appendChild(button);
-                shopList.appendChild(itemDiv);
-            });
-
-            const inventoryList = document.getElementById("inventoryList");
-            inventoryList.innerHTML = "";
-            if (state.inventory.length === 0) {
-                inventoryList.innerHTML = t("inventory_empty");
-            } else {
-                state.inventory.forEach((item, index) => {
-                    const itemDiv = document.createElement("div");
-                    itemDiv.className = "inventory-item";
-                    const nameSpan = document.createElement("span");
-                    nameSpan.textContent = `${t(`shop_items.${item.name}`)} (${t(`shop_items.${item.desc}`)})`;
-                    itemDiv.appendChild(nameSpan);
-                    if (item.name === "fish" || item.name === "meat") {
-                        const useButton = document.createElement("button");
-                        useButton.textContent = t("consume");
-                        useButton.onclick = () => consumeFood(index);
-                        itemDiv.appendChild(useButton);
-                    }
-                    inventoryList.appendChild(itemDiv);
+                    const desc = document.createElement("p");
+                    desc.textContent = t(`shop_items.${item.desc}`);
+                    const button = document.createElement("button");
+                    button.textContent = t("shop_item", t(`shop_items.${item.name}`), item.price.toLocaleString());
+                    button.disabled = state.balance < item.price || (!item.reusable && state.inventory.some(i => i.name === item.name));
+                    button.onclick = () => buyItem(item);
+                    itemDiv.appendChild(img);
+                    itemDiv.appendChild(desc);
+                    itemDiv.appendChild(button);
+                    shopList.appendChild(itemDiv);
                 });
+
+                const inventoryList = document.getElementById("inventoryList");
+                inventoryList.innerHTML = "";
+                if (state.inventory.length === 0) {
+                    inventoryList.innerHTML = t("inventory_empty");
+                } else {
+                    state.inventory.forEach((item, index) => {
+                        const itemDiv = document.createElement("div");
+                        itemDiv.className = "inventory-item";
+                        const nameSpan = document.createElement("span");
+                        nameSpan.textContent = `${t(`shop_items.${item.name}`)} (${t(`shop_items.${item.desc}`)})`;
+                        itemDiv.appendChild(nameSpan);
+                        if (item.name === "fish" || item.name === "meat") {
+                            const useButton = document.createElement("button");
+                            useButton.textContent = t("consume");
+                            useButton.onclick = () => consumeFood(index);
+                            itemDiv.appendChild(useButton);
+                        }
+                        inventoryList.appendChild(itemDiv);
+                    });
+                }
+
+                let bgImage = statuses.find(s => state.balance >= s.minBalance).bg;
+                document.body.style.backgroundImage = `url(${bgImage})`;
             }
 
-            let bgImage = statuses.find(s => state.balance >= s.minBalance).bg;
-            document.body.style.backgroundImage = `url(${bgImage})`;
-        }
+            function updateStatus() {
+                const newStatus = statuses.reduce((acc, s) => state.balance >= s.minBalance ? s : acc, statuses[0]);
+                if (state.status !== newStatus.name) {
+                    state.status = newStatus.name;
+                    showNotification(t("notifications.new_rank", t(`statuses.${state.status}`)));
+                    playSound("runeSound");
+                    document.body.classList.add('bg-transition');
+                    setTimeout(() => document.body.classList.remove('bg-transition'), 1000);
+                }
+            }
 
-        function updateStatus() {
-            const newStatus = statuses.reduce((acc, s) => state.balance >= s.minBalance ? s : acc, statuses[0]);
-            if (state.status !== newStatus.name) {
-                state.status = newStatus.name;
-                showNotification(t("notifications.new_rank", t(`statuses.${state.status}`)));
+            function startTask(task) {
+                if (state.isWorking) {
+                    showNotification(t("notifications.task_in_progress"));
+                    return;
+                }
+                if (state.energy < task.energy) {
+                    showNotification(t("notifications.low_energy"));
+                    return;
+                }
+                if (state.hunger < 30 && Date.now() > state.hungerSatisfiedUntil) {
+                    showNotification(t("notifications.low_hunger"));
+                    return;
+                }
+                state.isWorking = true;
+                state.currentTask = task;
+                state.taskStartTime = Date.now();
+                state.energy -= task.energy;
+                state.mood = Math.max(0, state.mood - 3);
+                showNotification(t("notifications.task_started", t(`tasks.${task.name}`), Math.floor(task.duration / 1000)));
+                playSound("clickSound");
+                saveGame();
+                render();
+            }
+
+            function completeTask(task) {
+                if (!state.isWorking || state.currentTask !== task) {
+                    state.isWorking = false;
+                    state.currentTask = null;
+                    state.taskStartTime = 0;
+                    saveGame();
+                    render();
+                    return;
+                }
+
+                let pay = task.pay;
+                state.inventory.forEach(item => {
+                    if (item.effect?.payMultiplier) {
+                        pay *= item.effect.payMultiplier;
+                        showNotification(t("notifications.item_bonus", t(`shop_items.${item.name}`), ((item.effect.payMultiplier - 1) * 100).toFixed(0)));
+                    }
+                });
+
+                if (state.hunger < 50 && Date.now() > state.hungerSatisfiedUntil) {
+                    pay *= 0.75;
+                    showNotification(t("notifications.hunger_reduced_income"));
+                }
+                pay = Number(pay.toFixed(3));
+
+                state.balance += pay;
+                showNotification(t("notifications.task_completed", t(`tasks.${task.name}`), pay.toFixed(3)));
                 playSound("runeSound");
-                document.body.classList.add('bg-transition');
-                setTimeout(() => document.body.classList.remove('bg-transition'), 1000);
-            }
-        }
+                createCoinAnimation();
 
-        function startTask(task) {
-            if (state.isWorking) {
-                showNotification(t("notifications.task_in_progress"));
-                return;
-            }
-            if (state.energy < task.energy) {
-                showNotification(t("notifications.low_energy"));
-                return;
-            }
-            if (state.hunger < 30 && Date.now() > state.hungerSatisfiedUntil) {
-                showNotification(t("notifications.low_hunger"));
-                return;
-            }
-            state.isWorking = true;
-            state.currentTask = task;
-            state.taskStartTime = Date.now();
-            state.energy -= task.energy;
-            state.mood = Math.max(0, state.mood - 3);
-            showNotification(t("notifications.task_started", t(`tasks.${task.name}`), Math.floor(task.duration / 1000)));
-            playSound("clickSound");
-            saveGame();
-            render();
-        }
+                if (task.name === "open_shop") {
+                    state.shopPassiveIncome = true;
+                    state.lastShopIncome = Date.now();
+                    showNotification(t("notifications.shop_opened"));
+                }
 
-        function completeTask(task) {
-            if (!state.isWorking || state.currentTask !== task) {
                 state.isWorking = false;
                 state.currentTask = null;
                 state.taskStartTime = 0;
+                updateStatus();
                 saveGame();
                 render();
-                return;
             }
 
-            let pay = task.pay;
-            state.inventory.forEach(item => {
-                if (item.effect?.payMultiplier) {
-                    pay *= item.effect.payMultiplier;
-                    showNotification(t("notifications.item_bonus", t(`shop_items.${item.name}`), ((item.effect.payMultiplier - 1) * 100).toFixed(0)));
+            function doSocialTask(task) {
+                if (state.energy < task.energy) {
+                    showNotification(t("notifications.low_energy"));
+                    return;
                 }
-            });
-
-            if (state.hunger < 50 && Date.now() > state.hungerSatisfiedUntil) {
-                pay *= 0.75;
-                showNotification(t("notifications.hunger_reduced_income"));
-            }
-            pay = Number(pay.toFixed(3));
-
-            state.balance += pay;
-            showNotification(t("notifications.task_completed", t(`tasks.${task.name}`), pay.toFixed(3)));
-            playSound("runeSound");
-            createCoinAnimation();
-
-            if (task.name === "open_shop") {
-                state.shopPassiveIncome = true;
-                state.lastShopIncome = Date.now();
-                showNotification(t("notifications.shop_opened"));
-            }
-
-            state.isWorking = false;
-            state.currentTask = null;
-            state.taskStartTime = 0;
-            updateStatus();
-            saveGame();
-            render();
-        }
-
-        function doSocialTask(task) {
-            if (state.energy < task.energy) {
-                showNotification(t("notifications.low_energy"));
-                return;
-            }
-            if (state.socialTaskCooldowns[task.id] && Date.now() < state.socialTaskCooldowns[task.id]) {
-                showNotification(t("notifications.social_task_cooldown"));
-                return;
-            }
-            if (task.action) task.action();
-            state.energy -= task.energy;
-            let pay = task.pay;
-            state.balance += pay;
-            state.socialTaskCooldowns[task.id] = Date.now() + task.cooldown;
-            showNotification(t("notifications.social_task_done", t(`social_tasks.${task.name}`), pay.toFixed(3)));
-            playSound("runeSound");
-            createCoinAnimation();
-            updateStatus();
-            saveGame();
-            render();
-        }
-
-        function buyItem(item) {
-            if (state.balance < item.price) {
-                showNotification(t("notifications.not_enough_runes"));
-                return;
-            }
-            if (!item.reusable && state.inventory.some(i => i.name === item.name)) {
-                showNotification(t("notifications.item_already_bought"));
-                return;
-            }
-            state.balance -= item.price;
-            state.inventory.push(item);
-            showNotification(t("notifications.item_bought", t(`shop_items.${item.name}`), item.price.toLocaleString()));
-            if (item.effect) {
-                if (item.effect.mood) {
-                    state.mood = Math.min(state.mood + item.effect.mood, 100);
-                    showNotification(t("notifications.mood_restored", item.effect.mood));
+                if (state.socialTaskCooldowns[task.id] && Date.now() < state.socialTaskCooldowns[task.id]) {
+                    showNotification(t("notifications.social_task_cooldown"));
+                    return;
                 }
-                if (item.effect.hungerSatisfied) {
-                    state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
-                    state.hunger = 100;
-                    showNotification(t("notifications.hunger_satisfied", item.effect.hungerSatisfied / 60000));
-                }
-            }
-            playSound("runeSound");
-            const itemDiv = Array.from(document.getElementById("shopList").children)
-                .find(div => div.querySelector("button").textContent.includes(t(`shop_items.${item.name}`)));
-            if (itemDiv) itemDiv.classList.add("purchased");
-            updateStatus();
-            saveGame();
-            render();
-        }
-
-        function showNotification(message) {
-            const notification = document.getElementById("notification");
-            notification.textContent = message;
-            notification.classList.add("show");
-            setTimeout(() => {
-                notification.classList.remove("show");
-                notification.textContent = "";
-            }, 3000);
-        }
-
-        function playSound(soundId) {
-            const sound = document.getElementById(soundId);
-            sound.currentTime = 0;
-            sound.play().catch(() => {});
-        }
-
-        function createCoinAnimation() {
-            const coin = document.createElement("div");
-            coin.className = "coin-animation";
-            coin.style.left = `${Math.random() * (window.innerWidth - 32)}px`;
-            coin.style.top = `${window.innerHeight - 64}px`;
-            document.body.appendChild(coin);
-            setTimeout(() => coin.remove(), 800);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const loadingScreen = document.getElementById('loading-screen');
-            const gameContent = document.getElementById('game-content');
-
-            setTimeout(() => {
-                loadingScreen.classList.add('hidden');
-                gameContent.classList.add('loaded');
-                enterFullscreen();
-                loadGame();
-                render();
-                setInterval(gameTick, 1000);
-            }, 12000);
-        });
-
-        function gameTick() {
-            const now = Date.now();
-            const deltaTime = (now - state.lastTick) / 1000;
-
-            if (state.energy < 100) {
-                state.energy += (10 / 300) * deltaTime;
-                if (state.energy > 100) state.energy = 100;
-            }
-
-            if (Date.now() > state.hungerSatisfiedUntil) {
-                if (state.hunger > 0) {
-                    state.hunger -= 0.0333 * deltaTime;
-                    if (state.hunger < 0) state.hunger = 0;
-                    if (state.hunger < 30) {
-                        showNotification(t("notifications.hungry"));
-                    }
-                }
-            } else {
-                state.hunger = 100;
-            }
-
-            if (state.mood < 100) {
-                state.mood += 0.0167 * deltaTime;
-                if (state.mood > 100) state.mood = 100;
-            }
-
-            if (state.isWorking && state.currentTask) {
-                const elapsed = now - state.taskStartTime;
-                if (elapsed >= state.currentTask.duration) {
-                    completeTask(state.currentTask);
-                }
-            }
-
-            if (state.shopPassiveIncome && (now - state.lastShopIncome) >= 240000) {
-                state.balance += 10;
-                state.lastShopIncome = now;
-                showNotification(t("notifications.shop_income"));
+                if (task.action) task.action();
+                state.energy -= task.energy;
+                let pay = task.pay;
+                state.balance += pay;
+                state.socialTaskCooldowns[task.id] = Date.now() + task.cooldown;
+                showNotification(t("notifications.social_task_done", t(`social_tasks.${task.name}`), pay.toFixed(3)));
                 playSound("runeSound");
                 createCoinAnimation();
+                updateStatus();
                 saveGame();
+                render();
             }
 
-            updateStatus();
-            state.lastTick = now;
-            saveGame();
-            render();
-        }
-    </script>
-</body>
+            function buyItem(item) {
+                if (state.balance < item.price) {
+                    showNotification(t("notifications.not_enough_runes"));
+                    return;
+                }
+                if (!item.reusable && state.inventory.some(i => i.name === item.name)) {
+                    showNotification(t("notifications.item_already_bought"));
+                    return;
+                }
+                state.balance -= item.price;
+                state.inventory.push(item);
+                showNotification(t("notifications.item_bought", t(`shop_items.${item.name}`), item.price.toLocaleString()));
+                if (item.effect) {
+                    if (item.effect.mood) {
+                        state.mood = Math.min(state.mood + item.effect.mood, 100);
+                        showNotification(t("notifications.mood_restored", item.effect.mood));
+                    }
+                    if (item.effect.hungerSatisfied) {
+                        state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
+                        state.hunger = 100;
+                        showNotification(t("notifications.hunger_satisfied", item.effect.hungerSatisfied / 60000));
+                    }
+                }
+                playSound("runeSound");
+                const itemDiv = Array.from(document.getElementById("shopList").children)
+                    .find(div => div.querySelector("button").textContent.includes(t(`shop_items.${item.name}`)));
+                if (itemDiv) itemDiv.classList.add("purchased");
+                updateStatus();
+                saveGame();
+                render();
+            }
+
+            function showNotification(message) {
+                const notification = document.getElementById("notification");
+                notification.textContent = message;
+                notification.classList.add("show");
+                setTimeout(() => {
+                    notification.classList.remove("show");
+                    notification.textContent = "";
+                }, 3000);
+            }
+
+            function playSound(soundId) {
+                const sound = document.getElementById(soundId);
+                sound.currentTime = 0;
+                sound.play().catch(() => {});
+            }
+
+            function createCoinAnimation() {
+                const coin = document.createElement("div");
+                coin.className = "coin-animation";
+                coin.style.left = `${Math.random() * (window.innerWidth - 32)}px`;
+                coin.style.top = `${window.innerHeight - 64}px`;
+                document.body.appendChild(coin);
+                setTimeout(() => coin.remove(), 800);
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const loadingScreen = document.getElementById('loading-screen');
+                const gameContent = document.getElementById('game-content');
+
+                loadGame();
+                render();
+
+                setTimeout(() => {
+                    loadingScreen.classList.add('hidden');
+                    gameContent.classList.add('loaded');
+                    enterFullscreen();
+                    setInterval(gameTick, 1000);
+                }, 1000);
+            });
+
+            function gameTick() {
+                const now = Date.now();
+                const deltaTime = (now - state.lastTick) / 1000;
+
+                if (state.energy < 100) {
+                    state.energy += (10 / 300) * deltaTime;
+                    if (state.energy > 100) state.energy = 100;
+                }
+
+                if (Date.now() > state.hungerSatisfiedUntil) {
+                    if (state.hunger > 0) {
+                        state.hunger -= 0.0333 * deltaTime;
+                        if (state.hunger < 0) state.hunger = 0;
+                        if (state.hunger < 30) {
+                            showNotification(t("notifications.hungry"));
+                        }
+                    }
+                } else {
+                    state.hunger = 100;
+                }
+
+                if (state.mood < 100) {
+                    state.mood += 0.0167 * deltaTime;
+                    if (state.mood > 100) state.mood = 100;
+                }
+
+                if (state.isWorking && state.currentTask) {
+                    const elapsed = now - state.taskStartTime;
+                    if (elapsed >= state.currentTask.duration) {
+                        completeTask(state.currentTask);
+                    }
+                }
+
+                if (state.shopPassiveIncome && (now - state.lastShopIncome) >= 240000) {
+                    state.balance += 10;
+                    state.lastShopIncome = now;
+                    showNotification(t("notifications.shop_income"));
+                    playSound("runeSound");
+                    createCoinAnimation();
+                    saveGame();
+                }
+
+                updateStatus();
+                state.lastTick = now;
+                saveGame();
+                render();
+            }
+        </script>
+    </body>
 </html>
