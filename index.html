@@ -21,6 +21,16 @@
             transition: background-image 1s ease-in-out;
         }
 
+        .bg-transition {
+            animation: bgFade 1s ease-in-out;
+        }
+
+        @keyframes bgFade {
+            0% { opacity: 0.7; }
+            50% { opacity: 0.9; }
+            100% { opacity: 1; }
+        }
+
         #loading-screen {
             position: fixed;
             top: 0;
@@ -165,11 +175,32 @@
             padding: 10px;
             text-align: center;
             transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
         }
 
         .task-item:hover, .shop-item:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+        }
+
+        .task-item.locked, .shop-item.locked {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .task-item.locked::after, .shop-item.locked::after {
+            content: '🔒 Требуется ранг: ' attr(data-level);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #FFD700;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.75em;
+            text-align: center;
+            width: 80%;
         }
 
         .task-item img, .shop-item img {
@@ -317,51 +348,50 @@
         <div class="game-container active" id="mainContainer">
             <h1 id="game-title">SOKO Shiba</h1>
             <div class="stats">
-                <div class="stat" id="stat-rank"></div>
                 <div class="stat" id="stat-runes"></div>
                 <div class="stat" id="stat-energy"></div>
                 <div class="stat" id="stat-hunger"></div>
                 <div class="stat" id="stat-mood"></div>
             </div>
             <div class="tabs">
-                <button class="tab-button active" onclick="showSection('mainContainer')" id="tab-main"></button>
-                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks"></button>
-                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop"></button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory"></button>
+                <button class="tab-button active" onclick="showSection('mainContainer')" id="tab-main">Главная</button>
+                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks">Задания</button>
+                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop">Рынок</button>
+                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory">Инвентарь</button>
             </div>
             <div class="studio-credit">Made by MATRIXON STD</div>
         </div>
 
         <div class="task-container" id="taskContainer">
-            <h1 id="tasks-title"></h1>
+            <h1 id="tasks-title">Задания</h1>
             <div class="task-list" id="taskList"></div>
             <div class="tabs">
-                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-tasks"></button>
-                <button class="tab-button active" onclick="showSection('taskContainer')" id="tab-tasks-tasks"></button>
-                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop-tasks"></button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory-tasks"></button>
+                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-tasks">Главная</button>
+                <button class="tab-button active" onclick="showSection('taskContainer')" id="tab-tasks-tasks">Задания</button>
+                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop-tasks">Рынок</button>
+                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory-tasks">Инвентарь</button>
             </div>
         </div>
 
         <div class="shop-container" id="shopContainer">
-            <h1 id="shop-title"></h1>
+            <h1 id="shop-title">Рынок</h1>
             <div class="shop-list" id="shopList"></div>
             <div class="tabs">
-                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-shop"></button>
-                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks-shop"></button>
-                <button class="tab-button active" onclick="showSection('shopContainer')" id="tab-shop-shop"></button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory-shop"></button>
+                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-shop">Главная</button>
+                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks-shop">Задания</button>
+                <button class="tab-button active" onclick="showSection('shopContainer')" id="tab-shop-shop">Рынок</button>
+                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory-shop">Инвентарь</button>
             </div>
         </div>
 
         <div class="inventory-container" id="inventoryContainer">
-            <h1 id="inventory-title"></h1>
+            <h1 id="inventory-title">Инвентарь</h1>
             <div class="inventory-list" id="inventoryList"></div>
             <div class="tabs">
-                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-inventory"></button>
-                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks-inventory"></button>
-                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop-inventory"></button>
-                <button class="tab-button active" onclick="showSection('inventoryContainer')" id="tab-inventory-inventory"></button>
+                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-inventory">Главная</button>
+                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks-inventory">Задания</button>
+                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop-inventory">Рынок</button>
+                <button class="tab-button active" onclick="showSection('inventoryContainer')" id="tab-inventory-inventory">Инвентарь</button>
             </div>
         </div>
 
@@ -374,7 +404,6 @@
         const translations = {
             ru: {
                 game_title: "SOKO Shiba",
-                rank: "Ранг: <span id='status'>{0}</span>",
                 runes: "Руны: <span id='balance'>{0}</span>",
                 energy: "Выносливость: <span id='energy'>{0}</span>",
                 hunger: "Голод: <span id='hunger'>{0}</span>",
@@ -391,13 +420,7 @@
                 shop_item: "{0} ({1} рун)",
                 inventory_empty: "Пусто",
                 consume: "Съесть",
-                statuses: {
-                    vagabond: "Бродяга",
-                    scout: "Разведчик",
-                    builder: "Строитель",
-                    chief: "Вождь",
-                    legend: "Легенда"
-                },
+                sell: "Продать",
                 tasks: {
                     chop_tree: "Рубить дерево",
                     clean_island: "Чистить остров",
@@ -408,7 +431,9 @@
                     recruit: "Привозить новых жителей",
                     build_village: "Строить деревню",
                     play_football: "Помогать детям играть в футбол",
-                    open_shop: "Открыть свою лавку"
+                    open_shop: "Открыть свою лавку",
+                    buy_products: "Покупать продукты подешевле",
+                    sell_products: "Продавать продукты"
                 },
                 social_tasks: {
                     subscribe: "Задание 1: Подписаться на канал",
@@ -428,7 +453,7 @@
                     hammer_desc: "Задания +30% рун"
                 },
                 notifications: {
-                    new_rank: "Новый ранг: {0}!",
+                    new_rank: "Новый уровень: {0}!",
                     task_started: "Начато: {0} ({1}с)",
                     task_completed: "Завершено: {0}! +{1} рун",
                     shop_opened: "Лавка открыта! Пассивный доход: 10 рун каждые 4 минуты!",
@@ -441,6 +466,7 @@
                     item_bought: "Куплено: {0} за {1} рун!",
                     item_already_bought: "Уже куплено!",
                     mood_restored: "Дух +{0}!",
+                    sell_timeout: "Время для продажи продуктов истекло!",
                     hunger_satisfied: "Голод утолен на {0} минут!",
                     hunger_reduced_income: "Голод снижает доход!",
                     item_bonus: "Бонус от {0}: +{1}%!",
@@ -449,264 +475,17 @@
                     social_invite: "Зови союзников через Telegram!",
                     food_consumed: "{0} съедено! Голод утолен на {1} минут!",
                     cannot_eat: "Это нельзя съесть!",
+                    products_sold: "Продукты проданы! +{0} рун!",
+                    products_bought: "Продукты куплены! -{0} рун!",
                     hungry: "Голоден! Съешь рыбу или мясо."
-                }
-            },
-            en: {
-                game_title: "SOKO Shiba",
-                rank: "Rank: <span id='status'>{0}</span>",
-                runes: "Runes: <span id='balance'>{0}</span>",
-                energy: "Energy: <span id='energy'>{0}</span>",
-                hunger: "Hunger: <span id='hunger'>{0}</span>",
-                mood: "Mood: <span id='mood'>{0}</span>",
-                tab_main: "Home",
-                tab_tasks: "Tasks",
-                tab_shop: "Market",
-                tab_inventory: "Inventory",
-                tasks_title: "Tasks",
-                shop_title: "Market",
-                inventory_title: "Inventory",
-                task_working: "In progress: {0} ({1}s)",
-                task_desc: "{0} runes, {1} energy",
-                shop_item: "{0} ({1} runes)",
-                inventory_empty: "Empty",
-                consume: "Eat",
-                statuses: {
-                    vagabond: "Vagabond",
-                    scout: "Scout",
-                    builder: "Builder",
-                    chief: "Chief",
-                    legend: "Legend"
-                },
-                tasks: {
-                    chop_tree: "Chop tree",
-                    clean_island: "Clean island",
-                    collect_leaves: "Collect leaves",
-                    build_boat: "Build boat",
-                    clean_ocean: "Clean ocean",
-                    fish: "Fish",
-                    recruit: "Recruit new residents",
-                    build_village: "Build village",
-                    play_football: "Help kids play football",
-                    open_shop: "Open your shop"
-                },
-                social_tasks: {
-                    subscribe: "Task 1: Subscribe to channel",
-                    share: "Task 2: Spread the legend",
-                    invite: "Task 3: Call allies"
-                },
-                shop_items: {
-                    fish: "Fish",
-                    fish_desc: "Satisfies hunger for 10 minutes",
-                    meat: "Meat",
-                    meat_desc: "Satisfies hunger for 15 minutes",
-                    honey: "Honey",
-                    honey_desc: "Restores 30 mood",
-                    axe: "Axe",
-                    axe_desc: "Tasks +20% runes",
-                    hammer: "Hammer",
-                    hammer_desc: "Tasks +30% runes"
-                },
-                notifications: {
-                    new_rank: "New rank: {0}!",
-                    task_started: "Started: {0} ({1}s)",
-                    task_completed: "Completed: {0}! +{1} runes",
-                    shop_opened: "Shop opened! Passive income: 10 runes every 4 minutes!",
-                    shop_income: "Shop earned 10 runes!",
-                    task_in_progress: "Already performing a task!",
-                    low_energy: "Not enough energy! Rest or drink honey.",
-                    low_hunger: "Too hungry! Eat fish or meat.",
-                    low_mood: "Not enough mood!",
-                    not_enough_runes: "Not enough runes!",
-                    item_bought: "Bought: {0} for {1} runes!",
-                    item_already_bought: "Already bought!",
-                    mood_restored: "Mood +{0}!",
-                    hunger_satisfied: "Hunger satisfied for {0} minutes!",
-                    hunger_reduced_income: "Hunger reduces income!",
-                    item_bonus: "Bonus from {0}: +{1}%!",
-                    social_task_done: "Task \"{0}\" completed! +{1} runes",
-                    social_task_cooldown: "Task on cooldown!",
-                    social_invite: "Call allies via Telegram!",
-                    food_consumed: "{0} eaten! Hunger satisfied for {1} minutes!",
-                    cannot_eat: "This cannot be eaten!",
-                    hungry: "Hungry! Eat fish or meat."
-                }
-            },
-            ja: {
-                game_title: "SOKO Shiba",
-                rank: "ランク: <span id='status'>{0}</span>",
-                runes: "ルーン: <span id='balance'>{0}</span>",
-                energy: "エネルギー: <span id='energy'>{0}</span>",
-                hunger: "空腹: <span id='hunger'>{0}</span>",
-                mood: "気分: <span id='mood'>{0}</span>",
-                tab_main: "ホーム",
-                tab_tasks: "タスク",
-                tab_shop: "市場",
-                tab_inventory: "インベントリ",
-                tasks_title: "タスク",
-                shop_title: "市場",
-                inventory_title: "インベントリ",
-                task_working: "進行中: {0} ({1}秒)",
-                task_desc: "{0}ルーン、{1}エネルギー",
-                shop_item: "{0} ({1}ルーン)",
-                inventory_empty: "空",
-                consume: "食べる",
-                statuses: {
-                    vagabond: "放浪者",
-                    scout: "斥候",
-                    builder: "建築者",
-                    chief: "族長",
-                    legend: "伝説"
-                },
-                tasks: {
-                    chop_tree: "木を切る",
-                    clean_island: "島を掃除",
-                    collect_leaves: "葉を集める",
-                    build_boat: "ボートを作る",
-                    clean_ocean: "海を掃除",
-                    fish: "釣り",
-                    recruit: "新しい住民を連れてくる",
-                    build_village: "村を作る",
-                    play_football: "子供のサッカーを手伝う",
-                    open_shop: "店を開く"
-                },
-                social_tasks: {
-                    subscribe: "タスク1: チャンネル登録",
-                    share: "タスク2: 伝説を広める",
-                    invite: "タスク3: 同盟者を呼ぶ"
-                },
-                shop_items: {
-                    fish: "魚",
-                    fish_desc: "10分間空腹を満たす",
-                    meat: "肉",
-                    meat_desc: "15分間空腹を満たす",
-                    honey: "蜂蜜",
-                    honey_desc: "気分を30回復",
-                    axe: "斧",
-                    axe_desc: "タスク報酬+20%ルーン",
-                    hammer: "ハンマー",
-                    hammer_desc: "タスク報酬+30%ルーン"
-                },
-                notifications: {
-                    new_rank: "新しいランク: {0}！",
-                    task_started: "開始: {0} ({1}秒)",
-                    task_completed: "完了: {0}！ +{1}ルーン",
-                    shop_opened: "店を開いた！パッシブ収入: 4分ごとに10ルーン！",
-                    shop_income: "店で10ルーンを獲得！",
-                    task_in_progress: "すでにタスクを実行中！",
-                    low_energy: "エネルギーが不足！休息するか蜂蜜を飲む。",
-                    low_hunger: "空腹すぎる！魚か肉を食べる。",
-                    low_mood: "気分が足りない！",
-                    not_enough_runes: "ルーンが不足！",
-                    item_bought: "{0}を{1}ルーンで購入！",
-                    item_already_bought: "すでに購入済み！",
-                    mood_restored: "気分+{0}！",
-                    hunger_satisfied: "{0}分間空腹を満たした！",
-                    hunger_reduced_income: "空腹で収入が減少！",
-                    item_bonus: "{0}からのボーナス: +{1}%！",
-                    social_task_done: "タスク「{0}」完了！ +{1}ルーン",
-                    social_task_cooldown: "タスクはクールダウン中！",
-                    social_invite: "Telegramで同盟者を呼ぶ！",
-                    food_consumed: "{0}を食べた！{1}分間空腹を満たした！",
-                    cannot_eat: "これは食べられない！",
-                    hungry: "空腹！魚か肉を食べる。"
-                }
-            },
-            uk: {
-                game_title: "SOKO Shiba",
-                rank: "Звання: <span id='status'>{0}</span>",
-                runes: "Руни: <span id='balance'>{0}</span>",
-                energy: "Енергія: <span id='energy'>{0}</span>",
-                hunger: "Голод: <span id='hunger'>{0}</span>",
-                mood: "Настрій: <span id='mood'>{0}</span>",
-                tab_main: "Головна",
-                tab_tasks: "Завдання",
-                tab_shop: "Ринок",
-                tab_inventory: "Інвентар",
-                tasks_title: "Завдання",
-                shop_title: "Ринок",
-                inventory_title: "Інвентар",
-                task_working: "Виконується: {0} ({1}с)",
-                task_desc: "{0} рун, {1} енергії",
-                shop_item: "{0} ({1} рун)",
-                inventory_empty: "Порожньо",
-                consume: "З'їсти",
-                statuses: {
-                    vagabond: "Блукач",
-                    scout: "Розвідник",
-                    builder: "Будівельник",
-                    chief: "Вождь",
-                    legend: "Легенда"
-                },
-                tasks: {
-                    chop_tree: "Рубати дерево",
-                    clean_island: "Чистити острів",
-                    collect_leaves: "Збирати листя",
-                    build_boat: "Будувати човен",
-                    clean_ocean: "Чистити океан",
-                    fish: "Рибалити",
-                    recruit: "Привозити нових жителів",
-                    build_village: "Будувати село",
-                    play_football: "Допомагати дітям грати у футбол",
-                    open_shop: "Відкрити свою крамницю"
-                },
-                social_tasks: {
-                    subscribe: "Завдання 1: Підписатися на канал",
-                    share: "Завдання 2: Поширити легенду",
-                    invite: "Завдання 3: Покликати союзників"
-                },
-                shop_items: {
-                    fish: "Риба",
-                    fish_desc: "Втамовує голод на 10 хвилин",
-                    meat: "М'ясо",
-                    meat_desc: "Втамовує голод на 15 хвилин",
-                    honey: "Мед",
-                    honey_desc: "Відновлює 30 настрою",
-                    axe: "Сокира",
-                    axe_desc: "Завдання +20% рун",
-                    hammer: "Молот",
-                    hammer_desc: "Завдання +30% рун"
-                },
-                notifications: {
-                    new_rank: "Нове звання: {0}!",
-                    task_started: "Почато: {0} ({1}с)",
-                    task_completed: "Завершено: {0}! +{1} рун",
-                    shop_opened: "Крамницю відкрито! Пасивний дохід: 10 рун кожні 4 хвилини!",
-                    shop_income: "Крамниця принесла 10 рун!",
-                    task_in_progress: "Вже виконуєш завдання!",
-                    low_energy: "Недостатньо енергії! Відпочинь або випий мед.",
-                    low_hunger: "Занадто голодний! З'їж рибу або м'ясо.",
-                    low_mood: "Недостатньо настрою!",
-                    not_enough_runes: "Недостатньо рун!",
-                    item_bought: "Куплено: {0} за {1} рун!",
-                    item_already_bought: "Вже куплено!",
-                    mood_restored: "Настрій +{0}!",
-                    hunger_satisfied: "Голод втамовано на {0} хвилин!",
-                    hunger_reduced_income: "Голод зменшує дохід!",
-                    item_bonus: "Бонус від {0}: +{1}%!",
-                    social_task_done: "Завдання \"{0}\" виконано! +{1} рун",
-                    social_task_cooldown: "Завдання на перезарядці!",
-                    social_invite: "Клич союзників через Telegram!",
-                    food_consumed: "{0} з'їдено! Голод втамовано на {1} хвилин!",
-                    cannot_eat: "Це не можна з'їсти!",
-                    hungry: "Голодний! З'їж рибу або м'ясо."
                 }
             }
         };
 
-        let currentLang = localStorage.getItem('language') || navigator.language.slice(0, 2);
-        if (!translations[currentLang]) currentLang = 'en';
-
-        function setLanguage(lang) {
-            if (translations[lang]) {
-                currentLang = lang;
-                localStorage.setItem('language', lang);
-                render();
-            }
-        }
+        let currentLang = 'ru';
 
         function t(key, ...args) {
-            let str = translations[currentLang][key] || translations.en[key] || key;
+            let str = translations.ru[key] || key;
             args.forEach((arg, i) => {
                 str = str.replace(`{${i}}`, arg);
             });
@@ -724,7 +503,7 @@
             hunger: 100,
             mood: 100,
             inventory: [],
-            status: "vagabond",
+            level: 0,
             isWorking: false,
             currentTask: null,
             taskStartTime: 0,
@@ -733,15 +512,17 @@
             hungerSatisfiedUntil: 0,
             lastTick: Date.now(),
             shopPassiveIncome: false,
-            lastShopIncome: 0
+            lastShopIncome: 0,
+            sellWindowActive: false,
+            sellWindowStart: 0
         };
 
-        const statuses = [
-            { name: "vagabond", minBalance: 0, bg: "bg0.png" },
-            { name: "scout", minBalance: 10000, bg: "bg1.png" },
-            { name: "builder", minBalance: 100000, bg: "bg2.png" },
-            { name: "chief", minBalance: 1000000, bg: "bg3.png" },
-            { name: "legend", minBalance: 10000000, bg: "bg4.png" }
+        const levels = [
+            { name: "Новичок", minBalance: 0, bg: "bg0.png" },
+            { name: "Разведчик", minBalance: 10000, bg: "bg1.png" },
+            { name: "Строитель", minBalance: 100000, bg: "bg2.png" },
+            { name: "Вождь", minBalance: 1000000, bg: "bg3.png" },
+            { name: "Легенда", minBalance: 10000000, bg: "bg4.png" }
         ];
 
         const tasks = [
@@ -754,7 +535,9 @@
             { id: 7, name: "recruit", pay: 0.012, energy: 20, duration: 120000, image: "recruit.png", level: 1 },
             { id: 8, name: "build_village", pay: 0.02, energy: 25, duration: 150000, image: "village.png", level: 2 },
             { id: 9, name: "play_football", pay: 0.03, energy: 20, duration: 140000, image: "football.png", level: 3 },
-            { id: 10, name: "open_shop", pay: 0.05, energy: 30, duration: 180000, image: "shop.png", level: 4 }
+            { id: 10, name: "open_shop", pay: 0.05, energy: 30, duration: 180000, image: "shop.png", level: 4 },
+            { id: 11, name: "buy_products", pay: -10, energy: 10, duration: 30000, image: "buy_products.png", level: 4 },
+            { id: 12, name: "sell_products", pay: 15, energy: 10, duration: 10000, image: "sell_products.png", level: 4 }
         ];
 
         const socialTasks = [
@@ -777,8 +560,8 @@
             { name: "fish", price: 5, desc: "fish_desc", effect: { hungerSatisfied: 600000 }, image: "fish_item.png", reusable: true },
             { name: "meat", price: 10, desc: "meat_desc", effect: { hungerSatisfied: 900000 }, image: "meat.png", reusable: true },
             { name: "honey", price: 15, desc: "honey_desc", effect: { mood: 30 }, image: "honey.png", reusable: true },
-            { name: "axe", price: 100, desc: "axe_desc", effect: { payMultiplier: 1.2 }, image: "axe.png" },
-            { name: "hammer", price: 500, desc: "hammer_desc", effect: { payMultiplier: 1.3 }, image: "hammer.png" }
+            { name: "axe", price: 100, desc: "axe_desc", effect: { payMultiplier: 1.2 }, image: "axe.png", reusable: false },
+            { name: "hammer", price: 500, desc: "hammer_desc", effect: { payMultiplier: 1.3 }, image: "hammer.png", reusable: false }
         ];
 
         if (window.Telegram?.WebApp) {
@@ -864,42 +647,44 @@
             }
         }
 
+        function sellProducts(index) {
+            const item = state.inventory[index];
+            if (item.name === "products" && state.sellWindowActive) {
+                state.balance += 15;
+                state.inventory.splice(index, 1);
+                showNotification(t("notifications.products_sold", 15));
+                playSound("runeSound");
+                saveGame();
+                render();
+            }
+        }
+
         function render() {
             document.getElementById("game-title").textContent = t("game_title");
-            document.getElementById("stat-rank").innerHTML = t("rank", t(`statuses.${state.status}`));
             document.getElementById("stat-runes").innerHTML = t("runes", state.balance.toFixed(3));
             document.getElementById("stat-energy").innerHTML = t("energy", Math.floor(state.energy));
             document.getElementById("stat-hunger").innerHTML = t("hunger", Math.floor(state.hunger));
             document.getElementById("stat-mood").innerHTML = t("mood", Math.floor(state.mood));
-            document.getElementById("tasks-title").textContent = t("tasks_title");
-            document.getElementById("shop-title").textContent = t("shop_title");
-            document.getElementById("inventory-title").textContent = t("inventory_title");
-            ['tab-main', 'tab-tasks', 'tab-shop', 'tab-inventory', 
-             'tab-main-tasks', 'tab-tasks-tasks', 'tab-shop-tasks', 'tab-inventory-tasks',
-             'tab-main-shop', 'tab-tasks-shop', 'tab-shop-shop', 'tab-inventory-shop',
-             'tab-main-inventory', 'tab-tasks-inventory', 'tab-shop-inventory', 'tab-inventory-inventory'].forEach(id => {
-                document.getElementById(id).textContent = t(id.split('-')[1]);
-            });
 
-            const currentLevel = statuses.findIndex(s => s.name === state.status);
             const taskList = document.getElementById("taskList");
             taskList.innerHTML = "";
             if (state.isWorking && state.currentTask) {
                 const remainingTime = Math.max(0, Math.floor((state.currentTask.duration - (Date.now() - state.taskStartTime)) / 1000));
                 taskList.innerHTML = `<div style="text-align: center; color: #FFD700; font-size: 0.9em;">${t("task_working", t(`tasks.${state.currentTask.name}`), remainingTime)}</div>`;
             } else {
-                tasks.filter(task => task.level <= currentLevel).forEach(task => {
+                tasks.forEach(task => {
                     const itemDiv = document.createElement("div");
-                    itemDiv.className = "task-item";
+                    itemDiv.className = `task-item ${task.level > state.level ? 'locked' : ''}`;
+                    itemDiv.setAttribute('data-level', levels[task.level].name);
                     const img = document.createElement("img");
                     img.src = task.image;
                     img.alt = t(`tasks.${task.name}`);
                     img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
                     const desc = document.createElement("p");
-                    desc.textContent = t("task_desc", task.pay.toFixed(3), task.energy);
+                    desc.textContent = t("task_desc", Math.abs(task.pay).toFixed(3), task.energy);
                     const button = document.createElement("button");
                     button.textContent = t(`tasks.${task.name}`);
-                    button.disabled = state.energy < task.energy || state.isWorking || state.hunger < 30;
+                    button.disabled = state.energy < task.energy || state.isWorking || state.hunger < 30 || task.level > state.level;
                     button.onclick = () => startTask(task);
                     itemDiv.appendChild(img);
                     itemDiv.appendChild(desc);
@@ -930,85 +715,120 @@
             shopList.innerHTML = "";
             shopItems.forEach(item => {
                 const itemDiv = document.createElement("div");
-                itemDiv.className = "shop-item";
+                itemDiv.className = `shop-item ${item.level > state.level ? 'locked' : ''}`;
+                itemDiv.setAttribute('data-level', levels[item.level || 0].name);
                 const img = document.createElement("img");
                 img.src = item.image;
                 img.alt = t(`shop_items.${item.name}`);
                 img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
-                    const desc = document.createElement("p");
-                    desc.textContent = t(`shop_items.${item.desc}`);
-                    const button = document.createElement("button");
-                    button.textContent = t("shop_item", t(`shop_items.${item.name}`), item.price.toLocaleString());
-                    button.disabled = state.balance < item.price || (!item.reusable && state.inventory.some(i => i.name === item.name));
-                    button.onclick = () => buyItem(item);
-                    itemDiv.appendChild(img);
-                    itemDiv.appendChild(desc);
-                    itemDiv.appendChild(button);
-                    shopList.appendChild(itemDiv);
+                const desc = document.createElement("p");
+                desc.textContent = t(`shop_items.${item.desc}`);
+                const button = document.createElement("button");
+                button.textContent = t("shop_item", t(`shop_items.${item.name}`), item.price.toLocaleString());
+                button.disabled = state.balance < item.price || (!item.reusable && state.inventory.some(i => i.name === item.name)) || (item.level && item.level > state.level);
+                button.onclick = () => buyItem(item);
+                itemDiv.appendChild(img);
+                itemDiv.appendChild(desc);
+                itemDiv.appendChild(button);
+                shopList.appendChild(itemDiv);
+            });
+
+            const inventoryList = document.getElementById("inventoryList");
+            inventoryList.innerHTML = "";
+            if (state.inventory.length === 0) {
+                inventoryList.innerHTML = t("inventory_empty");
+            } else {
+                state.inventory.forEach((item, index) => {
+                    const itemDiv = document.createElement("div");
+                    itemDiv.className = "inventory-item";
+                    const nameSpan = document.createElement("span");
+                    nameSpan.textContent = `${t(`shop_items.${item.name}`)} (${t(`shop_items.${item.desc}`)})`;
+                    itemDiv.appendChild(nameSpan);
+                    if (item.name === "fish" || item.name === "meat") {
+                        const useButton = document.createElement("button");
+                        useButton.textContent = t("consume");
+                        useButton.onclick = () => consumeFood(index);
+                        itemDiv.appendChild(useButton);
+                    } else if (item.name === "products" && state.sellWindowActive) {
+                        const sellButton = document.createElement("button");
+                        sellButton.textContent = t("sell");
+                        sellButton.onclick = () => sellProducts(index);
+                        itemDiv.appendChild(sellButton);
+                    }
+                    inventoryList.appendChild(itemDiv);
                 });
-
-                const inventoryList = document.getElementById("inventoryList");
-                inventoryList.innerHTML = "";
-                if (state.inventory.length === 0) {
-                    inventoryList.innerHTML = t("inventory_empty");
-                } else {
-                    state.inventory.forEach((item, index) => {
-                        const itemDiv = document.createElement("div");
-                        itemDiv.className = "inventory-item";
-                        const nameSpan = document.createElement("span");
-                        nameSpan.textContent = `${t(`shop_items.${item.name}`)} (${t(`shop_items.${item.desc}`)})`;
-                        itemDiv.appendChild(nameSpan);
-                        if (item.name === "fish" || item.name === "meat") {
-                            const useButton = document.createElement("button");
-                            useButton.textContent = t("consume");
-                            useButton.onclick = () => consumeFood(index);
-                            itemDiv.appendChild(useButton);
-                        }
-                        inventoryList.appendChild(itemDiv);
-                    });
-                }
-
-                let bgImage = statuses.find(s => state.balance >= s.minBalance).bg;
-                document.body.style.backgroundImage = `url(${bgImage})`;
             }
 
-            function updateStatus() {
-                const newStatus = statuses.reduce((acc, s) => state.balance >= s.minBalance ? s : acc, statuses[0]);
-                if (state.status !== newStatus.name) {
-                    state.status = newStatus.name;
-                    showNotification(t("notifications.new_rank", t(`statuses.${state.status}`)));
-                    playSound("runeSound");
-                    document.body.classList.add('bg-transition');
-                    setTimeout(() => document.body.classList.remove('bg-transition'), 1000);
-                }
-            }
+            let bgImage = levels[state.level].bg;
+            document.body.style.backgroundImage = `url(${bgImage})`;
+        }
 
-            function startTask(task) {
-                if (state.isWorking) {
-                    showNotification(t("notifications.task_in_progress"));
-                    return;
-                }
-                if (state.energy < task.energy) {
-                    showNotification(t("notifications.low_energy"));
-                    return;
-                }
-                if (state.hunger < 30 && Date.now() > state.hungerSatisfiedUntil) {
-                    showNotification(t("notifications.low_hunger"));
-                    return;
-                }
-                state.isWorking = true;
-                state.currentTask = task;
-                state.taskStartTime = Date.now();
-                state.energy -= task.energy;
-                state.mood = Math.max(0, state.mood - 3);
-                showNotification(t("notifications.task_started", t(`tasks.${task.name}`), Math.floor(task.duration / 1000)));
-                playSound("clickSound");
+        function updateLevel() {
+            const newLevel = levels.reduce((acc, l, i) => state.balance >= l.minBalance ? i : acc, 0);
+            if (state.level !== newLevel) {
+                state.level = newLevel;
+                showNotification(t("notifications.new_rank", levels[state.level].name));
+                playSound("runeSound");
+                document.body.classList.add('bg-transition');
+                setTimeout(() => document.body.classList.remove('bg-transition'), 1000);
+            }
+        }
+
+        function startTask(task) {
+            if (state.isWorking) {
+                showNotification(t("notifications.task_in_progress"));
+                return;
+            }
+            if (state.energy < task.energy) {
+                showNotification(t("notifications.low_energy"));
+                return;
+            }
+            if (state.hunger < 30 && Date.now() > state.hungerSatisfiedUntil) {
+                showNotification(t("notifications.low_hunger"));
+                return;
+            }
+            if (task.name === "sell_products" && !state.sellWindowActive) {
+                showNotification(t("notifications.sell_timeout"));
+                return;
+            }
+            state.isWorking = true;
+            state.currentTask = task;
+            state.taskStartTime = Date.now();
+            state.energy -= task.energy;
+            state.mood = Math.max(0, state.mood - 3);
+            showNotification(t("notifications.task_started", t(`tasks.${task.name}`), Math.floor(task.duration / 1000)));
+            playSound("clickSound");
+            saveGame();
+            render();
+        }
+
+        function completeTask(task) {
+            if (!state.isWorking || state.currentTask !== task) {
+                state.isWorking = false;
+                state.currentTask = null;
+                state.taskStartTime = 0;
                 saveGame();
                 render();
+                return;
             }
 
-            function completeTask(task) {
-                if (!state.isWorking || state.currentTask !== task) {
+            let pay = task.pay;
+            state.inventory.forEach(item => {
+                if (item.effect?.payMultiplier && task.pay > 0) {
+                    pay *= item.effect.payMultiplier;
+                    showNotification(t("notifications.item_bonus", t(`shop_items.${item.name}`), ((item.effect.payMultiplier - 1) * 100).toFixed(0)));
+                }
+            });
+
+            if (state.hunger < 50 && Date.now() > state.hungerSatisfiedUntil) {
+                pay *= 0.75;
+                showNotification(t("notifications.hunger_reduced_income"));
+            }
+            pay = Number(pay.toFixed(3));
+
+            if (pay < 0) {
+                if (state.balance < Math.abs(pay)) {
+                    showNotification(t("notifications.not_enough_runes"));
                     state.isWorking = false;
                     state.currentTask = null;
                     state.taskStartTime = 0;
@@ -1016,181 +836,185 @@
                     render();
                     return;
                 }
-
-                let pay = task.pay;
-                state.inventory.forEach(item => {
-                    if (item.effect?.payMultiplier) {
-                        pay *= item.effect.payMultiplier;
-                        showNotification(t("notifications.item_bonus", t(`shop_items.${item.name}`), ((item.effect.payMultiplier - 1) * 100).toFixed(0)));
-                    }
-                });
-
-                if (state.hunger < 50 && Date.now() > state.hungerSatisfiedUntil) {
-                    pay *= 0.75;
-                    showNotification(t("notifications.hunger_reduced_income"));
-                }
-                pay = Number(pay.toFixed(3));
-
+                state.balance += pay;
+                state.inventory.push({ name: "products", desc: "Продукты для продажи", reusable: true });
+                showNotification(t("notifications.products_bought", Math.abs(pay)));
+            } else {
                 state.balance += pay;
                 showNotification(t("notifications.task_completed", t(`tasks.${task.name}`), pay.toFixed(3)));
-                playSound("runeSound");
-                createCoinAnimation();
-
-                if (task.name === "open_shop") {
-                    state.shopPassiveIncome = true;
-                    state.lastShopIncome = Date.now();
-                    showNotification(t("notifications.shop_opened"));
-                }
-
-                state.isWorking = false;
-                state.currentTask = null;
-                state.taskStartTime = 0;
-                updateStatus();
-                saveGame();
-                render();
             }
 
-            function doSocialTask(task) {
-                if (state.energy < task.energy) {
-                    showNotification(t("notifications.low_energy"));
-                    return;
-                }
-                if (state.socialTaskCooldowns[task.id] && Date.now() < state.socialTaskCooldowns[task.id]) {
-                    showNotification(t("notifications.social_task_cooldown"));
-                    return;
-                }
-                if (task.action) task.action();
-                state.energy -= task.energy;
-                let pay = task.pay;
-                state.balance += pay;
-                state.socialTaskCooldowns[task.id] = Date.now() + task.cooldown;
-                showNotification(t("notifications.social_task_done", t(`social_tasks.${task.name}`), pay.toFixed(3)));
-                playSound("runeSound");
-                createCoinAnimation();
-                updateStatus();
-                saveGame();
-                render();
+            playSound("runeSound");
+            createCoinAnimation();
+
+            if (task.name === "open_shop") {
+                state.shopPassiveIncome = true;
+                state.lastShopIncome = Date.now();
+                showNotification(t("notifications.shop_opened"));
+            } else if (task.name === "buy_products") {
+                state.sellWindowActive = true;
+                state.sellWindowStart = Date.now();
+            } else if (task.name === "sell_products") {
+                state.sellWindowActive = false;
+                state.sellWindowStart = 0;
             }
 
-            function buyItem(item) {
-                if (state.balance < item.price) {
-                    showNotification(t("notifications.not_enough_runes"));
-                    return;
-                }
-                if (!item.reusable && state.inventory.some(i => i.name === item.name)) {
-                    showNotification(t("notifications.item_already_bought"));
-                    return;
-                }
-                state.balance -= item.price;
-                state.inventory.push(item);
-                showNotification(t("notifications.item_bought", t(`shop_items.${item.name}`), item.price.toLocaleString()));
-                if (item.effect) {
-                    if (item.effect.mood) {
-                        state.mood = Math.min(state.mood + item.effect.mood, 100);
-                        showNotification(t("notifications.mood_restored", item.effect.mood));
-                    }
-                    if (item.effect.hungerSatisfied) {
-                        state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
-                        state.hunger = 100;
-                        showNotification(t("notifications.hunger_satisfied", item.effect.hungerSatisfied / 60000));
-                    }
-                }
-                playSound("runeSound");
-                const itemDiv = Array.from(document.getElementById("shopList").children)
-                    .find(div => div.querySelector("button").textContent.includes(t(`shop_items.${item.name}`)));
-                if (itemDiv) itemDiv.classList.add("purchased");
-                updateStatus();
-                saveGame();
-                render();
+            state.isWorking = false;
+            state.currentTask = null;
+            state.taskStartTime = 0;
+            updateLevel();
+            saveGame();
+            render();
+        }
+
+        function doSocialTask(task) {
+            if (state.energy < task.energy) {
+                showNotification(t("notifications.low_energy"));
+                return;
             }
-
-            function showNotification(message) {
-                const notification = document.getElementById("notification");
-                notification.textContent = message;
-                notification.classList.add("show");
-                setTimeout(() => {
-                    notification.classList.remove("show");
-                    notification.textContent = "";
-                }, 3000);
+            if (state.socialTaskCooldowns[task.id] && Date.now() < state.socialTaskCooldowns[task.id]) {
+                showNotification(t("notifications.social_task_cooldown"));
+                return;
             }
+            if (task.action) task.action();
+            state.energy -= task.energy;
+            let pay = task.pay;
+            state.balance += pay;
+            state.socialTaskCooldowns[task.id] = Date.now() + task.cooldown;
+            showNotification(t("notifications.social_task_done", t(`social_tasks.${task.name}`), pay.toFixed(3)));
+            playSound("runeSound");
+            createCoinAnimation();
+            updateLevel();
+            saveGame();
+            render();
+        }
 
-            function playSound(soundId) {
-                const sound = document.getElementById(soundId);
-                sound.currentTime = 0;
-                sound.play().catch(() => {});
+        function buyItem(item) {
+            if (state.balance < item.price) {
+                showNotification(t("notifications.not_enough_runes"));
+                return;
             }
-
-            function createCoinAnimation() {
-                const coin = document.createElement("div");
-                coin.className = "coin-animation";
-                coin.style.left = `${Math.random() * (window.innerWidth - 32)}px`;
-                coin.style.top = `${window.innerHeight - 64}px`;
-                document.body.appendChild(coin);
-                setTimeout(() => coin.remove(), 800);
+            if (!item.reusable && state.inventory.some(i => i.name === item.name)) {
+                showNotification(t("notifications.item_already_bought"));
+                return;
             }
-
-            document.addEventListener('DOMContentLoaded', () => {
-                const loadingScreen = document.getElementById('loading-screen');
-                const gameContent = document.getElementById('game-content');
-
-                loadGame();
-                render();
-
-                setTimeout(() => {
-                    loadingScreen.classList.add('hidden');
-                    gameContent.classList.add('loaded');
-                    enterFullscreen();
-                    setInterval(gameTick, 1000);
-                }, 1000);
-            });
-
-            function gameTick() {
-                const now = Date.now();
-                const deltaTime = (now - state.lastTick) / 1000;
-
-                if (state.energy < 100) {
-                    state.energy += (10 / 300) * deltaTime;
-                    if (state.energy > 100) state.energy = 100;
+            state.balance -= item.price;
+            state.inventory.push(item);
+            showNotification(t("notifications.item_bought", t(`shop_items.${item.name}`), item.price.toLocaleString()));
+            if (item.effect) {
+                if (item.effect.mood) {
+                    state.mood = Math.min(state.mood + item.effect.mood, 100);
+                    showNotification(t("notifications.mood_restored", item.effect.mood));
                 }
-
-                if (Date.now() > state.hungerSatisfiedUntil) {
-                    if (state.hunger > 0) {
-                        state.hunger -= 0.0333 * deltaTime;
-                        if (state.hunger < 0) state.hunger = 0;
-                        if (state.hunger < 30) {
-                            showNotification(t("notifications.hungry"));
-                        }
-                    }
-                } else {
+                if (item.effect.hungerSatisfied) {
+                    state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
                     state.hunger = 100;
+                    showNotification(t("notifications.hunger_satisfied", item.effect.hungerSatisfied / 60000));
                 }
+            }
+            playSound("runeSound");
+            const itemDiv = Array.from(document.getElementById("shopList").children)
+                .find(div => div.querySelector("button").textContent.includes(t(`shop_items.${item.name}`)));
+            if (itemDiv) itemDiv.classList.add("purchased");
+            updateLevel();
+            saveGame();
+            render();
+        }
 
-                if (state.mood < 100) {
-                    state.mood += 0.0167 * deltaTime;
-                    if (state.mood > 100) state.mood = 100;
-                }
+        function showNotification(message) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.classList.add("show");
+            setTimeout(() => {
+                notification.classList.remove("show");
+                notification.textContent = "";
+            }, 3000);
+        }
 
-                if (state.isWorking && state.currentTask) {
-                    const elapsed = now - state.taskStartTime;
-                    if (elapsed >= state.currentTask.duration) {
-                        completeTask(state.currentTask);
+        function playSound(soundId) {
+            const sound = document.getElementById(soundId);
+            sound.currentTime = 0;
+            sound.play().catch(() => {});
+        }
+
+        function createCoinAnimation() {
+            const coin = document.createElement("div");
+            coin.className = "coin-animation";
+            coin.style.left = `${Math.random() * (window.innerWidth - 32)}px`;
+            coin.style.top = `${window.innerHeight - 64}px`;
+            document.body.appendChild(coin);
+            setTimeout(() => coin.remove(), 800);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            const gameContent = document.getElementById('game-content');
+
+            loadGame();
+            render();
+
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                gameContent.classList.add('loaded');
+                enterFullscreen();
+                setInterval(gameTick, 1000);
+            }, 1000);
+        });
+
+        function gameTick() {
+            const now = Date.now();
+            const deltaTime = (now - state.lastTick) / 1000;
+
+            if (state.energy < 100) {
+                state.energy += (10 / 300) * deltaTime;
+                if (state.energy > 100) state.energy = 100;
+            }
+
+            if (Date.now() > state.hungerSatisfiedUntil) {
+                if (state.hunger > 0) {
+                    state.hunger -= 0.0333 * deltaTime;
+                    if (state.hunger < 0) state.hunger = 0;
+                    if (state.hunger < 30) {
+                        showNotification(t("notifications.hungry"));
                     }
                 }
-
-                if (state.shopPassiveIncome && (now - state.lastShopIncome) >= 240000) {
-                    state.balance += 10;
-                    state.lastShopIncome = now;
-                    showNotification(t("notifications.shop_income"));
-                    playSound("runeSound");
-                    createCoinAnimation();
-                    saveGame();
-                }
-
-                updateStatus();
-                state.lastTick = now;
-                saveGame();
-                render();
+            } else {
+                state.hunger = 100;
             }
-        </script>
-    </body>
+
+            if (state.mood < 100) {
+                state.mood += 0.0167 * deltaTime;
+                if (state.mood > 100) state.mood = 100;
+            }
+
+            if (state.isWorking && state.currentTask) {
+                const elapsed = now - state.taskStartTime;
+                if (elapsed >= state.currentTask.duration) {
+                    completeTask(state.currentTask);
+                }
+            }
+
+            if (state.shopPassiveIncome && (now - state.lastShopIncome) >= 240000) {
+                state.balance += 10;
+                state.lastShopIncome = now;
+                showNotification(t("notifications.shop_income"));
+                playSound("runeSound");
+                createCoinAnimation();
+                saveGame();
+            }
+
+            if (state.sellWindowActive && (now - state.sellWindowStart) >= 10000) {
+                state.sellWindowActive = false;
+                state.sellWindowStart = 0;
+                showNotification(t("notifications.sell_timeout"));
+                saveGame();
+            }
+
+            updateLevel();
+            state.lastTick = now;
+            saveGame();
+            render();
+        }
+    </script>
+</body>
 </html>
