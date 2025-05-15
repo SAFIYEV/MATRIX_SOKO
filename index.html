@@ -18,9 +18,41 @@
             min-height: 100vh;
             overflow: hidden;
             touch-action: manipulation;
+            transition: background-image 1s ease-in-out;
         }
 
-        .game-container, .shop-container, .job-container, .task-container, .village-container, .inventory-container, .raid-container, .trade-container {
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('dwnld.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 4000;
+            opacity: 1;
+            transition: opacity 1s ease;
+        }
+
+        #loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #game-content {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        #game-content.loaded {
+            display: flex;
+        }
+
+        .game-container, .task-container, .shop-container, .inventory-container {
             width: 100%;
             max-width: 360px;
             margin: 8px;
@@ -41,7 +73,7 @@
             transform: translateY(20px);
         }
 
-        .shop-container, .job-container, .task-container, .village-container, .inventory-container, .raid-container, .trade-container {
+        .task-container, .shop-container, .inventory-container {
             border: 1px solid #FFD700;
             background: rgba(30, 30, 40, 0.95);
         }
@@ -83,18 +115,11 @@
 
         .tabs {
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-around;
             margin-top: auto;
             padding: 8px 0;
             background: rgba(0, 0, 0, 0.4);
             border-radius: 12px;
-        }
-
-        .tab-row {
-            display: flex;
-            width: 100%;
-            justify-content: space-around;
         }
 
         .tab-button {
@@ -122,7 +147,7 @@
             font-weight: 600;
         }
 
-        .shop-list, .job-list, .task-list {
+        .task-list, .shop-list {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 10px;
@@ -131,7 +156,7 @@
             max-height: 50vh;
         }
 
-        .shop-item, .job-item, .task-item {
+        .task-item, .shop-item {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 12px;
             padding: 10px;
@@ -139,25 +164,25 @@
             transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .shop-item:hover, .job-item:hover, .task-item:hover {
+        .task-item:hover, .shop-item:hover {
             transform: scale(1.05);
             box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
         }
 
-        .shop-item img, .job-item img, .task-item img {
+        .task-item img, .shop-item img {
             width: 64px;
             height: 64px;
             object-fit: contain;
             margin-bottom: 6px;
         }
 
-        .shop-item p, .job-item p, .task-item p {
+        .task-item p, .shop-item p {
             font-size: 0.8em;
             color: #D1D5DB;
             margin: 4px 0;
         }
 
-        .shop-item button, .job-item button, .task-item button {
+        .task-item button, .shop-item button {
             width: 100%;
             padding: 8px;
             font-size: 0.85em;
@@ -169,13 +194,13 @@
             transition: transform 0.2s, background 0.2s;
         }
 
-        .shop-item button:disabled, .job-item button:disabled, .task-item button:disabled {
+        .task-item button:disabled, .shop-item button:disabled {
             background: #555;
             color: #888;
             cursor: not-allowed;
         }
 
-        .shop-item button:hover:not(:disabled), .job-item button:hover:not(:disabled), .task-item button:hover:not(:disabled) {
+        .task-item button:hover:not(:disabled), .shop-item button:hover:not(:disabled) {
             background: linear-gradient(135deg, #FFE066, #FFD700);
             transform: scale(1.05);
         }
@@ -184,41 +209,13 @@
             animation: purchase 0.3s ease;
         }
 
-        .inventory-list, .raid, .village, .trade {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            padding: 10px 0;
-        }
-
-        .raid button, .village button, .trade button {
-            width: 100%;
-            padding: 10px;
-            font-size: 0.9em;
-            background: linear-gradient(135deg, #6B7280, #4B5563);
-            color: #E0E0E0;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-        }
-
-        .raid button:disabled, .village button:disabled, .trade button:disabled {
-            background: #555;
-            cursor: not-allowed;
-        }
-
-        .raid button:hover:not(:disabled), .village button:hover:not(:disabled), .trade button:hover:not(:disabled) {
-            background: linear-gradient(135deg, #9CA3AF, #6B7280);
-            transform: translateY(-2px);
-        }
-
         .inventory-list {
             font-size: 0.85em;
             color: #D1D5DB;
             text-align: center;
             max-height: 200px;
             overflow-y: auto;
+            padding: 10px 0;
         }
 
         .inventory-item {
@@ -237,16 +234,6 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-        }
-
-        .trade input {
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            border: none;
-            font-size: 0.9em;
-            background: rgba(255, 255, 255, 0.1);
-            color: #E0E0E0;
         }
 
         .notification {
@@ -294,187 +281,83 @@
         .wallet-button {
             position: fixed;
             top: 16px;
-            left: 50%;
-            transform: translateX(-50%);
+            right: 16px;
             z-index: 3000;
         }
 
         @media (max-width: 360px) {
             h1 { font-size: 1.2em; }
-            .game-container, .shop-container, .job-container, .task-container, .village-container, .inventory-container, .raid-container, .trade-container {
+            .game-container, .task-container, .shop-container, .inventory-container {
                 margin: 4px;
                 padding: 10px;
                 max-width: 320px;
             }
             .stat { font-size: 0.75em; }
             .tab-button { font-size: 0.7em; padding: 6px; }
-            .shop-item img, .job-item img, .task-item img { width: 48px; height: 48px; }
-            .shop-list, .job-list, .task-list { grid-template-columns: 1fr; }
-            .wallet-button { top: 8px; left: 50%; transform: translateX(-50%); }
+            .task-item img, .shop-item img { width: 48px; height: 48px; }
+            .task-list, .shop-list { grid-template-columns: 1fr; }
+            .wallet-button { top: 8px; right: 8px; }
         }
     </style>
 </head>
 <body>
-    <div class="wallet-button" id="ton-connect"></div>
-    <div class="game-container active" id="mainContainer">
-        <h1>Viking Dog Saga</h1>
-        <div class="stats">
-            <div class="stat">Ранг: <span id="status">Бродяга</span></div>
-            <div class="stat">Руны: <span id="balance">0</span></div>
-            <div class="stat">Выносливость: <span id="energy">100</span></div>
-            <div class="stat">Голод: <span id="hunger">100</span></div>
-            <div class="stat">Дух: <span id="mood">100</span></div>
-            <div class="stat">ID: <span id="playerId"></span></div>
-        </div>
-        <div class="tabs">
-            <div class="tab-row">
+    <div id="loading-screen"></div>
+    <div id="game-content">
+        <div class="wallet-button" id="ton-connect"></div>
+        <div class="game-container active" id="mainContainer">
+            <h1>Viking Dog Saga</h1>
+            <div class="stats">
+                <div class="stat">Ранг: <span id="status">Бродяга</span></div>
+                <div class="stat">Руны: <span id="balance">0</span></div>
+                <div class="stat">Выносливость: <span id="energy">100</span></div>
+                <div class="stat">Голод: <span id="hunger">100</span></div>
+                <div class="stat">Дух: <span id="mood">100</span></div>
+            </div>
+            <div class="tabs">
                 <button class="tab-button active" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button" onclick="showSection('jobContainer')">Задачи</button>
+                <button class="tab-button" onclick="showSection('taskContainer')">Задания</button>
                 <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
                 <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
             </div>
-            <div class="tab-row">
-                <button class="tab-button" onclick="showSection('taskContainer')">Квесты</button>
-                <button class="tab-button" onclick="showSection('raidContainer')">Набеги</button>
-                <button class="tab-button" onclick="showSection('tradeContainer')">Торговля</button>
-            </div>
         </div>
-    </div>
 
-    <div class="job-container" id="jobContainer">
-        <h1>Задачи</h1>
-        <div class="job-list" id="jobList"></div>
-        <div class="tabs">
-            <div class="tab-row">
+        <div class="task-container" id="taskContainer">
+            <h1>Задания</h1>
+            <div class="task-list" id="taskList"></div>
+            <div class="tabs">
                 <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button active" onclick="showSection('jobContainer')">Задачи</button>
+                <button class="tab-button active" onclick="showSection('taskContainer')">Задания</button>
                 <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
                 <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
             </div>
-            <div class="tab-row">
-                <button class="tab-button" onclick="showSection('taskContainer')">Квесты</button>
-                <button class="tab-button" onclick="showSection('raidContainer')">Набеги</button>
-                <button class="tab-button" onclick="showSection('tradeContainer')">Торговля</button>
-            </div>
         </div>
-    </div>
 
-    <div class="task-container" id="taskContainer">
-        <h1>Квесты</h1>
-        <div class="task-list" id="taskList"></div>
-        <button class="tab-button" style="margin-top: 10px;" onclick="showSection('jobContainer')">Назад к задачам</button>
-        <div class="tabs">
-            <div class="tab-row">
+        <div class="shop-container" id="shopContainer">
+            <h1>Рынок</h1>
+            <div class="shop-list" id="shopList"></div>
+            <div class="tabs">
                 <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button" onclick="showSection('jobContainer')">Задачи</button>
-                <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
-            </div>
-            <div class="tab-row">
-                <button class="tab-button active" onclick="showSection('taskContainer')">Квесты</button>
-                <button class="tab-button" onclick="showSection('raidContainer')">Набеги</button>
-                <button class="tab-button" onclick="showSection('tradeContainer')">Торговля</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="shop-container" id="shopContainer">
-        <h1>Рынок</h1>
-        <div class="shop-list" id="shopList"></div>
-        <div class="tabs">
-            <div class="tab-row">
-                <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button" onclick="showSection('jobContainer')">Задачи</button>
+                <button class="tab-button" onclick="showSection('taskContainer')">Задания</button>
                 <button class="tab-button active" onclick="showSection('shopContainer')">Рынок</button>
                 <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
             </div>
-            <div class="tab-row">
-                <button class="tab-button" onclick="showSection('taskContainer')">Квесты</button>
-                <button class="tab-button" onclick="showSection('raidContainer')">Набеги</button>
-                <button class="tab-button" onclick="showSection('tradeContainer')">Торговля</button>
-            </div>
         </div>
-    </div>
 
-    <div class="village-container" id="villageContainer">
-        <h1>Деревня</h1>
-        <div class="village" id="villageSection"></div>
-        <div class="tabs">
-            <div class="tab-row">
+        <div class="inventory-container" id="inventoryContainer">
+            <h1>Инвентарь</h1>
+            <div class="inventory-list" id="inventoryList"></div>
+            <div class="tabs">
                 <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button" onclick="showSection('jobContainer')">Задачи</button>
-                <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
-            </div>
-            <div class="tab-row">
-                <button class="tab-button" onclick="showSection('taskContainer')">Квесты</button>
-                <button class="tab-button" onclick="showSection('raidContainer')">Набеги</button>
-                <button class="tab-button" onclick="showSection('tradeContainer')">Торговля</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="inventory-container" id="inventoryContainer">
-        <h1>Инвентарь</h1>
-        <div class="inventory-list" id="inventoryList"></div>
-        <div class="tabs">
-            <div class="tab-row">
-                <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button" onclick="showSection('jobContainer')">Задачи</button>
+                <button class="tab-button" onclick="showSection('taskContainer')">Задания</button>
                 <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
                 <button class="tab-button active" onclick="showSection('inventoryContainer')">Инвентарь</button>
             </div>
-            <div class="tab-row">
-                <button class="tab-button" onclick="showSection('taskContainer')">Квесты</button>
-                <button class="tab-button" onclick="showSection('raidContainer')">Набеги</button>
-                <button class="tab-button" onclick="showSection('tradeContainer')">Торговля</button>
-            </div>
         </div>
-    </div>
 
-    <div class="raid-container" id="raidContainer">
-        <h1>Набеги</h1>
-        <div class="raid" id="raidSection"></div>
-        <div class="tabs">
-            <div class="tab-row">
-                <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button" onclick="showSection('jobContainer')">Задачи</button>
-                <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
-            </div>
-            <div class="tab-row">
-                <button class="tab-button" onclick="showSection('taskContainer')">Квесты</button>
-                <button class="tab-button active" onclick="showSection('raidContainer')">Набеги</button>
-                <button class="tab-button" onclick="showSection('tradeContainer')">Торговля</button>
-            </div>
-        </div>
+        <div class="notification" id="notification"></div>
+        <audio id="clickSound" src="bark.mp3"></audio>
+        <audio id="runeSound" src="rune_collect.mp3"></audio>
     </div>
-
-    <div class="trade-container" id="tradeContainer">
-        <h1>Торговля рунами</h1>
-        <div class="trade">
-            <input type="text" id="recipientId" placeholder="ID получателя">
-            <input type="number" id="tradeAmount" placeholder="Количество">
-            <button onclick="tradeRunes()">Отправить</button>
-        </div>
-        <div class="tabs">
-            <div class="tab-row">
-                <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
-                <button class="tab-button" onclick="showSection('jobContainer')">Задачи</button>
-                <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
-            </div>
-            <div class="tab-row">
-                <button class="tab-button" onclick="showSection('taskContainer')">Квесты</button>
-                <button class="tab-button" onclick="showSection('raidContainer')">Набеги</button>
-                <button class="tab-button active" onclick="showSection('tradeContainer')">Торговля</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="notification" id="notification"></div>
-    <audio id="clickSound" src="bark.mp3"></audio>
-    <audio id="runeSound" src="rune_collect.mp3"></audio>
 
     <script>
         const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
@@ -487,171 +370,64 @@
             energy: 100,
             hunger: 100,
             mood: 100,
-            currentJob: null,
-            currentTask: null,
-            taskStartTime: 0,
-            villageOwned: false,
-            villageLevel: 0,
             inventory: [],
             status: "Бродяга",
-            debtRepaymentActive: false,
             isWorking: false,
+            currentTask: null,
+            taskStartTime: 0,
             socialTaskCooldowns: {},
             lastSave: Date.now(),
-            achievements: [],
             hungerSatisfiedUntil: 0,
             lastTick: Date.now(),
-            playerId: generateUniqueId(),
-            hourlyIncome: 0,
-            pendingTrades: [],
-            villageSectionUpdated: false
+            shopActive: false,
+            shopStartTime: 0,
+            shopPassiveIncome: false,
+            lastShopIncome: 0
         };
 
         const statuses = [
-            { name: "Бродяга", minBalance: 0 },
-            { name: "Разведчик", minBalance: 1000 },
-            { name: "Строитель", minBalance: 10000 },
-            { name: "Вождь", minBalance: 50000 },
-            { name: "Воевода", minBalance: 1000000 },
-            { name: "Легенда", minBalance: 10000000 }
+            { name: "Бродяга", minBalance: 0, bg: "bg0.jpg" },
+            { name: "Разведчик", minBalance: 10000, bg: "bg1.jpg" },
+            { name: "Строитель", minBalance: 100000, bg: "bg2.jpg" },
+            { name: "Вождь", minBalance: 1000000, bg: "bg3.jpg" },
+            { name: "Легенда", minBalance: 10000000, bg: "bg4.jpg" }
         ];
 
-        const jobs = {
-            forager: {
-                name: "Собиратель",
-                pay: 0.005,
-                unlock: 0,
-                hourly: 0.001,
-                fine: 0.002,
-                image: "forager.png",
-                tasks: [
-                    { name: "Собрать ягоды", pay: 0.005, energy: 10, duration: 60000, image: "berries.png" },
-                    { name: "Найти ракушки", pay: 0.006, energy: 10, duration: 70000, image: "shells.png" },
-                    { name: "Собрать травы", pay: 0.007, energy: 10, duration: 80000, image: "herbs.png" }
-                ]
-            },
-            woodcutter: {
-                name: "Дровосек",
-                pay: 0.008,
-                unlock: 0,
-                hourly: 0.002,
-                fine: 0.003,
-                image: "woodcutter.png",
-                tasks: [
-                    { name: "Рубить деревья", pay: 0.008, energy: 10, duration: 60000, image: "chop_tree.png" },
-                    { name: "Собирать ветки", pay: 0.009, energy: 10, duration: 70000, image: "branches.png" },
-                    { name: "Колоть дрова", pay: 0.0085, energy: 10, duration: 65000, image: "split_logs.png" }
-                ]
-            },
-            fisherman: {
-                name: "Рыбак",
-                pay: 0.006,
-                unlock: 1000,
-                hourly: 0.0015,
-                fine: 0.0025,
-                image: "fisherman.png",
-                tasks: [
-                    { name: "Ловить рыбу", pay: 0.006, energy: 10, duration: 60000, image: "fish.png" },
-                    { name: "Ставить сети", pay: 0.007, energy: 10, duration: 70000, image: "nets.png" },
-                    { name: "Ловить крабов", pay: 0.0055, energy: 10, duration: 55000, image: "crabs.png" }
-                ]
-            },
-            hunter: {
-                name: "Охотник",
-                pay: 0.01,
-                unlock: 5000,
-                hourly: 0.003,
-                fine: 0.004,
-                image: "hunter.png",
-                tasks: [
-                    { name: "Выслеживать дичь", pay: 0.01, energy: 10, duration: 80000, image: "track_prey.png" },
-                    { name: "Ставить ловушки", pay: 0.012, energy: 10, duration: 90000, image: "traps.png" },
-                    { name: "Охотиться на кабана", pay: 0.011, energy: 10, duration: 85000, image: "boar.png" }
-                ]
-            },
-            builder: {
-                name: "Строитель",
-                pay: 0.02,
-                unlock: 10000,
-                hourly: 0.004,
-                fine: 0.005,
-                image: "builder.png",
-                tasks: [
-                    { name: "Строить хижину", pay: 0.02, energy: 10, duration: 90000, image: "hut.png" },
-                    { name: "Мастерить инструменты", pay: 0.025, energy: 10, duration: 95000, image: "tools.png" },
-                    { name: "Возводить частокол", pay: 0.03, energy: 10, duration: 100000, image: "palisade.png" }
-                ]
-            },
-            settler: {
-                name: "Поселенец",
-                pay: 0.05,
-                unlock: 50000,
-                hourly: 0.005,
-                fine: 0.01,
-                image: "settler.png",
-                tasks: [
-                    { name: "Заселять деревню", pay: 0.05, energy: 20, duration: 180000, image: "village.png" },
-                    { name: "Набрать викингов", pay: 0.04, energy: 15, duration: 120000, image: "recruit.png" },
-                    { name: "Планировать расширение", pay: 0.06, energy: 15, duration: 150000, image: "plan.png" }
-                ]
-            }
-        };
+        const tasks = [
+            { id: 1, name: "Рубить дерево", pay: 0.005, energy: 10, duration: 60000, image: "task_icon.png", level: 0 },
+            { id: 2, name: "Чистить остров", pay: 0.006, energy: 10, duration: 70000, image: "task_icon.png", level: 0 },
+            { id: 3, name: "Собирать листья", pay: 0.007, energy: 10, duration: 80000, image: "task_icon.png", level: 0 },
+            { id: 4, name: "Строить лодку", pay: 0.008, energy: 15, duration: 90000, image: "task_icon.png", level: 1 },
+            { id: 5, name: "Чистить океан", pay: 0.009, energy: 15, duration: 100000, image: "task_icon.png", level: 1 },
+            { id: 6, name: "Рыбачить", pay: 0.01, energy: 15, duration: 110000, image: "task_icon.png", level: 1 },
+            { id: 7, name: "Привозить новых жителей", pay: 0.012, energy: 20, duration: 120000, image: "task_icon.png", level: 1 },
+            { id: 8, name: "Строить деревню", pay: 0.02, energy: 25, duration: 150000, image: "task_icon.png", level: 2 },
+            { id: 9, name: "Помогать детям играть в футбол", pay: 0.03, energy: 20, duration: 140000, image: "task_icon.png", level: 3 },
+            { id: 10, name: "Открыть свою лавку", pay: 0.05, energy: 30, duration: 180000, image: "task_icon.png", level: 4 }
+        ];
 
         const socialTasks = [
-            {
-                name: "Поделиться сагой",
-                pay: 0.005,
-                energy: 5,
-                cooldown: 300000,
-                action: () => {
-                    if (window.Telegram?.WebApp) {
-                        window.Telegram.WebApp.openTelegramLink('https://t.me/vikingdogsaga');
-                    } else {
-                        window.open('https://t.me/vikingdogsaga', '_blank');
-                    }
+            { id: 1, name: "Задание 1: Подписаться на канал", pay: 0.005, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
+                if (window.Telegram?.WebApp) {
+                    window.Telegram.WebApp.openTelegramLink('https://t.me/vikingdogsaga');
+                } else {
+                    window.open('https://t.me/vikingdogsaga', '_blank');
                 }
-            },
-            {
-                name: "Распространить легенду",
-                pay: 0.01,
-                energy: 10,
-                cooldown: 600000,
-                action: () => {
-                    window.open('https://t.me/share/url?url=VikingDogSaga', '_blank');
-                }
-            },
-            {
-                name: "Созвать союзников",
-                pay: 0.02,
-                energy: 15,
-                cooldown: 86400000,
-                action: () => {
-                    showNotification("Зови союзников через Telegram!");
-                }
-            }
+            }},
+            { id: 2, name: "Задание 2: Распространить легенду", pay: 0.01, energy: 10, cooldown: 600000, image: "task_icon.png", action: () => {
+                window.open('https://t.me/share/url?url=VikingDogSaga', '_blank');
+            }},
+            { id: 3, name: "Задание 3: Созвать союзников", pay: 0.02, energy: 15, cooldown: 86400000, image: "task_icon.png", action: () => {
+                showNotification("Зови союзников через Telegram!");
+            }}
         ];
 
         const shopItems = [
             { name: "Рыба", price: 5, desc: "Утоляет голод на 10 минут", effect: { hungerSatisfied: 600000 }, image: "fish_item.png", reusable: true },
             { name: "Мясо", price: 10, desc: "Утоляет голод на 15 минут", effect: { hungerSatisfied: 900000 }, image: "meat.png", reusable: true },
             { name: "Мед", price: 15, desc: "Восстанавливает 30 духа", effect: { mood: 30 }, image: "honey.png", reusable: true },
-            { name: "Топор", price: 100, desc: "Дровосек +20% рун", effect: { payMultiplier: 1.2 }, job: "woodcutter", image: "axe.png" },
-            { name: "Кожаная броня", price: 200, desc: "Охота +10% рун", effect: { taskPayMultiplier: 1.1 }, job: "hunter", image: "leather_armor.png" },
-            { name: "Сеть", price: 500, desc: "Рыбалка +50% улова", effect: { tipChance: 0.5, tipMultiplier: 1.5 }, job: "fisherman", image: "net.png" },
-            { name: "Железная броня", price: 5000, desc: "Набеги +50% рун", effect: { taskPayMultiplier: 1.5 }, image: "iron_armor.png" },
-            { name: "Молот", price: 10000, desc: "Строительство +30% рун", effect: { payMultiplier: 1.3 }, job: "builder", image: "hammer.png" },
-            { name: "Рунный камень", price: 20000, desc: "Поселение +40% рун", effect: { payMultiplier: 1.4 }, job: "settler", image: "rune_stone.png" },
-            { name: "Длинный дом", price: 50000, desc: "Дух +20", effect: { mood: 20 }, image: "longhouse.png" },
-            { name: "Большой зал", price: 200000, desc: "Дух +30", effect: { mood: 30 }, image: "great_hall.png" },
-            { name: "Драккар", price: 1000000, desc: "Дух +50", effect: { mood: 50 }, image: "drakkar.png" }
-        ];
-
-        const achievements = [
-            { name: "Первые руны", desc: "Заработай 100 рун", condition: () => state.balance >= 100, reward: { balance: 0.005 } },
-            { name: "Разведчик", desc: "Стань Разведчиком", condition: () => state.status === "Разведчик", reward: { energy: 20 } },
-            { name: "Вождь", desc: "Основай деревню", condition: () => state.villageOwned, reward: { balance: 0.10 } },
-            { name: "Легенда", desc: "Стань Легендой", condition: () => state.status === "Легенда", reward: { balance: 10.00 } },
-            { name: "Собиратель", desc: "Купи 5 предметов", condition: () => state.inventory.length >= 5, reward: { balance: 0.05 } }
+            { name: "Топор", price: 100, desc: "Задания +20% рун", effect: { payMultiplier: 1.2 }, image: "axe.png" },
+            { name: "Молот", price: 500, desc: "Задания +30% рун", effect: { payMultiplier: 1.3 }, image: "hammer.png" }
         ];
 
         if (window.Telegram?.WebApp) {
@@ -659,12 +435,6 @@
             window.Telegram.WebApp.enableClosingConfirmation();
             window.Telegram.WebApp.BackButton.onClick(() => showSection('mainContainer'));
             window.Telegram.WebApp.BackButton.show();
-        }
-
-        function generateUniqueId() {
-            const timestamp = Date.now().toString(36);
-            const randomStr = Math.random().toString(36).substr(2, 5);
-            return `${timestamp}-${randomStr}`;
         }
 
         function enterFullscreen() {
@@ -691,14 +461,9 @@
                 if (state.isWorking && state.currentTask) {
                     const elapsed = Date.now() - state.taskStartTime;
                     if (elapsed >= state.currentTask.duration) {
-                        completeJobTask(state.currentTask);
+                        completeTask(state.currentTask);
                     }
                 }
-                state.pendingTrades.forEach(trade => {
-                    state.balance += trade.amount;
-                    showNotification(`Получено ${trade.amount.toFixed(3)} рун от ${trade.senderId}`);
-                });
-                state.pendingTrades = [];
             }
             state.lastSave = Date.now();
             state.lastTick = Date.now();
@@ -717,7 +482,7 @@
         }
 
         function showSection(sectionId) {
-            ['mainContainer', 'jobContainer', 'taskContainer', 'shopContainer', 'villageContainer', 'inventoryContainer', 'raidContainer', 'tradeContainer'].forEach(id => {
+            ['mainContainer', 'taskContainer', 'shopContainer', 'inventoryContainer'].forEach(id => {
                 const section = document.getElementById(id);
                 section.classList.toggle('active', id === sectionId);
                 Array.from(section.querySelectorAll('.tab-button')).forEach(btn => {
@@ -729,18 +494,6 @@
             }
             playSound("clickSound");
             render();
-        }
-
-        function checkAchievements() {
-            achievements.forEach(ach => {
-                if (!state.achievements.includes(ach.name) && ach.condition()) {
-                    state.achievements.push(ach.name);
-                    showNotification(`Достижение: ${ach.name}! Награда: ${Object.keys(ach.reward).map(key => `${key === 'balance' ? '' : ''}${ach.reward[key]} ${key}`).join(', ')}`);
-                    if (ach.reward.balance) state.balance += ach.reward.balance;
-                    if (ach.reward.energy) state.energy = Math.min(state.energy + ach.reward.energy, 100);
-                    playSound("runeSound");
-                }
-            });
         }
 
         function consumeFood(index) {
@@ -764,96 +517,44 @@
             document.getElementById("energy").textContent = Math.floor(state.energy);
             document.getElementById("hunger").textContent = Math.floor(state.hunger);
             document.getElementById("mood").textContent = Math.floor(state.mood);
-            document.getElementById("playerId").textContent = state.playerId;
 
-            const jobList = document.getElementById("jobList");
-            jobList.innerHTML = "";
-            Object.keys(jobs).forEach(key => {
-                const job = jobs[key];
-                const itemDiv = document.createElement("div");
-                itemDiv.className = "job-item";
-                const img = document.createElement("img");
-                img.src = job.image;
-                img.alt = job.name;
-                img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
-                const desc = document.createElement("p");
-                desc.textContent = `З/П: ${job.pay.toFixed(3)} рун, Час: ${job.hourly.toFixed(3)}`;
-                const button = document.createElement("button");
-                button.textContent = job.unlock > 0 ? `${job.name} (${job.unlock.toLocaleString()} рун)` : job.name;
-                button.disabled = state.balance < job.unlock || (state.currentJob && state.currentJob.name === job.name);
-                button.onclick = () => {
-                    selectJob(key);
-                    showSection('taskContainer');
-                };
-                itemDiv.appendChild(img);
-                itemDiv.appendChild(desc);
-                itemDiv.appendChild(button);
-                jobList.appendChild(itemDiv);
-            });
-
+            const currentLevel = statuses.findIndex(s => s.name === state.status);
             const taskList = document.getElementById("taskList");
             taskList.innerHTML = "";
-            if (state.currentJob) {
-                if (state.isWorking && state.currentTask) {
-                    const remainingTime = Math.max(0, Math.floor((state.currentTask.duration - (Date.now() - state.taskStartTime)) / 1000));
-                    taskList.innerHTML = `<div style="text-align: center; color: #FFD700; font-size: 0.9em;">Выполняется: ${state.currentTask.name} (${remainingTime}с)</div>`;
-                    const pauseButton = document.createElement("button");
-                    pauseButton.textContent = `Приостановить (штраф ${state.currentJob.fine.toFixed(3)} рун)`;
-                    pauseButton.onclick = pauseJob;
-                    taskList.appendChild(pauseButton);
-                } else {
-                    state.currentJob.tasks.forEach(task => {
-                        const itemDiv = document.createElement("div");
-                        itemDiv.className = "task-item";
-                        const img = document.createElement("img");
-                        img.src = task.image;
-                        img.alt = task.name;
-                        img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
-                        const desc = document.createElement("p");
-                        desc.textContent = `${task.pay.toFixed(3)} рун, ${task.energy} выносливости`;
-                        const button = document.createElement("button");
-                        button.textContent = task.name;
-                        button.disabled = state.energy < task.energy || state.isWorking || state.hunger < 30;
-                        button.classList.toggle('active', state.currentTask && state.currentTask.name === task.name);
-                        button.onclick = () => startJobTask(task);
-                        itemDiv.appendChild(img);
-                        itemDiv.appendChild(desc);
-                        itemDiv.appendChild(button);
-                        taskList.appendChild(itemDiv);
-                    });
-                    socialTasks.forEach(task => {
-                        const itemDiv = document.createElement("div");
-                        itemDiv.className = "task-item";
-                        const img = document.createElement("img");
-                        img.src = "rune_icon.png";
-                        img.alt = task.name;
-                        img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
-                        const desc = document.createElement("p");
-                        desc.textContent = `${task.pay.toFixed(3)} рун, ${task.energy} выносливости`;
-                        const button = document.createElement("button");
-                        button.textContent = task.name;
-                        button.disabled = state.energy < task.energy || (state.socialTaskCooldowns[task.name] && Date.now() < state.socialTaskCooldowns[task.name]);
-                        button.onclick = () => doSocialTask(task);
-                        itemDiv.appendChild(img);
-                        itemDiv.appendChild(desc);
-                        itemDiv.appendChild(button);
-                        taskList.appendChild(itemDiv);
-                    });
-                }
+            if (state.isWorking && state.currentTask) {
+                const remainingTime = Math.max(0, Math.floor((state.currentTask.duration - (Date.now() - state.taskStartTime)) / 1000));
+                taskList.innerHTML = `<div style="text-align: center; color: #FFD700; font-size: 0.9em;">Выполняется: ${state.currentTask.name} (${remainingTime}с)</div>`;
             } else {
-                taskList.innerHTML = '<div style="text-align: center; font-size: 0.9em;">Выбери задачу</div>';
-                socialTasks.forEach(task => {
+                tasks.filter(task => task.level <= currentLevel).forEach(task => {
                     const itemDiv = document.createElement("div");
                     itemDiv.className = "task-item";
                     const img = document.createElement("img");
-                    img.src = "rune_icon.png";
+                    img.src = task.image;
                     img.alt = task.name;
                     img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
                     const desc = document.createElement("p");
                     desc.textContent = `${task.pay.toFixed(3)} рун, ${task.energy} выносливости`;
                     const button = document.createElement("button");
                     button.textContent = task.name;
-                    button.disabled = state.energy < task.energy || (state.socialTaskCooldowns[task.name] && Date.now() < state.socialTaskCooldowns[task.name]);
+                    button.disabled = state.energy < task.energy || state.isWorking || state.hunger < 30;
+                    button.onclick = () => startTask(task);
+                    itemDiv.appendChild(img);
+                    itemDiv.appendChild(desc);
+                    itemDiv.appendChild(button);
+                    taskList.appendChild(itemDiv);
+                });
+                socialTasks.forEach(task => {
+                    const itemDiv = document.createElement("div");
+                    itemDiv.className = "task-item";
+                    const img = document.createElement("img");
+                    img.src = task.image;
+                    img.alt = task.name;
+                    img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
+                    const desc = document.createElement("p");
+                    desc.textContent = `${task.pay.toFixed(3)} рун, ${task.energy} выносливости`;
+                    const button = document.createElement("button");
+                    button.textContent = task.name;
+                    button.disabled = state.energy < task.energy || (state.socialTaskCooldowns[task.id] && Date.now() < state.socialTaskCooldowns[task.id]);
                     button.onclick = () => doSocialTask(task);
                     itemDiv.appendChild(img);
                     itemDiv.appendChild(desc);
@@ -883,19 +584,6 @@
                 shopList.appendChild(itemDiv);
             });
 
-            const villageSection = document.getElementById("villageSection");
-            villageSection.innerHTML = "";
-            const buyButton = document.createElement("button");
-            buyButton.textContent = "Основать деревню (50,000 рун)";
-            buyButton.disabled = state.balance < 50000 || state.villageOwned;
-            buyButton.onclick = foundVillage;
-            const upgradeButton = document.createElement("button");
-            upgradeButton.textContent = `Улучшить деревню (${100000 * state.villageLevel} рун)`;
-            upgradeButton.disabled = !state.villageOwned || state.balance < (100000 * state.villageLevel) || state.villageLevel >= 5;
-            upgradeButton.onclick = upgradeVillage;
-            villageSection.appendChild(buyButton);
-            villageSection.appendChild(upgradeButton);
-
             const inventoryList = document.getElementById("inventoryList");
             inventoryList.innerHTML = "";
             if (state.inventory.length === 0) {
@@ -917,60 +605,24 @@
                 });
             }
 
-            const raidSection = document.getElementById("raidSection");
-            raidSection.innerHTML = "";
-            [100, 1000, 10000, 100000].forEach(bet => {
-                const button = document.createElement("button");
-                button.textContent = `Набег за ${bet.toLocaleString()} рун`;
-                button.disabled = state.balance < bet;
-                button.onclick = () => raid(bet);
-                raidSection.appendChild(button);
-            });
-
-            let bgImage;
-            if (state.balance >= 10000000) bgImage = "bg4.jpg";
-            else if (state.balance >= 1000000) bgImage = "bg3.jpg";
-            else if (state.balance >= 100000) bgImage = "bg2.jpg";
-            else if (state.balance >= 10000) bgImage = "bg1.jpg";
-            else bgImage = "bg0.jpg";
+            let bgImage = statuses.find(s => state.balance >= s.minBalance).bg;
             document.body.style.backgroundImage = `url(${bgImage})`;
-
-            checkAchievements();
         }
 
         function updateStatus() {
-            const newStatus = statuses.reduce((acc, s) => state.balance >= s.minBalance ? s.name : acc, "Бродяга");
-            if (state.status !== newStatus) {
-                state.status = newStatus;
+            const newStatus = statuses.reduce((acc, s) => state.balance >= s.minBalance ? s : acc, statuses[0]);
+            if (state.status !== newStatus.name) {
+                state.status = newStatus.name;
                 showNotification(`Новый ранг: ${state.status}!`);
                 playSound("runeSound");
-            }
-            if (state.balance >= 10000000 && !state.achievements.includes("Легенда")) {
-                showNotification("Ты Легенда! 10,000,000 рун!");
+                document.body.classList.add('bg-transition');
+                setTimeout(() => document.body.classList.remove('bg-transition'), 1000);
             }
         }
 
-        function selectJob(jobKey) {
-            if (state.currentJob && state.currentJob.name === jobs[jobKey].name) {
-                showNotification("Эта задача уже выбрана!");
-                return;
-            }
+        function startTask(task) {
             if (state.isWorking) {
-                showNotification("Дождись завершения квеста!");
-                return;
-            }
-            state.currentJob = jobs[jobKey];
-            state.currentTask = null;
-            state.hourlyIncome = state.currentJob.hourly;
-            showNotification(`Задача выбрана: ${state.currentJob.name}`);
-            playSound("clickSound");
-            saveGame();
-            render();
-        }
-
-        function startJobTask(task) {
-            if (state.isWorking) {
-                showNotification("Уже выполняешь квест!");
+                showNotification("Уже выполняешь задание!");
                 return;
             }
             if (state.energy < task.energy) {
@@ -981,49 +633,19 @@
                 showNotification("Слишком голоден! Съешь рыбу или мясо.");
                 return;
             }
-
             state.isWorking = true;
             state.currentTask = task;
             state.taskStartTime = Date.now();
             state.energy -= task.energy;
             state.mood = Math.max(0, state.mood - 3);
-
             showNotification(`Начато: ${task.name} (${Math.floor(task.duration / 1000)}с)`);
             playSound("clickSound");
-
             saveGame();
             render();
         }
 
-        function pauseJob() {
-            if (!state.isWorking || !state.currentJob) return;
-            const fine = state.currentJob.fine;
-            if (state.balance < fine) {
-                showNotification("Недостаточно рун для штрафа!");
-                return;
-            }
-            state.balance -= fine;
-            state.isWorking = false;
-            state.currentTask = null;
-            state.taskStartTime = 0;
-            showNotification(`Задача приостановлена! Штраф: ${fine.toFixed(3)} рун`);
-            playSound("clickSound");
-            saveGame();
-            render();
-        }
-
-        function completeJobTask(task) {
+        function completeTask(task) {
             if (!state.isWorking || state.currentTask !== task) {
-                state.isWorking = false;
-                state.currentTask = null;
-                state.taskStartTime = 0;
-                saveGame();
-                render();
-                return;
-            }
-
-            if (state.energy < 0) {
-                showNotification("Ошибка: Недостаточно выносливости!");
                 state.isWorking = false;
                 state.currentTask = null;
                 state.taskStartTime = 0;
@@ -1034,19 +656,9 @@
 
             let pay = task.pay;
             state.inventory.forEach(item => {
-                if (item.job && state.currentJob && item.job === Object.keys(jobs).find(key => jobs[key] === state.currentJob)) {
-                    if (item.effect.payMultiplier) {
-                        pay *= item.effect.payMultiplier;
-                        showNotification(`Бонус от ${item.name}: +${((item.effect.payMultiplier - 1) * 100).toFixed(0)}%!`);
-                    }
-                    if (item.effect.tipChance && Math.random() < item.effect.tipChance) {
-                        const tip = pay * (item.effect.tipMultiplier - 1);
-                        pay *= item.effect.tipMultiplier;
-                        showNotification(`Доп. ${tip.toFixed(3)} рун от ${item.name}!`);
-                    }
-                }
-                if (item.effect.taskPayMultiplier) {
-                    pay *= item.effect.taskPayMultiplier;
+                if (item.effect?.payMultiplier) {
+                    pay *= item.effect.payMultiplier;
+                    showNotification(`Бонус от ${item.name}: +${((item.effect.payMultiplier - 1) * 100).toFixed(0)}%!`);
                 }
             });
 
@@ -1056,17 +668,16 @@
             }
             pay = Number(pay.toFixed(3));
 
-            if (state.balance < 0) {
-                const repayment = Math.min(pay, -state.balance);
-                state.balance += repayment;
-                showNotification(`Погашено долга: ${repayment.toFixed(3)} рун`);
-                pay -= repayment;
-            }
             state.balance += pay;
-
             showNotification(`Завершено: ${task.name}! +${pay.toFixed(3)} рун`);
             playSound("runeSound");
             createCoinAnimation();
+
+            if (task.name === "Открыть свою лавку") {
+                state.shopPassiveIncome = true;
+                state.lastShopIncome = Date.now();
+                showNotification("Лавка открыта! Пассивный доход: 10 рун каждые 4 минуты!");
+            }
 
             state.isWorking = false;
             state.currentTask = null;
@@ -1081,22 +692,16 @@
                 showNotification("Мало выносливости!");
                 return;
             }
-            if (state.socialTaskCooldowns[task.name] && Date.now() < state.socialTaskCooldowns[task.name]) {
-                showNotification("Квест на кулдауне!");
+            if (state.socialTaskCooldowns[task.id] && Date.now() < state.socialTaskCooldowns[task.id]) {
+                showNotification("Задание на перезарядке!");
                 return;
             }
             if (task.action) task.action();
             state.energy -= task.energy;
             let pay = task.pay;
-            if (state.balance < 0) {
-                const repayment = Math.min(pay, -state.balance);
-                state.balance += repayment;
-                showNotification(`Погашено долга: ${repayment.toFixed(3)} рун`);
-                pay -= repayment;
-            }
             state.balance += pay;
-            state.socialTaskCooldowns[task.name] = Date.now() + task.cooldown;
-            showNotification(`Квест "${task.name}" выполнен! +${pay.toFixed(3)} рун`);
+            state.socialTaskCooldowns[task.id] = Date.now() + task.cooldown;
+            showNotification(`Задание "${task.name}" выполнено! +${pay.toFixed(3)} рун`);
             playSound("runeSound");
             createCoinAnimation();
             updateStatus();
@@ -1136,101 +741,6 @@
             render();
         }
 
-        function foundVillage() {
-            if (state.balance < 50000) {
-                showNotification("Недостаточно рун!");
-                return;
-            }
-            state.balance -= 50000;
-            state.villageOwned = true;
-            showNotification("Деревня основана! Пассивный доход открыт!");
-            playSound("runeSound");
-            saveGame();
-            render();
-        }
-
-        function upgradeVillage() {
-            const cost = 100000 * state.villageLevel;
-            if (!state.villageOwned || state.balance < cost || state.villageLevel >= 5) {
-                showNotification(!state.villageOwned ? "Сначала основай деревню!" : state.balance < cost ? "Недостаточно рун!" : "Макс. уровень!");
-                return;
-            }
-            state.balance -= cost;
-            state.villageLevel += 1;
-            showNotification(`Деревня улучшена! +${10 * state.villageLevel} рун/30мин!`);
-            playSound("runeSound");
-            updateStatus();
-            saveGame();
-            render();
-        }
-
-        function raid(bet) {
-            if (state.balance < bet) {
-                showNotification("Недостаточно рун!");
-                return;
-            }
-            state.balance -= bet;
-            const rand = Math.random() * 100;
-            let outcome;
-            if (rand < 45) {
-                const winAmount = bet * 2;
-                state.balance += winAmount;
-                outcome = `Захвачено ${winAmount.toFixed(3)} рун!`;
-            } else if (rand < 85) {
-                outcome = `Потеряно ${bet.toFixed(3)} рун!`;
-            } else if (rand < 95) {
-                state.balance = Math.max(0, state.balance - bet * 2);
-                outcome = "Тяжелое поражение!";
-            } else {
-                state.balance += bet * 5;
-                outcome = `Великая победа! +${bet * 5} рун!`;
-            }
-            showNotification(outcome);
-            playSound("runeSound");
-            updateStatus();
-            saveGame();
-            render();
-        }
-
-        function tradeRunes() {
-            const recipientId = document.getElementById("recipientId").value;
-            const amount = parseFloat(document.getElementById("tradeAmount").value);
-            if (!recipientId || isNaN(amount) || amount <= 0) {
-                showNotification("Введи корректные данные!");
-                return;
-            }
-            if (state.balance < amount) {
-                showNotification("Недостаточно рун!");
-                return;
-            }
-            if (recipientId === state.playerId) {
-                showNotification("Нельзя торговать с собой!");
-                return;
-            }
-            state.balance -= amount;
-            const recipientState = JSON.parse(localStorage.getItem('vikingDogSagaState_' + recipientId)) || {};
-            recipientState.pendingTrades = recipientState.pendingTrades || [];
-            recipientState.pendingTrades.push({
-                senderId: state.playerId,
-                amount: amount
-            });
-            localStorage.setItem('vikingDogSagaState_' + recipientId, JSON.stringify(recipientState));
-            showNotification(`Отправлено ${amount.toFixed(3)} рун игроку ${recipientId}!`);
-            playSound("runeSound");
-            saveGame();
-            render();
-        }
-
-        function checkDebt() {
-            if (state.balance < 0 && !state.debtRepaymentActive) {
-                state.debtRepaymentActive = true;
-                showNotification("Долг! Заработок идет на погашение.");
-            } else if (state.balance >= 0 && state.debtRepaymentActive) {
-                state.debtRepaymentActive = false;
-                showNotification("Долг погашен!");
-            }
-        }
-
         function showNotification(message) {
             const notification = document.getElementById("notification");
             notification.textContent = message;
@@ -1257,11 +767,17 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            enterFullscreen();
-            localStorage.setItem('vikingDogSagaState_' + state.playerId, JSON.stringify(state));
-            loadGame();
-            render();
-            setInterval(gameTick, 1000);
+            const loadingScreen = document.getElementById('loading-screen');
+            const gameContent = document.getElementById('game-content');
+
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                gameContent.classList.add('loaded');
+                enterFullscreen();
+                loadGame();
+                render();
+                setInterval(gameTick, 1000);
+            }, 12000);
         });
 
         function gameTick() {
@@ -1290,30 +806,22 @@
                 if (state.mood > 100) state.mood = 100;
             }
 
-            if (state.villageOwned) {
-                let income = (state.villageLevel * 10 / 1800) * deltaTime;
-                if (state.balance < 0) {
-                    const repayment = Math.min(income, -state.balance);
-                    state.balance += repayment;
-                    showNotification(`Погашено долга: ${repayment.toFixed(3)} рун`);
-                    income -= repayment;
-                }
-                state.balance += income;
-            }
-
-            if (state.hourlyIncome > 0) {
-                const hourlyIncome = (state.hourlyIncome / 3600) * deltaTime;
-                state.balance += hourlyIncome;
-            }
-
             if (state.isWorking && state.currentTask) {
                 const elapsed = now - state.taskStartTime;
                 if (elapsed >= state.currentTask.duration) {
-                    completeJobTask(state.currentTask);
+                    completeTask(state.currentTask);
                 }
             }
 
-            checkDebt();
+            if (state.shopPassiveIncome && (now - state.lastShopIncome) >= 240000) {
+                state.balance += 10;
+                state.lastShopIncome = now;
+                showNotification("Лавка принесла 10 рун!");
+                playSound("runeSound");
+                createCoinAnimation();
+                saveGame();
+            }
+
             updateStatus();
             state.lastTick = now;
             saveGame();
