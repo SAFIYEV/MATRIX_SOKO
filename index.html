@@ -158,6 +158,7 @@
             background: #FFD700;
             color: #1A1A1A;
             font-weight: 600;
+            transform: translateX(-5px);
         }
 
         .task-list, .shop-list {
@@ -189,7 +190,7 @@
         }
 
         .task-item.locked::after, .shop-item.locked::after {
-            content: '🔒 Требуется ранг: ' attr(data-level);
+            content: '🔒 Требуется уровень: ' attr(data-level);
             position: absolute;
             top: 50%;
             left: 50%;
@@ -348,50 +349,51 @@
         <div class="game-container active" id="mainContainer">
             <h1 id="game-title">SOKO Shiba</h1>
             <div class="stats">
+                <div class="stat" id="stat-level"></div>
                 <div class="stat" id="stat-runes"></div>
                 <div class="stat" id="stat-energy"></div>
                 <div class="stat" id="stat-hunger"></div>
                 <div class="stat" id="stat-mood"></div>
             </div>
             <div class="tabs">
-                <button class="tab-button active" onclick="showSection('mainContainer')" id="tab-main">Главная</button>
-                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks">Задания</button>
-                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop">Рынок</button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory">Инвентарь</button>
+                <button class="tab-button active" onclick="showSection('mainContainer')">Главная</button>
+                <button class="tab-button" onclick="showSection('taskContainer')">Задания</button>
+                <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
+                <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
             </div>
             <div class="studio-credit">Made by MATRIXON STD</div>
         </div>
 
         <div class="task-container" id="taskContainer">
-            <h1 id="tasks-title">Задания</h1>
+            <h1>Задания</h1>
             <div class="task-list" id="taskList"></div>
             <div class="tabs">
-                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-tasks">Главная</button>
-                <button class="tab-button active" onclick="showSection('taskContainer')" id="tab-tasks-tasks">Задания</button>
-                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop-tasks">Рынок</button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory-tasks">Инвентарь</button>
+                <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
+                <button class="tab-button active" onclick="showSection('taskContainer')">Задания</button>
+                <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
+                <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
             </div>
         </div>
 
         <div class="shop-container" id="shopContainer">
-            <h1 id="shop-title">Рынок</h1>
+            <h1>Рынок</h1>
             <div class="shop-list" id="shopList"></div>
             <div class="tabs">
-                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-shop">Главная</button>
-                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks-shop">Задания</button>
-                <button class="tab-button active" onclick="showSection('shopContainer')" id="tab-shop-shop">Рынок</button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')" id="tab-inventory-shop">Инвентарь</button>
+                <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
+                <button class="tab-button" onclick="showSection('taskContainer')">Задания</button>
+                <button class="tab-button active" onclick="showSection('shopContainer')">Рынок</button>
+                <button class="tab-button" onclick="showSection('inventoryContainer')">Инвентарь</button>
             </div>
         </div>
 
         <div class="inventory-container" id="inventoryContainer">
-            <h1 id="inventory-title">Инвентарь</h1>
+            <h1>Инвентарь</h1>
             <div class="inventory-list" id="inventoryList"></div>
             <div class="tabs">
-                <button class="tab-button" onclick="showSection('mainContainer')" id="tab-main-inventory">Главная</button>
-                <button class="tab-button" onclick="showSection('taskContainer')" id="tab-tasks-inventory">Задания</button>
-                <button class="tab-button" onclick="showSection('shopContainer')" id="tab-shop-inventory">Рынок</button>
-                <button class="tab-button active" onclick="showSection('inventoryContainer')" id="tab-inventory-inventory">Инвентарь</button>
+                <button class="tab-button" onclick="showSection('mainContainer')">Главная</button>
+                <button class="tab-button" onclick="showSection('taskContainer')">Задания</button>
+                <button class="tab-button" onclick="showSection('shopContainer')">Рынок</button>
+                <button class="tab-button active" onclick="showSection('inventoryContainer')">Инвентарь</button>
             </div>
         </div>
 
@@ -404,6 +406,7 @@
         const translations = {
             ru: {
                 game_title: "SOKO Shiba",
+                level: "Уровень: <span id='level'>{0}</span>",
                 runes: "Руны: <span id='balance'>{0}</span>",
                 energy: "Выносливость: <span id='energy'>{0}</span>",
                 hunger: "Голод: <span id='hunger'>{0}</span>",
@@ -423,17 +426,17 @@
                 sell: "Продать",
                 tasks: {
                     chop_tree: "Рубить дерево",
-                    clean_island: "Чистить остров",
-                    collect_leaves: "Собирать листья",
+                    clean_island: "Почистить остров",
+                    collect_leaves: "Собрать упавшие листья",
                     build_boat: "Строить лодку",
-                    clean_ocean: "Чистить океан",
+                    clean_ocean: "Почистить океан",
                     fish: "Рыбачить",
                     recruit: "Привозить новых жителей",
                     build_village: "Строить деревню",
                     play_football: "Помогать детям играть в футбол",
                     open_shop: "Открыть свою лавку",
-                    buy_products: "Покупать продукты подешевле",
-                    sell_products: "Продавать продукты"
+                    buy_products: "Купить продукты подешевле",
+                    sell_products: "Продать продукты подороже"
                 },
                 social_tasks: {
                     subscribe: "Задание 1: Подписаться на канал",
@@ -450,7 +453,15 @@
                     axe: "Топор",
                     axe_desc: "Задания +20% рун",
                     hammer: "Молот",
-                    hammer_desc: "Задания +30% рун"
+                    hammer_desc: "Задания +30% рун",
+                    boat: "Лодка",
+                    boat_desc: "Ускоряет задания на воде",
+                    football: "Футбольный мяч",
+                    football_desc: "Ускоряет задания с детьми",
+                    bread: "Хлеб",
+                    bread_desc: "Утоляет голод на 5 минут",
+                    jam: "Варенье",
+                    jam_desc: "Восстанавливает 20 духа"
                 },
                 notifications: {
                     new_rank: "Новый уровень: {0}!",
@@ -460,7 +471,7 @@
                     shop_income: "Лавка принесла 10 рун!",
                     task_in_progress: "Уже выполняешь задание!",
                     low_energy: "Недостаточно выносливости! Отдохни или выпей мед.",
-                    low_hunger: "Слишком голоден! Съешь рыбу или мясо.",
+                    low_hunger: "Слишком голоден! Съешь что-нибудь.",
                     low_mood: "Недостаточно духа!",
                     not_enough_runes: "Недостаточно рун!",
                     item_bought: "Куплено: {0} за {1} рун!",
@@ -477,7 +488,7 @@
                     cannot_eat: "Это нельзя съесть!",
                     products_sold: "Продукты проданы! +{0} рун!",
                     products_bought: "Продукты куплены! -{0} рун!",
-                    hungry: "Голоден! Съешь рыбу или мясо."
+                    hungry: "Голоден! Съешь что-нибудь."
                 }
             }
         };
@@ -526,42 +537,46 @@
         ];
 
         const tasks = [
-            { id: 1, name: "chop_tree", pay: 0.005, energy: 10, duration: 60000, image: "chop_tree.png", level: 0 },
-            { id: 2, name: "clean_island", pay: 0.006, energy: 10, duration: 70000, image: "clean_island.png", level: 0 },
-            { id: 3, name: "collect_leaves", pay: 0.007, energy: 10, duration: 80000, image: "leaves.png", level: 0 },
-            { id: 4, name: "build_boat", pay: 0.008, energy: 15, duration: 90000, image: "build_boat.png", level: 1 },
-            { id: 5, name: "clean_ocean", pay: 0.009, energy: 15, duration: 100000, image: "clean_ocean.png", level: 1 },
-            { id: 6, name: "fish", pay: 0.01, energy: 15, duration: 110000, image: "fish.png", level: 1 },
-            { id: 7, name: "recruit", pay: 0.012, energy: 20, duration: 120000, image: "recruit.png", level: 1 },
-            { id: 8, name: "build_village", pay: 0.02, energy: 25, duration: 150000, image: "village.png", level: 2 },
-            { id: 9, name: "play_football", pay: 0.03, energy: 20, duration: 140000, image: "football.png", level: 3 },
-            { id: 10, name: "open_shop", pay: 0.05, energy: 30, duration: 180000, image: "shop.png", level: 4 },
+            { id: 1, name: "chop_tree", pay: 0.5, energy: 10, duration: 60000, image: "chop_tree.png", level: 0 },
+            { id: 2, name: "clean_island", pay: 0.6, energy: 10, duration: 70000, image: "clean_island.png", level: 0 },
+            { id: 3, name: "collect_leaves", pay: 0.7, energy: 10, duration: 80000, image: "leaves.png", level: 0 },
+            { id: 4, name: "build_boat", pay: 0.8, energy: 15, duration: 90000, image: "build_boat.png", level: 1 },
+            { id: 5, name: "clean_ocean", pay: 0.9, energy: 15, duration: 100000, image: "clean_ocean.png", level: 1 },
+            { id: 6, name: "fish", pay: 1.0, energy: 15, duration: 110000, image: "fish.png", level: 1 },
+            { id: 7, name: "recruit", pay: 1.2, energy: 20, duration: 120000, image: "recruit.png", level: 1 },
+            { id: 8, name: "build_village", pay: 2.0, energy: 25, duration: 150000, image: "village.png", level: 2 },
+            { id: 9, name: "play_football", pay: 3.0, energy: 20, duration: 140000, image: "football.png", level: 3 },
+            { id: 10, name: "open_shop", pay: 5.0, energy: 30, duration: 180000, image: "shop.png", level: 4 },
             { id: 11, name: "buy_products", pay: -10, energy: 10, duration: 30000, image: "buy_products.png", level: 4 },
             { id: 12, name: "sell_products", pay: 15, energy: 10, duration: 10000, image: "sell_products.png", level: 4 }
         ];
 
         const socialTasks = [
-            { id: 1, name: "subscribe", pay: 0.005, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
+            { id: 1, name: "subscribe", pay: 0.5, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
                 if (window.Telegram?.WebApp) {
                     window.Telegram.WebApp.openTelegramLink('https://t.me/vikingdogsaga');
                 } else {
                     window.open('https://t.me/vikingdogsaga', '_blank');
                 }
             }},
-            { id: 2, name: "share", pay: 0.01, energy: 10, cooldown: 600000, image: "task_icon.png", action: () => {
+            { id: 2, name: "share", pay: 1.0, energy: 10, cooldown: 600000, image: "task_icon.png", action: () => {
                 window.open('https://t.me/share/url?url=SOKOShiba', '_blank');
             }},
-            { id: 3, name: "invite", pay: 0.02, energy: 15, cooldown: 86400000, image: "task_icon.png", action: () => {
+            { id: 3, name: "invite", pay: 2.0, energy: 15, cooldown: 86400000, image: "task_icon.png", action: () => {
                 showNotification(t("notifications.social_invite"));
             }}
         ];
 
         const shopItems = [
-            { name: "fish", price: 5, desc: "fish_desc", effect: { hungerSatisfied: 600000 }, image: "fish_item.png", reusable: true },
-            { name: "meat", price: 10, desc: "meat_desc", effect: { hungerSatisfied: 900000 }, image: "meat.png", reusable: true },
-            { name: "honey", price: 15, desc: "honey_desc", effect: { mood: 30 }, image: "honey.png", reusable: true },
-            { name: "axe", price: 100, desc: "axe_desc", effect: { payMultiplier: 1.2 }, image: "axe.png", reusable: false },
-            { name: "hammer", price: 500, desc: "hammer_desc", effect: { payMultiplier: 1.3 }, image: "hammer.png", reusable: false }
+            { name: "fish", price: 5, desc: "fish_desc", effect: { hungerSatisfied: 600000 }, image: "fish_item.png", reusable: true, level: 0 },
+            { name: "meat", price: 10, desc: "meat_desc", effect: { hungerSatisfied: 900000 }, image: "meat.png", reusable: true, level: 0 },
+            { name: "honey", price: 15, desc: "honey_desc", effect: { mood: 30 }, image: "honey.png", reusable: true, level: 0 },
+            { name: "bread", price: 3, desc: "bread_desc", effect: { hungerSatisfied: 300000 }, image: "bread.png", reusable: true, level: 0 },
+            { name: "jam", price: 8, desc: "jam_desc", effect: { mood: 20 }, image: "jam.png", reusable: true, level: 0 },
+            { name: "axe", price: 50, desc: "axe_desc", effect: { payMultiplier: 1.2 }, image: "axe.png", reusable: false, level: 1 },
+            { name: "hammer", price: 100, desc: "hammer_desc", effect: { payMultiplier: 1.3 }, image: "hammer.png", reusable: false, level: 2 },
+            { name: "boat", price: 150, desc: "boat_desc", effect: { taskSpeed: 0.9 }, image: "boat.png", reusable: false, level: 1 },
+            { name: "football", price: 120, desc: "football_desc", effect: { taskSpeed: 0.9 }, image: "football.png", reusable: false, level: 3 }
         ];
 
         if (window.Telegram?.WebApp) {
@@ -634,11 +649,16 @@
 
         function consumeFood(index) {
             const item = state.inventory[index];
-            if (item.name === "fish" || item.name === "meat") {
-                state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
-                state.hunger = 100;
+            if (["fish", "meat", "bread", "jam"].includes(item.name)) {
+                if (item.effect.hungerSatisfied) {
+                    state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
+                    state.hunger = 100;
+                    showNotification(t("notifications.food_consumed", t(`shop_items.${item.name}`), item.effect.hungerSatisfied / 60000));
+                } else if (item.effect.mood) {
+                    state.mood = Math.min(state.mood + item.effect.mood, 100);
+                    showNotification(t("notifications.mood_restored", item.effect.mood));
+                }
                 state.inventory.splice(index, 1);
-                showNotification(t("notifications.food_consumed", t(`shop_items.${item.name}`), item.effect.hungerSatisfied / 60000));
                 playSound("clickSound");
                 saveGame();
                 render();
@@ -661,6 +681,7 @@
 
         function render() {
             document.getElementById("game-title").textContent = t("game_title");
+            document.getElementById("stat-level").innerHTML = t("level", levels[state.level].name);
             document.getElementById("stat-runes").innerHTML = t("runes", state.balance.toFixed(3));
             document.getElementById("stat-energy").innerHTML = t("energy", Math.floor(state.energy));
             document.getElementById("stat-hunger").innerHTML = t("hunger", Math.floor(state.hunger));
@@ -716,7 +737,7 @@
             shopItems.forEach(item => {
                 const itemDiv = document.createElement("div");
                 itemDiv.className = `shop-item ${item.level > state.level ? 'locked' : ''}`;
-                itemDiv.setAttribute('data-level', levels[item.level || 0].name);
+                itemDiv.setAttribute('data-level', levels[item.level].name);
                 const img = document.createElement("img");
                 img.src = item.image;
                 img.alt = t(`shop_items.${item.name}`);
@@ -725,7 +746,7 @@
                 desc.textContent = t(`shop_items.${item.desc}`);
                 const button = document.createElement("button");
                 button.textContent = t("shop_item", t(`shop_items.${item.name}`), item.price.toLocaleString());
-                button.disabled = state.balance < item.price || (!item.reusable && state.inventory.some(i => i.name === item.name)) || (item.level && item.level > state.level);
+                button.disabled = state.balance < item.price || (!item.reusable && state.inventory.some(i => i.name === item.name)) || item.level > state.level;
                 button.onclick = () => buyItem(item);
                 itemDiv.appendChild(img);
                 itemDiv.appendChild(desc);
@@ -744,7 +765,7 @@
                     const nameSpan = document.createElement("span");
                     nameSpan.textContent = `${t(`shop_items.${item.name}`)} (${t(`shop_items.${item.desc}`)})`;
                     itemDiv.appendChild(nameSpan);
-                    if (item.name === "fish" || item.name === "meat") {
+                    if (["fish", "meat", "bread", "jam"].includes(item.name)) {
                         const useButton = document.createElement("button");
                         useButton.textContent = t("consume");
                         useButton.onclick = () => consumeFood(index);
@@ -813,10 +834,14 @@
             }
 
             let pay = task.pay;
+            let duration = task.duration;
             state.inventory.forEach(item => {
                 if (item.effect?.payMultiplier && task.pay > 0) {
                     pay *= item.effect.payMultiplier;
                     showNotification(t("notifications.item_bonus", t(`shop_items.${item.name}`), ((item.effect.payMultiplier - 1) * 100).toFixed(0)));
+                }
+                if (item.effect?.taskSpeed && task.pay > 0) {
+                    duration *= item.effect.taskSpeed;
                 }
             });
 
@@ -901,17 +926,6 @@
             state.balance -= item.price;
             state.inventory.push(item);
             showNotification(t("notifications.item_bought", t(`shop_items.${item.name}`), item.price.toLocaleString()));
-            if (item.effect) {
-                if (item.effect.mood) {
-                    state.mood = Math.min(state.mood + item.effect.mood, 100);
-                    showNotification(t("notifications.mood_restored", item.effect.mood));
-                }
-                if (item.effect.hungerSatisfied) {
-                    state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
-                    state.hunger = 100;
-                    showNotification(t("notifications.hunger_satisfied", item.effect.hungerSatisfied / 60000));
-                }
-            }
             playSound("runeSound");
             const itemDiv = Array.from(document.getElementById("shopList").children)
                 .find(div => div.querySelector("button").textContent.includes(t(`shop_items.${item.name}`)));
@@ -989,7 +1003,13 @@
 
             if (state.isWorking && state.currentTask) {
                 const elapsed = now - state.taskStartTime;
-                if (elapsed >= state.currentTask.duration) {
+                let duration = state.currentTask.duration;
+                state.inventory.forEach(item => {
+                    if (item.effect?.taskSpeed && state.currentTask.pay > 0) {
+                        duration *= item.effect.taskSpeed;
+                    }
+                });
+                if (elapsed >= duration) {
                     completeTask(state.currentTask);
                 }
             }
