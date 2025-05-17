@@ -356,8 +356,8 @@
 
         .referral-form input, .transfer-form input {
             padding: 8px;
+            border: 1px solid #FFD700;
             border-radius: 8px;
-            border: none;
             background: rgba(255, 255, 255, 0.1);
             color: #E0E0E0;
             font-size: 0.9em;
@@ -541,7 +541,8 @@
                     sell_products: "Sell Products High"
                 },
                 social_tasks: {
-                    subscribe: "Subscribe to Channel",
+                    subscribe: "Subscribe to Soko Inu",
+                    matrixon_subscribe: "Subscribe to MATRIXON STD",
                     share: "Spread the Legend",
                     invite: "Invite Allies"
                 },
@@ -642,7 +643,8 @@
                     sell_products: "Продать продукты подороже"
                 },
                 social_tasks: {
-                    subscribe: "Подписаться на канал",
+                    subscribe: "Подписаться на Soko Inu",
+                    matrixon_subscribe: "Подписаться на MATRIXON STD",
                     share: "Распространить легенду",
                     invite: "Созвать союзников"
                 },
@@ -774,9 +776,16 @@
         const socialTasks = [
             { id: 1, name: "subscribe", pay: 0.5, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
                 if (window.Telegram?.WebApp) {
-                    window.Telegram.WebApp.openTelegramLink('https://t.me/vikingdogsaga');
+                    window.Telegram.WebApp.openTelegramLink('https://t.me/Soko_inu');
                 } else {
-                    window.open('https://t.me/vikingdogsaga', '_blank');
+                    window.open('https://t.me/Soko_inu', '_blank');
+                }
+            }},
+            { id: 4, name: "matrixon_subscribe", pay: 0.5, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
+                if (window.Telegram?.WebApp) {
+                    window.Telegram.WebApp.openTelegramLink('https://t.me/matrixonstd');
+                } else {
+                    window.open('https://t.me/matrixonstd', '_blank');
                 }
             }},
             { id: 2, name: "share", pay: 1.0, energy: 10, cooldown: 600000, image: "task_icon.png", action: () => {
