@@ -126,6 +126,24 @@
             font-weight: 600;
         }
 
+        .user-id {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 0.9em;
+            color: #E0E0E0;
+        }
+
+        .user-id button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            font-size: 0.8em;
+            background: linear-gradient(135deg, #FFD700, #DAA520);
+            color: #1A1A1A;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
         .tabs {
             display: flex;
             justify-content: space-around;
@@ -387,6 +405,7 @@
                 <div class="stat" id="stat-hunger"></div>
                 <div class="stat" id="stat-mood"></div>
             </div>
+            <div class="user-id" id="user-id"></div>
             <div class="tabs">
                 <button class="tab-button active" onclick="showSection('mainContainer')"></button>
                 <button class="tab-button" onclick="showSection('taskContainer')"></button>
@@ -440,7 +459,7 @@
         <div class="referral-container" id="referralContainer">
             <h1></h1>
             <div class="referral-form">
-                <p id="user-id"></p>
+                <p id="referral-user-id"></p>
                 <input type="text" id="referral-id" placeholder="Enter referral ID">
                 <button onclick="submitReferral()">Submit</button>
             </div>
@@ -503,6 +522,8 @@
                 consume: "Consume",
                 sell: "Sell",
                 user_id: "Your ID: {0}",
+                copy_id: "Copy ID",
+                copied: "ID copied!",
                 tasks: {
                     chop_tree: "Chop Tree",
                     clean_island: "Clean Island",
@@ -571,6 +592,7 @@
                     referral_success: "Referral successful! You and your friend earned 0.5 runes!",
                     referral_already_used: "Referral ID already used or invalid!",
                     referral_self: "Cannot use your own ID!",
+                    referral_once: "You can only use a referral ID once!",
                     transfer_success: "Transferred {0} runes to ID {1}!",
                     transfer_invalid: "Invalid recipient ID or amount!",
                     transfer_not_enough: "Not enough runes to transfer!"
@@ -601,6 +623,8 @@
                 consume: "Съесть",
                 sell: "Продать",
                 user_id: "Ваш ID: {0}",
+                copy_id: "Копировать ID",
+                copied: "ID скопирован!",
                 tasks: {
                     chop_tree: "Рубить дерево",
                     clean_island: "Почистить остров",
@@ -669,6 +693,7 @@
                     referral_success: "Реферал успешен! Вы и ваш друг получили 0.5 руны!",
                     referral_already_used: "Реферальный ID уже использован или недействителен!",
                     referral_self: "Нельзя использовать собственный ID!",
+                    referral_once: "Можно использовать реферальный ID только один раз!",
                     transfer_success: "Переведено {0} рун на ID {1}!",
                     transfer_invalid: "Недействительный ID получателя или сумма!",
                     transfer_not_enough: "Недостаточно рун для перевода!"
@@ -877,35 +902,47 @@
             }
         }
 
+        function copyUserId() {
+            navigator.clipboard.writeText(state.userId).then(() => {
+                showNotification(t("notifications.copied"));
+            }).catch(err => {
+                console.warn("Copy error:", err);
+            });
+        }
+
         function submitReferral() {
+            if (state.referredBy) {
+                showNotification(t("notifications.referral_once"));
+                return;
+            }
             const referralId = document.getElementById("referral-id").value.trim();
             if (referralId === state.userId) {
                 showNotification(t("notifications.referral_self"));
                 return;
             }
-            if (state.referredBy || state.referredUsers.includes(referralId)) {
+            // Проверка формата UUID
+            const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
+            if (!uuidRegex.test(referralId)) {
                 showNotification(t("notifications.referral_already_used"));
                 return;
             }
-            // Симуляция проверки существования ID (в реальной игре нужен сервер)
-            if (referralId.length === 36) { // Простая проверка формата UUID
-                state.referredBy = referralId;
-                state.balance += 0.5;
-                state.referredUsers.push(referralId);
-                showNotification(t("notifications.referral_success"));
-                playSound("runeSound");
-                createCoinAnimation();
-                saveGame();
-                render();
-            } else {
-                showNotification(t("notifications.referral_already_used"));
-            }
+            // TODO: Серверная проверка существования referralId
+            // Для демо предполагаем, что ID существует, если соответствует формату
+            state.referredBy = referralId;
+            state.balance += 0.5;
+            state.referredUsers.push(referralId);
+            showNotification(t("notifications.referral_success"));
+            playSound("runeSound");
+            createCoinAnimation();
+            saveGame();
+            render();
         }
 
         function submitTransfer() {
             const recipientId = document.getElementById("transfer-id").value.trim();
             const amount = parseFloat(document.getElementById("transfer-amount").value);
-            if (recipientId === state.userId || recipientId.length !== 36 || isNaN(amount) || amount < 0.1) {
+            const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
+            if (recipientId === state.userId || !uuidRegex.test(recipientId) || isNaN(amount) || amount < 0.1) {
                 showNotification(t("notifications.transfer_invalid"));
                 return;
             }
@@ -913,7 +950,7 @@
                 showNotification(t("notifications.transfer_not_enough"));
                 return;
             }
-            // Симуляция перевода (в реальной игре нужен сервер)
+            // TODO: Серверная логика для перевода рун на recipientId
             state.balance -= amount;
             showNotification(t("notifications.transfer_success", amount.toFixed(3), recipientId));
             playSound("runeSound");
@@ -928,6 +965,11 @@
             document.getElementById("stat-energy").innerHTML = t("energy", Math.floor(state.energy));
             document.getElementById("stat-hunger").innerHTML = t("hunger", Math.floor(state.hunger));
             document.getElementById("stat-mood").innerHTML = t("mood", Math.floor(state.mood));
+
+            // Update user ID on Home and Referral pages
+            const userIdDiv = document.getElementById("user-id");
+            userIdDiv.innerHTML = `${t("user_id", state.userId)} <button onclick="copyUserId()">${t("copy_id")}</button>`;
+            document.getElementById("referral-user-id").textContent = t("user_id", state.userId);
 
             // Update tab button texts
             document.querySelectorAll('.tab-button').forEach(btn => {
@@ -945,9 +987,6 @@
             document.querySelector('#inventoryContainer h1').textContent = t("inventory_title");
             document.querySelector('#referralContainer h1').textContent = t("referral_title");
             document.querySelector('#transferContainer h1').textContent = t("transfer_title");
-
-            // Update referral form
-            document.getElementById("user-id").textContent = t("user_id", state.userId);
 
             const taskList = document.getElementById("taskList");
             taskList.innerHTML = "";
