@@ -294,8 +294,8 @@
         .notification {
             position: fixed;
             top: 16px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 16px;
+            transform: none;
             font-size: 0.85em;
             color: #FFD700;
             background: rgba(0, 0, 0, 0.9);
@@ -389,6 +389,7 @@
             .task-item img, .shop-item img { width: 48px; height: 48px; }
             .task-list, .shop-list { grid-template-columns: 1fr; }
             .wallet-button { top: 8px; right: 8px; }
+            .notification { max-width: 70%; font-size: 0.75em; }
         }
     </style>
 </head>
@@ -491,8 +492,9 @@
         </div>
 
         <div class="notification" id="notification"></div>
-        <audio id="clickSound" src="bark.mp3"></audio>
-        <audio id="runeSound" src="rune_collect.mp3"></audio>
+        <audio id="clickSound" src="click.mp3"></audio>
+        <audio id="runeSound" src="cash.mp3"></audio>
+        <audio id="notificationSound" src="notification.mp3"></audio>
     </div>
 
     <script>
@@ -920,14 +922,11 @@
                 showNotification(t("notifications.referral_self"));
                 return;
             }
-            // Проверка формата UUID
             const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
             if (!uuidRegex.test(referralId)) {
                 showNotification(t("notifications.referral_already_used"));
                 return;
             }
-            // TODO: Серверная проверка существования referralId
-            // Для демо предполагаем, что ID существует, если соответствует формату
             state.referredBy = referralId;
             state.balance += 0.5;
             state.referredUsers.push(referralId);
@@ -950,7 +949,6 @@
                 showNotification(t("notifications.transfer_not_enough"));
                 return;
             }
-            // TODO: Серверная логика для перевода рун на recipientId
             state.balance -= amount;
             showNotification(t("notifications.transfer_success", amount.toFixed(3), recipientId));
             playSound("runeSound");
@@ -966,12 +964,10 @@
             document.getElementById("stat-hunger").innerHTML = t("hunger", Math.floor(state.hunger));
             document.getElementById("stat-mood").innerHTML = t("mood", Math.floor(state.mood));
 
-            // Update user ID on Home and Referral pages
             const userIdDiv = document.getElementById("user-id");
             userIdDiv.innerHTML = `${t("user_id", state.userId)} <button onclick="copyUserId()">${t("copy_id")}</button>`;
             document.getElementById("referral-user-id").textContent = t("user_id", state.userId);
 
-            // Update tab button texts
             document.querySelectorAll('.tab-button').forEach(btn => {
                 if (btn.onclick.toString().includes('mainContainer')) btn.textContent = t("tab_main");
                 else if (btn.onclick.toString().includes('taskContainer')) btn.textContent = t("tab_tasks");
@@ -981,7 +977,6 @@
                 else if (btn.onclick.toString().includes('transferContainer')) btn.textContent = t("tab_transfer");
             });
 
-            // Update section titles
             document.querySelector('#taskContainer h1').textContent = t("tasks_title");
             document.querySelector('#shopContainer h1').textContent = t("shop_title");
             document.querySelector('#inventoryContainer h1').textContent = t("inventory_title");
@@ -1240,6 +1235,7 @@
             const notification = document.getElementById("notification");
             notification.textContent = message;
             notification.classList.add("show");
+            playSound("notificationSound");
             setTimeout(() => {
                 notification.classList.remove("show");
                 notification.textContent = "";
