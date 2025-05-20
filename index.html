@@ -142,6 +142,12 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
+            transition: -webkit-filter 0.1s, filter 0.1s;
+        }
+
+        .user-id button:active {
+            -webkit-filter: brightness(0.8);
+            filter: brightness(0.8);
         }
 
         .tabs {
@@ -163,7 +169,7 @@
             border-radius: 8px;
             color: #E0E0E0;
             cursor: pointer;
-            transition: background 0.2s, transform 0.1s, filter 0.1s;
+            transition: background 0.2s, -webkit-filter 0.1s, filter 0.1s;
             margin: 4px;
             text-align: center;
             min-width: 60px;
@@ -171,10 +177,10 @@
 
         .tab-button:hover {
             background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
         }
 
         .tab-button:active {
+            -webkit-filter: brightness(0.8);
             filter: brightness(0.8);
         }
 
@@ -182,7 +188,6 @@
             background: #FFD700;
             color: #1A1A1A;
             font-weight: 600;
-            transform: translateX(-5px);
         }
 
         .task-list, .shop-list {
@@ -250,7 +255,7 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.2s, background 0.2s, filter 0.1s;
+            transition: transform 0.2s, background 0.2s, -webkit-filter 0.1s, filter 0.1s;
             font-weight: bold;
             text-transform: uppercase;
         }
@@ -267,6 +272,7 @@
         }
 
         .task-item button:active, .shop-item button:active {
+            -webkit-filter: brightness(0.8);
             filter: brightness(0.8);
         }
 
@@ -299,10 +305,13 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: filter 0.1s;
+            transition: -webkit-filter 0.1s, filter 0.1s;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         .inventory-item button:active {
+            -webkit-filter: brightness(0.8);
             filter: brightness(0.8);
         }
 
@@ -386,7 +395,7 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 0.9em;
-            transition: filter 0.1s;
+            transition: -webkit-filter 0.1s, filter 0.1s;
             font-weight: bold;
             text-transform: uppercase;
         }
@@ -396,6 +405,7 @@
         }
 
         .referral-form button:active, .transfer-form button:active {
+            -webkit-filter: brightness(0.8);
             filter: brightness(0.8);
         }
 
@@ -528,25 +538,25 @@
                 energy: "Energy: <span id='energy'>{0}</span>",
                 hunger: "Hunger: <span id='hunger'>{0}</span>",
                 mood: "Mood: <span id='mood'>{0}</span>",
-                tab_main: "Home",
-                tab_tasks: "Tasks",
-                tab_shop: "Market",
-                tab_inventory: "Inventory",
-                tab_referral: "Referral",
-                tab_transfer: "Transfer",
-                tasks_title: "Tasks",
-                shop_title: "Market",
-                inventory_title: "Inventory",
-                referral_title: "Referral",
-                transfer_title: "Transfer",
+                tab_main: "HOME",
+                tab_tasks: "TASKS",
+                tab_shop: "MARKET",
+                tab_inventory: "INVENTORY",
+                tab_referral: "REFERRAL",
+                tab_transfer: "TRANSFER",
+                tasks_title: "TASKS",
+                shop_title: "MARKET",
+                inventory_title: "INVENTORY",
+                referral_title: "REFERRAL",
+                transfer_title: "TRANSFER",
                 task_working: "In progress: {0} ({1}s)",
                 task_desc: "{0} runes, {1} energy",
                 shop_item: "{0} ({1} runes)",
                 inventory_empty: "Empty",
-                consume: "Consume",
-                sell: "Sell",
+                consume: "CONSUME",
+                sell: "SELL",
                 user_id: "Your ID: {0}",
-                copy_id: "Copy ID",
+                copy_id: "COPY ID",
                 copied: "ID copied!",
                 tasks: {
                     chop_tree: "CHOP TREE",
@@ -569,23 +579,23 @@
                     invite: "INVITE ALLIES"
                 },
                 shop_items: {
-                    fish: "Fish",
+                    fish: "FISH",
                     fish_desc: "Satisfies hunger for 10 minutes",
-                    meat: "Meat",
+                    meat: "MEAT",
                     meat_desc: "Satisfies hunger for 15 minutes",
-                    honey: "Honey",
+                    honey: "HONEY",
                     honey_desc: "Restores 30 mood",
-                    axe: "Axe",
+                    axe: "AXE",
                     axe_desc: "Tasks +20% runes",
-                    hammer: "Hammer",
+                    hammer: "HAMMER",
                     hammer_desc: "Tasks +30% runes",
-                    boat: "Boat",
+                    boat: "BOAT",
                     boat_desc: "Speeds up water tasks",
-                    football: "Football Ball",
+                    football: "FOOTBALL BALL",
                     football_desc: "Speeds up tasks with kids",
-                    bread: "Bread",
+                    bread: "BREAD",
                     bread_desc: "Satisfies hunger for 5 minutes",
-                    jam: "Jam",
+                    jam: "JAM",
                     jam_desc: "Restores 20 mood"
                 },
                 notifications: {
@@ -630,25 +640,25 @@
                 energy: "Выносливость: <span id='energy'>{0}</span>",
                 hunger: "Голод: <span id='hunger'>{0}</span>",
                 mood: "Дух: <span id='mood'>{0}</span>",
-                tab_main: "Главная",
-                tab_tasks: "Задания",
-                tab_shop: "Рынок",
-                tab_inventory: "Инвентарь",
-                tab_referral: "Рефералы",
-                tab_transfer: "Перевод",
-                tasks_title: "Задания",
-                shop_title: "Рынок",
-                inventory_title: "Инвентарь",
-                referral_title: "Рефералы",
-                transfer_title: "Перевод",
+                tab_main: "ГЛАВНАЯ",
+                tab_tasks: "ЗАДАНИЯ",
+                tab_shop: "РЫНОК",
+                tab_inventory: "ИНВЕНТАРЬ",
+                tab_referral: "РЕФЕРАЛЫ",
+                tab_transfer: "ПЕРЕВОД",
+                tasks_title: "ЗАДАНИЯ",
+                shop_title: "РЫНОК",
+                inventory_title: "ИНВЕНТАРЬ",
+                referral_title: "РЕФЕРАЛЫ",
+                transfer_title: "ПЕРЕВОД",
                 task_working: "Выполняется: {0} ({1}с)",
                 task_desc: "{0} рун, {1} выносливости",
                 shop_item: "{0} ({1} рун)",
                 inventory_empty: "Пусто",
-                consume: "Съесть",
-                sell: "Продать",
+                consume: "СЪЕСТЬ",
+                sell: "ПРОДАТЬ",
                 user_id: "Ваш ID: {0}",
-                copy_id: "Копировать ID",
+                copy_id: "КОПИРОВАТЬ ID",
                 copied: "ID скопирован!",
                 tasks: {
                     chop_tree: "РУБИТЬ ДЕРЕВО",
@@ -671,23 +681,23 @@
                     invite: "СОЗВАТЬ СОЮЗНИКОВ"
                 },
                 shop_items: {
-                    fish: "Рыба",
+                    fish: "РЫБА",
                     fish_desc: "Утоляет голод на 10 минут",
-                    meat: "Мясо",
+                    meat: "МЯСО",
                     meat_desc: "Утоляет голод на 15 минут",
-                    honey: "Мед",
+                    honey: "МЕД",
                     honey_desc: "Восстанавливает 30 духа",
-                    axe: "Топор",
+                    axe: "ТОПОР",
                     axe_desc: "Задания +20% рун",
-                    hammer: "Молот",
+                    hammer: "МОЛОТ",
                     hammer_desc: "Задания +30% рун",
-                    boat: "Лодка",
+                    boat: "ЛОДКА",
                     boat_desc: "Ускоряет задания на воде",
-                    football: "Футбольный мяч",
+                    football: "ФУТБОЛЬНЫЙ МЯЧ",
                     football_desc: "Ускоряет задания с детьми",
-                    bread: "Хлеб",
+                    bread: "ХЛЕБ",
                     bread_desc: "Утоляет голод на 5 минут",
-                    jam: "Варенье",
+                    jam: "ВАРЕНЬЕ",
                     jam_desc: "Восстанавливает 20 духа"
                 },
                 notifications: {
