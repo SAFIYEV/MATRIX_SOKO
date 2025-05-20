@@ -163,7 +163,7 @@
             border-radius: 8px;
             color: #E0E0E0;
             cursor: pointer;
-            transition: background 0.2s, transform 0.1s;
+            transition: background 0.2s, transform 0.1s, filter 0.1s;
             margin: 4px;
             text-align: center;
             min-width: 60px;
@@ -172,6 +172,10 @@
         .tab-button:hover {
             background: rgba(255, 255, 255, 0.2);
             transform: translateY(-2px);
+        }
+
+        .tab-button:active {
+            filter: brightness(0.8);
         }
 
         .tab-button.active {
@@ -246,7 +250,9 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
+            transition: transform 0.2s, background 0.2s, filter 0.1s;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         .task-item button:disabled, .shop-item button:disabled {
@@ -258,6 +264,10 @@
         .task-item button:hover:not(:disabled), .shop-item button:hover:not(:disabled) {
             background: linear-gradient(135deg, #FFE066, #FFD700);
             transform: scale(1.05);
+        }
+
+        .task-item button:active, .shop-item button:active {
+            filter: brightness(0.8);
         }
 
         .shop-item.purchased {
@@ -289,6 +299,11 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
+            transition: filter 0.1s;
+        }
+
+        .inventory-item button:active {
+            filter: brightness(0.8);
         }
 
         .notification {
@@ -371,10 +386,17 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 0.9em;
+            transition: filter 0.1s;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         .referral-form button:hover, .transfer-form button:hover {
             background: linear-gradient(135deg, #FFE066, #FFD700);
+        }
+
+        .referral-form button:active, .transfer-form button:active {
+            filter: brightness(0.8);
         }
 
         @media (max-width: 360px) {
@@ -462,7 +484,7 @@
             <div class="referral-form">
                 <p id="referral-user-id"></p>
                 <input type="text" id="referral-id" placeholder="Enter referral ID">
-                <button onclick="submitReferral()">Submit</button>
+                <button onclick="submitReferral()">SUBMIT</button>
             </div>
             <div class="tabs">
                 <button class="tab-button" onclick="showSection('mainContainer')"></button>
@@ -479,7 +501,7 @@
             <div class="transfer-form">
                 <input type="text" id="transfer-id" placeholder="Enter recipient ID">
                 <input type="number" id="transfer-amount" placeholder="Enter runes amount" min="0.1" step="0.1">
-                <button onclick="submitTransfer()">Transfer</button>
+                <button onclick="submitTransfer()">TRANSFER</button>
             </div>
             <div class="tabs">
                 <button class="tab-button" onclick="showSection('mainContainer')"></button>
@@ -527,24 +549,24 @@
                 copy_id: "Copy ID",
                 copied: "ID copied!",
                 tasks: {
-                    chop_tree: "Chop Tree",
-                    clean_island: "Clean Island",
-                    collect_leaves: "Collect Leaves",
-                    build_boat: "Build Boat",
-                    clean_ocean: "Clean Ocean",
-                    fish: "Fish",
-                    recruit: "Recruit Residents",
-                    build_village: "Build Village",
-                    play_football: "Help Kids Play Football",
-                    open_shop: "Open Shop",
-                    buy_products: "Buy Products Cheap",
-                    sell_products: "Sell Products High"
+                    chop_tree: "CHOP TREE",
+                    clean_island: "CLEAN ISLAND",
+                    collect_leaves: "COLLECT LEAVES",
+                    build_boat: "BUILD BOAT",
+                    clean_ocean: "CLEAN OCEAN",
+                    fish: "FISH",
+                    recruit: "RECRUIT RESIDENTS",
+                    build_village: "BUILD VILLAGE",
+                    play_football: "HELP KIDS PLAY FOOTBALL",
+                    open_shop: "OPEN SHOP",
+                    buy_products: "BUY PRODUCTS CHEAP",
+                    sell_products: "SELL PRODUCTS HIGH"
                 },
                 social_tasks: {
-                    subscribe: "Subscribe to Soko Inu",
-                    matrixon_subscribe: "Subscribe to MATRIXON STD",
-                    share: "Spread the Legend",
-                    invite: "Invite Allies"
+                    subscribe: "SUBSCRIBE TO SOKO INU",
+                    matrixon_subscribe: "SUBSCRIBE TO MATRIXON STD",
+                    share: "SPREAD THE LEGEND",
+                    invite: "INVITE ALLIES"
                 },
                 shop_items: {
                     fish: "Fish",
@@ -629,24 +651,24 @@
                 copy_id: "Копировать ID",
                 copied: "ID скопирован!",
                 tasks: {
-                    chop_tree: "Рубить дерево",
-                    clean_island: "Почистить остров",
-                    collect_leaves: "Собрать упавшие листья",
-                    build_boat: "Строить лодку",
-                    clean_ocean: "Почистить океан",
-                    fish: "Рыбачить",
-                    recruit: "Привозить новых жителей",
-                    build_village: "Строить деревню",
-                    play_football: "Помогать детям играть в футбол",
-                    open_shop: "Открыть свою лавку",
-                    buy_products: "Купить продукты подешевле",
-                    sell_products: "Продать продукты подороже"
+                    chop_tree: "РУБИТЬ ДЕРЕВО",
+                    clean_island: "ПОЧИСТИТЬ ОСТРОВ",
+                    collect_leaves: "СОБРАТЬ УПАВШИЕ ЛИСТЬЯ",
+                    build_boat: "СТРОИТЬ ЛОДКУ",
+                    clean_ocean: "ПОЧИСТИТЬ ОКЕАН",
+                    fish: "РЫБАЧИТЬ",
+                    recruit: "ПРИВОЗИТЬ НОВЫХ ЖИТЕЛЕЙ",
+                    build_village: "СТРОИТЬ ДЕРЕВНЮ",
+                    play_football: "ПОМОГАТЬ ДЕТЯМ ИГРАТЬ В ФУТБОЛ",
+                    open_shop: "ОТКРЫТЬ СВОЮ ЛАВКУ",
+                    buy_products: "КУПИТЬ ПРОДУКТЫ ПОДЕШЕВЛЕ",
+                    sell_products: "ПРОДАТЬ ПРОДУКТЫ ПОДОРОЖЕ"
                 },
                 social_tasks: {
-                    subscribe: "Подписаться на Soko Inu",
-                    matrixon_subscribe: "Подписаться на MATRIXON STD",
-                    share: "Распространить легенду",
-                    invite: "Созвать союзников"
+                    subscribe: "ПОДПИСАТЬСЯ НА SOKO INU",
+                    matrixon_subscribe: "ПОДПИСАТЬСЯ НА MATRIXON STD",
+                    share: "РАСПРОСТРАНИТЬ ЛЕГЕНДУ",
+                    invite: "СОЗВАТЬ СОЮЗНИКОВ"
                 },
                 shop_items: {
                     fish: "Рыба",
