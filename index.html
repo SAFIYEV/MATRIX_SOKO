@@ -142,12 +142,6 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: -webkit-filter 0.1s, filter 0.1s;
-        }
-
-        .user-id button:active {
-            -webkit-filter: brightness(0.8);
-            filter: brightness(0.8);
         }
 
         .tabs {
@@ -169,7 +163,7 @@
             border-radius: 8px;
             color: #E0E0E0;
             cursor: pointer;
-            transition: background 0.2s, -webkit-filter 0.1s, filter 0.1s;
+            transition: background 0.2s, transform 0.1s;
             margin: 4px;
             text-align: center;
             min-width: 60px;
@@ -177,17 +171,14 @@
 
         .tab-button:hover {
             background: rgba(255, 255, 255, 0.2);
-        }
-
-        .tab-button:active {
-            -webkit-filter: brightness(0.8);
-            filter: brightness(0.8);
+            transform: translateY(-2px);
         }
 
         .tab-button.active {
             background: #FFD700;
             color: #1A1A1A;
             font-weight: 600;
+            transform: translateX(-5px);
         }
 
         .task-list, .shop-list {
@@ -255,9 +246,7 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: transform 0.2s, background 0.2s, -webkit-filter 0.1s, filter 0.1s;
-            font-weight: bold;
-            text-transform: uppercase;
+            transition: transform 0.2s, background 0.2s;
         }
 
         .task-item button:disabled, .shop-item button:disabled {
@@ -269,11 +258,6 @@
         .task-item button:hover:not(:disabled), .shop-item button:hover:not(:disabled) {
             background: linear-gradient(135deg, #FFE066, #FFD700);
             transform: scale(1.05);
-        }
-
-        .task-item button:active, .shop-item button:active {
-            -webkit-filter: brightness(0.8);
-            filter: brightness(0.8);
         }
 
         .shop-item.purchased {
@@ -305,14 +289,6 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: -webkit-filter 0.1s, filter 0.1s;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .inventory-item button:active {
-            -webkit-filter: brightness(0.8);
-            filter: brightness(0.8);
         }
 
         .notification {
@@ -395,18 +371,10 @@
             border-radius: 8px;
             cursor: pointer;
             font-size: 0.9em;
-            transition: -webkit-filter 0.1s, filter 0.1s;
-            font-weight: bold;
-            text-transform: uppercase;
         }
 
         .referral-form button:hover, .transfer-form button:hover {
             background: linear-gradient(135deg, #FFE066, #FFD700);
-        }
-
-        .referral-form button:active, .transfer-form button:active {
-            -webkit-filter: brightness(0.8);
-            filter: brightness(0.8);
         }
 
         @media (max-width: 360px) {
@@ -494,7 +462,7 @@
             <div class="referral-form">
                 <p id="referral-user-id"></p>
                 <input type="text" id="referral-id" placeholder="Enter referral ID">
-                <button onclick="submitReferral()">SUBMIT</button>
+                <button onclick="submitReferral()">Submit</button>
             </div>
             <div class="tabs">
                 <button class="tab-button" onclick="showSection('mainContainer')"></button>
@@ -511,7 +479,7 @@
             <div class="transfer-form">
                 <input type="text" id="transfer-id" placeholder="Enter recipient ID">
                 <input type="number" id="transfer-amount" placeholder="Enter runes amount" min="0.1" step="0.1">
-                <button onclick="submitTransfer()">TRANSFER</button>
+                <button onclick="submitTransfer()">Transfer</button>
             </div>
             <div class="tabs">
                 <button class="tab-button" onclick="showSection('mainContainer')"></button>
@@ -538,64 +506,64 @@
                 energy: "Energy: <span id='energy'>{0}</span>",
                 hunger: "Hunger: <span id='hunger'>{0}</span>",
                 mood: "Mood: <span id='mood'>{0}</span>",
-                tab_main: "HOME",
-                tab_tasks: "TASKS",
-                tab_shop: "MARKET",
-                tab_inventory: "INVENTORY",
-                tab_referral: "REFERRAL",
-                tab_transfer: "TRANSFER",
-                tasks_title: "TASKS",
-                shop_title: "MARKET",
-                inventory_title: "INVENTORY",
-                referral_title: "REFERRAL",
-                transfer_title: "TRANSFER",
+                tab_main: "Home",
+                tab_tasks: "Tasks",
+                tab_shop: "Market",
+                tab_inventory: "Inventory",
+                tab_referral: "Referral",
+                tab_transfer: "Transfer",
+                tasks_title: "Tasks",
+                shop_title: "Market",
+                inventory_title: "Inventory",
+                referral_title: "Referral",
+                transfer_title: "Transfer",
                 task_working: "In progress: {0} ({1}s)",
                 task_desc: "{0} runes, {1} energy",
                 shop_item: "{0} ({1} runes)",
                 inventory_empty: "Empty",
-                consume: "CONSUME",
-                sell: "SELL",
+                consume: "Consume",
+                sell: "Sell",
                 user_id: "Your ID: {0}",
-                copy_id: "COPY ID",
+                copy_id: "Copy ID",
                 copied: "ID copied!",
                 tasks: {
-                    chop_tree: "CHOP TREE",
-                    clean_island: "CLEAN ISLAND",
-                    collect_leaves: "COLLECT LEAVES",
-                    build_boat: "BUILD BOAT",
-                    clean_ocean: "CLEAN OCEAN",
-                    fish: "FISH",
-                    recruit: "RECRUIT RESIDENTS",
-                    build_village: "BUILD VILLAGE",
-                    play_football: "HELP KIDS PLAY FOOTBALL",
-                    open_shop: "OPEN SHOP",
-                    buy_products: "BUY PRODUCTS CHEAP",
-                    sell_products: "SELL PRODUCTS HIGH"
+                    chop_tree: "Chop Tree",
+                    clean_island: "Clean Island",
+                    collect_leaves: "Collect Leaves",
+                    build_boat: "Build Boat",
+                    clean_ocean: "Clean Ocean",
+                    fish: "Fish",
+                    recruit: "Recruit Residents",
+                    build_village: "Build Village",
+                    play_football: "Help Kids Play Football",
+                    open_shop: "Open Shop",
+                    buy_products: "Buy Products Cheap",
+                    sell_products: "Sell Products High"
                 },
                 social_tasks: {
-                    subscribe: "SUBSCRIBE TO SOKO INU",
-                    matrixon_subscribe: "SUBSCRIBE TO MATRIXON STD",
-                    share: "SPREAD THE LEGEND",
-                    invite: "INVITE ALLIES"
+                    subscribe: "Subscribe to Soko Inu",
+                    matrixon_subscribe: "Subscribe to MATRIXON STD",
+                    share: "Spread the Legend",
+                    invite: "Invite Allies"
                 },
                 shop_items: {
-                    fish: "FISH",
+                    fish: "Fish",
                     fish_desc: "Satisfies hunger for 10 minutes",
-                    meat: "MEAT",
+                    meat: "Meat",
                     meat_desc: "Satisfies hunger for 15 minutes",
-                    honey: "HONEY",
+                    honey: "Honey",
                     honey_desc: "Restores 30 mood",
-                    axe: "AXE",
+                    axe: "Axe",
                     axe_desc: "Tasks +20% runes",
-                    hammer: "HAMMER",
+                    hammer: "Hammer",
                     hammer_desc: "Tasks +30% runes",
-                    boat: "BOAT",
+                    boat: "Boat",
                     boat_desc: "Speeds up water tasks",
-                    football: "FOOTBALL BALL",
+                    football: "Football Ball",
                     football_desc: "Speeds up tasks with kids",
-                    bread: "BREAD",
+                    bread: "Bread",
                     bread_desc: "Satisfies hunger for 5 minutes",
-                    jam: "JAM",
+                    jam: "Jam",
                     jam_desc: "Restores 20 mood"
                 },
                 notifications: {
@@ -640,64 +608,64 @@
                 energy: "Выносливость: <span id='energy'>{0}</span>",
                 hunger: "Голод: <span id='hunger'>{0}</span>",
                 mood: "Дух: <span id='mood'>{0}</span>",
-                tab_main: "ГЛАВНАЯ",
-                tab_tasks: "ЗАДАНИЯ",
-                tab_shop: "РЫНОК",
-                tab_inventory: "ИНВЕНТАРЬ",
-                tab_referral: "РЕФЕРАЛЫ",
-                tab_transfer: "ПЕРЕВОД",
-                tasks_title: "ЗАДАНИЯ",
-                shop_title: "РЫНОК",
-                inventory_title: "ИНВЕНТАРЬ",
-                referral_title: "РЕФЕРАЛЫ",
-                transfer_title: "ПЕРЕВОД",
+                tab_main: "Главная",
+                tab_tasks: "Задания",
+                tab_shop: "Рынок",
+                tab_inventory: "Инвентарь",
+                tab_referral: "Рефералы",
+                tab_transfer: "Перевод",
+                tasks_title: "Задания",
+                shop_title: "Рынок",
+                inventory_title: "Инвентарь",
+                referral_title: "Рефералы",
+                transfer_title: "Перевод",
                 task_working: "Выполняется: {0} ({1}с)",
                 task_desc: "{0} рун, {1} выносливости",
                 shop_item: "{0} ({1} рун)",
                 inventory_empty: "Пусто",
-                consume: "СЪЕСТЬ",
-                sell: "ПРОДАТЬ",
+                consume: "Съесть",
+                sell: "Продать",
                 user_id: "Ваш ID: {0}",
-                copy_id: "КОПИРОВАТЬ ID",
+                copy_id: "Копировать ID",
                 copied: "ID скопирован!",
                 tasks: {
-                    chop_tree: "РУБИТЬ ДЕРЕВО",
-                    clean_island: "ПОЧИСТИТЬ ОСТРОВ",
-                    collect_leaves: "СОБРАТЬ УПАВШИЕ ЛИСТЬЯ",
-                    build_boat: "СТРОИТЬ ЛОДКУ",
-                    clean_ocean: "ПОЧИСТИТЬ ОКЕАН",
-                    fish: "РЫБАЧИТЬ",
-                    recruit: "ПРИВОЗИТЬ НОВЫХ ЖИТЕЛЕЙ",
-                    build_village: "СТРОИТЬ ДЕРЕВНЮ",
-                    play_football: "ПОМОГАТЬ ДЕТЯМ ИГРАТЬ В ФУТБОЛ",
-                    open_shop: "ОТКРЫТЬ СВОЮ ЛАВКУ",
-                    buy_products: "КУПИТЬ ПРОДУКТЫ ПОДЕШЕВЛЕ",
-                    sell_products: "ПРОДАТЬ ПРОДУКТЫ ПОДОРОЖЕ"
+                    chop_tree: "Рубить дерево",
+                    clean_island: "Почистить остров",
+                    collect_leaves: "Собрать упавшие листья",
+                    build_boat: "Строить лодку",
+                    clean_ocean: "Почистить океан",
+                    fish: "Рыбачить",
+                    recruit: "Привозить новых жителей",
+                    build_village: "Строить деревню",
+                    play_football: "Помогать детям играть в футбол",
+                    open_shop: "Открыть свою лавку",
+                    buy_products: "Купить продукты подешевле",
+                    sell_products: "Продать продукты подороже"
                 },
                 social_tasks: {
-                    subscribe: "ПОДПИСАТЬСЯ НА SOKO INU",
-                    matrixon_subscribe: "ПОДПИСАТЬСЯ НА MATRIXON STD",
-                    share: "РАСПРОСТРАНИТЬ ЛЕГЕНДУ",
-                    invite: "СОЗВАТЬ СОЮЗНИКОВ"
+                    subscribe: "Подписаться на Soko Inu",
+                    matrixon_subscribe: "Подписаться на MATRIXON STD",
+                    share: "Распространить легенду",
+                    invite: "Созвать союзников"
                 },
                 shop_items: {
-                    fish: "РЫБА",
+                    fish: "Рыба",
                     fish_desc: "Утоляет голод на 10 минут",
-                    meat: "МЯСО",
+                    meat: "Мясо",
                     meat_desc: "Утоляет голод на 15 минут",
-                    honey: "МЕД",
+                    honey: "Мед",
                     honey_desc: "Восстанавливает 30 духа",
-                    axe: "ТОПОР",
+                    axe: "Топор",
                     axe_desc: "Задания +20% рун",
-                    hammer: "МОЛОТ",
+                    hammer: "Молот",
                     hammer_desc: "Задания +30% рун",
-                    boat: "ЛОДКА",
+                    boat: "Лодка",
                     boat_desc: "Ускоряет задания на воде",
-                    football: "ФУТБОЛЬНЫЙ МЯЧ",
+                    football: "Футбольный мяч",
                     football_desc: "Ускоряет задания с детьми",
-                    bread: "ХЛЕБ",
+                    bread: "Хлеб",
                     bread_desc: "Утоляет голод на 5 минут",
-                    jam: "ВАРЕНЬЕ",
+                    jam: "Варенье",
                     jam_desc: "Восстанавливает 20 духа"
                 },
                 notifications: {
