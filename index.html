@@ -9,7 +9,7 @@
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
-            font-weight: bold; /* Жирный шрифт для всего интерфейса */
+            font-weight: bold;
             background: url('bg0.png') no-repeat center center fixed;
             background-size: cover;
             color: #fff;
@@ -65,7 +65,7 @@
             display: flex;
         }
 
-        .game-container, .task-container, .shop-container, .inventory-container, .referral-container, .transfer-container {
+        .game-container, .task-container, .shop-container, .inventory-container {
             width: 100%;
             max-width: 360px;
             margin: 8px auto;
@@ -76,7 +76,7 @@
             backdrop-filter: blur(8px);
             box-sizing: border-box;
             position: fixed;
-            bottom: 70px; /* Смещение для фиксированной панели вкладок */
+            bottom: 8px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 1;
@@ -87,7 +87,7 @@
             opacity: 0;
         }
 
-        .task-container, .shop-container, .inventory-container, .referral-container, .transfer-container {
+        .task-container, .shop-container, .inventory-container {
             border: 1px solid #FFD700;
             background: rgba(30, 30, 40, 0.95);
         }
@@ -124,45 +124,21 @@
 
         .stat span {
             color: #FFD700;
-        }
-
-        .user-id {
-            text-align: center;
-            margin: 10px 0;
-            font-size: 0.9em;
-            color: #E0E0E0;
-        }
-
-        .user-id button {
-            margin-left: 10px;
-            padding: 5px 10px;
-            font-size: 0.8em;
-            background: linear-gradient(135deg, #FFD700, #DAA520);
-            color: #1A1A1A;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            font-weight: bold;
         }
 
         .tabs {
-            position: fixed;
-            bottom: 8px;
-            left: 50%;
-            transform: translateX(-50%);
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            padding: 8px;
+            justify-content: space-around;
+            margin-top: auto;
+            padding: 8px 0;
             background: rgba(0, 0, 0, 0.4);
             border-radius: 12px;
-            width: 100%;
-            max-width: 360px;
-            box-sizing: border-box;
-            z-index: 1000;
+            flex-wrap: wrap;
         }
 
         .tab-button {
-            flex: 0 1 80px;
+            flex: 1;
             padding: 8px;
             font-size: 0.8em;
             background: rgba(255, 255, 255, 0.1);
@@ -170,17 +146,22 @@
             border-radius: 8px;
             color: #E0E0E0;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s, transform 0.1s;
+            margin: 4px;
             text-align: center;
+            min-width: 60px;
         }
 
         .tab-button:hover {
             background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
         }
 
         .tab-button.active {
             background: #FFD700;
             color: #1A1A1A;
+            font-weight: bold;
+            transform: translateX(-5px);
         }
 
         .task-list, .shop-list {
@@ -293,6 +274,48 @@
             cursor: pointer;
         }
 
+        .notification {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            transform: none;
+            font-size: 0.85em;
+            color: #FFD700;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 10px 20px;
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.4s;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            z-index: 2000;
+        }
+
+        .notification.show {
+            opacity: 1;
+        }
+
+        .coin-animation {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            background: url('rune.png') no-repeat center;
+            background-size: contain;
+            animation: collectCoin 0.8s ease-out forwards;
+        }
+
+        @keyframes purchase {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes collectCoin {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-80px); opacity: 0; }
+        }
+
         .wallet-button {
             position: fixed;
             top: 16px;
@@ -307,39 +330,9 @@
             margin-top: 8px;
         }
 
-        .referral-form, .transfer-form {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding: 10px;
-        }
-
-        .referral-form input, .transfer-form input {
-            padding: 8px;
-            border: 1px solid #FFD700;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #E0E0E0;
-            font-size: 0.9em;
-        }
-
-        .referral-form button, .transfer-form button {
-            padding: 10px;
-            background: linear-gradient(135deg, #FFD700, #DAA520);
-            color: #1A1A1A;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
-
-        .referral-form button:hover, .transfer-form button:hover {
-            background: linear-gradient(135deg, #FFE066, #FFD700);
-        }
-
         @media (max-width: 360px) {
             h1 { font-size: 1.2em; }
-            .game-container, .task-container, .shop-container, .inventory-container, .referral-container, .transfer-container {
+            .game-container, .task-container, .shop-container, .inventory-container {
                 margin: 4px auto;
                 padding: 10px;
                 max-width: 320px;
@@ -349,12 +342,7 @@
             .task-item img, .shop-item img { width: 48px; height: 48px; }
             .task-list, .shop-list { grid-template-columns: 1fr; }
             .wallet-button { top: 8px; right: 8px; }
-        }
-
-        @keyframes purchase {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            .notification { max-width: 70%; font-size: 0.75em; }
         }
     </style>
 </head>
@@ -371,14 +359,11 @@
                 <div class="stat" id="stat-hunger"></div>
                 <div class="stat" id="stat-mood"></div>
             </div>
-            <div class="user-id" id="user-id"></div>
             <div class="tabs">
                 <button class="tab-button active" onclick="showSection('mainContainer')"></button>
                 <button class="tab-button" onclick="showSection('taskContainer')"></button>
                 <button class="tab-button" onclick="showSection('shopContainer')"></button>
                 <button class="tab-button" onclick="showSection('inventoryContainer')"></button>
-                <button class="tab-button" onclick="showSection('referralContainer')"></button>
-                <button class="tab-button" onclick="showSection('transferContainer')"></button>
             </div>
             <div class="studio-credit">Made by MATRIXON STD</div>
         </div>
@@ -391,8 +376,6 @@
                 <button class="tab-button active" onclick="showSection('taskContainer')"></button>
                 <button class="tab-button" onclick="showSection('shopContainer')"></button>
                 <button class="tab-button" onclick="showSection('inventoryContainer')"></button>
-                <button class="tab-button" onclick="showSection('referralContainer')"></button>
-                <button class="tab-button" onclick="showSection('transferContainer')"></button>
             </div>
         </div>
 
@@ -404,8 +387,6 @@
                 <button class="tab-button" onclick="showSection('taskContainer')"></button>
                 <button class="tab-button active" onclick="showSection('shopContainer')"></button>
                 <button class="tab-button" onclick="showSection('inventoryContainer')"></button>
-                <button class="tab-button" onclick="showSection('referralContainer')"></button>
-                <button class="tab-button" onclick="showSection('transferContainer')"></button>
             </div>
         </div>
 
@@ -417,47 +398,13 @@
                 <button class="tab-button" onclick="showSection('taskContainer')"></button>
                 <button class="tab-button" onclick="showSection('shopContainer')"></button>
                 <button class="tab-button active" onclick="showSection('inventoryContainer')"></button>
-                <button class="tab-button" onclick="showSection('referralContainer')"></button>
-                <button class="tab-button" onclick="showSection('transferContainer')"></button>
             </div>
         </div>
 
-        <div class="referral-container" id="referralContainer">
-            <h1></h1>
-            <div class="referral-form">
-                <p id="referral-user-id"></p>
-                <input type="text" id="referral-id" placeholder="Enter referral ID">
-                <button onclick="submitReferral()">Submit</button>
-            </div>
-            <div class="tabs">
-                <button class="tab-button" onclick="showSection('mainContainer')"></button>
-                <button class="tab-button" onclick="showSection('taskContainer')"></button>
-                <button class="tab-button" onclick="showSection('shopContainer')"></button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')"></button>
-                <button class="tab-button active" onclick="showSection('referralContainer')"></button>
-                <button class="tab-button" onclick="showSection('transferContainer')"></button>
-            </div>
-        </div>
-
-        <div class="transfer-container" id="transferContainer">
-            <h1></h1>
-            <div class="transfer-form">
-                <input type="text" id="transfer-id" placeholder="Enter recipient ID">
-                <input type="number" id="transfer-amount" placeholder="Enter runes amount" min="0.1" step="0.1">
-                <button onclick="submitTransfer()">Transfer</button>
-            </div>
-            <div class="tabs">
-                <button class="tab-button" onclick="showSection('mainContainer')"></button>
-                <button class="tab-button" onclick="showSection('taskContainer')"></button>
-                <button class="tab-button" onclick="showSection('shopContainer')"></button>
-                <button class="tab-button" onclick="showSection('inventoryContainer')"></button>
-                <button class="tab-button" onclick="showSection('referralContainer')"></button>
-                <button class="tab-button active" onclick="showSection('transferContainer')"></button>
-            </div>
-        </div>
-
+        <div class="notification" id="notification"></div>
         <audio id="clickSound" src="click.mp3"></audio>
         <audio id="runeSound" src="cash.mp3"></audio>
+        <audio id="notificationSound" src="notification.mp3"></audio>
     </div>
 
     <script>
@@ -473,61 +420,81 @@
                 tab_tasks: "Tasks",
                 tab_shop: "Market",
                 tab_inventory: "Inventory",
-                tab_referral: "Referral",
-                tab_transfer: "Transfer",
                 tasks_title: "Tasks",
                 shop_title: "Market",
                 inventory_title: "Inventory",
-                referral_title: "Referral",
-                transfer_title: "Transfer",
                 task_working: "In progress: {0} ({1}s)",
                 task_desc: "{0} runes, {1} energy",
                 shop_item: "{0} ({1} runes)",
                 inventory_empty: "Empty",
                 consume: "Consume",
                 sell: "Sell",
-                user_id: "Your ID: {0}",
-                copy_id: "Copy ID",
-                copied: "ID copied!",
                 tasks: {
-                    "Chop Tree": "Chop Tree",
-                    "Clean Island": "Clean Island",
-                    "Collect Leaves": "Collect Leaves",
-                    "Build Boat": "Build Boat",
-                    "Clean Ocean": "Clean Ocean",
-                    "Fish": "Fish",
-                    "Recruit": "Recruit Residents",
-                    "Build Village": "Build Village",
-                    "Play Football": "Help Kids Play Football",
-                    "Open Shop": "Open Shop",
-                    "Buy Products": "Buy Products Cheap",
-                    "Sell Products": "Sell Products High"
+                    chop_tree: "Chop Tree",
+                    clean_island: "Clean Island",
+                    collect_leaves: "Collect Leaves",
+                    build_boat: "Build Boat",
+                    clean_ocean: "Clean Ocean",
+                    fish: "Fish",
+                    recruit: "Recruit Residents",
+                    build_village: "Build Village",
+                    play_football: "Help Kids Play Football",
+                    open_shop: "Open Shop",
+                    buy_products: "Buy Products Cheap",
+                    sell_products: "Sell Products High"
                 },
                 social_tasks: {
-                    "Subscribe": "Subscribe to Soko Inu",
-                    "Matrixon Subscribe": "Subscribe to MATRIXON STD",
-                    "Share": "Spread the Legend",
-                    "Invite": "Invite Allies"
+                    subscribe: "Subscribe to Soko Inu",
+                    matrixon_subscribe: "Subscribe to MATRIXON STD",
+                    share: "Spread the Legend",
+                    invite: "Invite Allies"
                 },
                 shop_items: {
-                    "Fish": "Fish",
-                    "Fish Desc": "Satisfies hunger for 10 minutes",
-                    "Meat": "Meat",
-                    "Meat Desc": "Satisfies hunger for 15 minutes",
-                    "Honey": "Honey",
-                    "Honey Desc": "Restores 30 mood",
-                    "Axe": "Axe",
-                    "Axe Desc": "Tasks +20% runes",
-                    "Hammer": "Hammer",
-                    "Hammer Desc": "Tasks +30% runes",
-                    "Boat": "Boat",
-                    "Boat Desc": "Speeds up water tasks",
-                    "Football": "Football Ball",
-                    "Football Desc": "Speeds up tasks with kids",
-                    "Bread": "Bread",
-                    "Bread Desc": "Satisfies hunger for 5 minutes",
-                    "Jam": "Jam",
-                    "Jam Desc": "Restores 20 mood"
+                    fish: "Fish",
+                    fish_desc: "Satisfies hunger for 10 minutes",
+                    meat: "Meat",
+                    meat_desc: "Satisfies hunger for 15 minutes",
+                    honey: "Honey",
+                    honey_desc: "Restores 30 mood",
+                    axe: "Axe",
+                    axe_desc: "Tasks +20% runes",
+                    hammer: "Hammer",
+                    hammer_desc: "Tasks +30% runes",
+                    boat: "Boat",
+                    boat_desc: "Speeds up water tasks",
+                    football: "Football Ball",
+                    football_desc: "Speeds up tasks with kids",
+                    bread: "Bread",
+                    bread_desc: "Satisfies hunger for 5 minutes",
+                    jam: "Jam",
+                    jam_desc: "Restores 20 mood"
+                },
+                notifications: {
+                    new_rank: "New rank: {0}!",
+                    task_started: "Started: {0} ({1}s)",
+                    task_completed: "Completed: {0}! +{1} runes",
+                    shop_opened: "Shop opened! Passive income: 10 runes every 4 minutes!",
+                    shop_income: "Shop earned 10 runes!",
+                    task_in_progress: "Task already in progress!",
+                    low_energy: "Not enough energy! Rest or drink honey.",
+                    low_hunger: "Too hungry! Eat something.",
+                    low_mood: "Not enough mood!",
+                    not_enough_runes: "Not enough runes!",
+                    item_bought: "Bought: {0} for {1} runes!",
+                    item_already_bought: "Already bought!",
+                    mood_restored: "Mood +{0}!",
+                    sell_timeout: "Time to sell products expired!",
+                    hunger_satisfied: "Hunger satisfied for {0} minutes!",
+                    hunger_reduced_income: "Hunger reduces income!",
+                    item_bonus: "Bonus from {0}: +{1}%!",
+                    social_task_done: "Task \"{0}\" completed! +{1} runes",
+                    social_task_cooldown: "Task on cooldown!",
+                    social_invite: "Invite allies via Telegram!",
+                    food_consumed: "{0} consumed! Hunger satisfied for {1} minutes!",
+                    cannot_eat: "Cannot eat this!",
+                    products_sold: "Products sold! +{0} runes!",
+                    products_bought: "Products bought! -{0} runes!",
+                    hungry: "Hungry! Eat something."
                 }
             },
             ru: {
@@ -541,61 +508,81 @@
                 tab_tasks: "Задания",
                 tab_shop: "Рынок",
                 tab_inventory: "Инвентарь",
-                tab_referral: "Рефералы",
-                tab_transfer: "Перевод",
                 tasks_title: "Задания",
                 shop_title: "Рынок",
                 inventory_title: "Инвентарь",
-                referral_title: "Рефералы",
-                transfer_title: "Перевод",
                 task_working: "Выполняется: {0} ({1}с)",
                 task_desc: "{0} рун, {1} выносливости",
                 shop_item: "{0} ({1} рун)",
                 inventory_empty: "Пусто",
                 consume: "Съесть",
                 sell: "Продать",
-                user_id: "Ваш ID: {0}",
-                copy_id: "Копировать ID",
-                copied: "ID скопирован!",
                 tasks: {
-                    "Chop Tree": "Рубить дерево",
-                    "Clean Island": "Почистить остров",
-                    "Collect Leaves": "Собрать упавшие листья",
-                    "Build Boat": "Строить лодку",
-                    "Clean Ocean": "Почистить океан",
-                    "Fish": "Рыбачить",
-                    "Recruit": "Привозить новых жителей",
-                    "Build Village": "Строить деревню",
-                    "Play Football": "Помогать детям играть в футбол",
-                    "Open Shop": "Открыть свою лавку",
-                    "Buy Products": "Купить продукты подешевле",
-                    "Sell Products": "Продать продукты подороже"
+                    chop_tree: "Рубить дерево",
+                    clean_island: "Почистить остров",
+                    collect_leaves: "Собрать упавшие листья",
+                    build_boat: "Строить лодку",
+                    clean_ocean: "Почистить океан",
+                    fish: "Рыбачить",
+                    recruit: "Привозить новых жителей",
+                    build_village: "Строить деревню",
+                    play_football: "Помогать детям играть в футбол",
+                    open_shop: "Открыть свою лавку",
+                    buy_products: "Купить продукты подешевле",
+                    sell_products: "Продать продукты подороже"
                 },
                 social_tasks: {
-                    "Subscribe": "Подписаться на Soko Inu",
-                    "Matrixon Subscribe": "Подписаться на MATRIXON STD",
-                    "Share": "Распространить легенду",
-                    "Invite": "Созвать союзников"
+                    subscribe: "Подписаться на Soko Inu",
+                    matrixon_subscribe: "Подписаться на MATRIXON STD",
+                    share: "Распространить легенду",
+                    invite: "Созвать союзников"
                 },
                 shop_items: {
-                    "Fish": "Рыба",
-                    "Fish Desc": "Утоляет голод на 10 минут",
-                    "Meat": "Мясо",
-                    "Meat Desc": "Утоляет голод на 15 минут",
-                    "Honey": "Мед",
-                    "Honey Desc": "Восстанавливает 30 духа",
-                    "Axe": "Топор",
-                    "Axe Desc": "Задания +20% рун",
-                    "Hammer": "Молот",
-                    "Hammer Desc": "Задания +30% рун",
-                    "Boat": "Лодка",
-                    "Boat Desc": "Ускоряет задания на воде",
-                    "Football": "Футбольный мяч",
-                    "Football Desc": "Ускоряет задания с детьми",
-                    "Bread": "Хлеб",
-                    "Bread Desc": "Утоляет голод на 5 минут",
-                    "Jam": "Варенье",
-                    "Jam Desc": "Восстанавливает 20 духа"
+                    fish: "Рыба",
+                    fish_desc: "Утоляет голод на 10 минут",
+                    meat: "Мясо",
+                    meat_desc: "Утоляет голод на 15 минут",
+                    honey: "Мед",
+                    honey_desc: "Восстанавливает 30 духа",
+                    axe: "Топор",
+                    axe_desc: "Задания +20% рун",
+                    hammer: "Молот",
+                    hammer_desc: "Задания +30% рун",
+                    boat: "Лодка",
+                    boat_desc: "Ускоряет задания на воде",
+                    football: "Футбольный мяч",
+                    football_desc: "Ускоряет задания с детьми",
+                    bread: "Хлеб",
+                    bread_desc: "Утоляет голод на 5 минут",
+                    jam: "Варенье",
+                    jam_desc: "Восстанавливает 20 духа"
+                },
+                notifications: {
+                    new_rank: "Новый уровень: {0}!",
+                    task_started: "Начато: {0} ({1}с)",
+                    task_completed: "Завершено: {0}! +{1} рун",
+                    shop_opened: "Лавка открыта! Пассивный доход: 10 рун каждые 4 минуты!",
+                    shop_income: "Лавка принесла 10 рун!",
+                    task_in_progress: "Уже выполняешь задание!",
+                    low_energy: "Недостаточно выносливости! Отдохни или выпей мед.",
+                    low_hunger: "Слишком голоден! Съешь что-нибудь.",
+                    low_mood: "Недостаточно духа!",
+                    not_enough_runes: "Недостаточно рун!",
+                    item_bought: "Куплено: {0} за {1} рун!",
+                    item_already_bought: "Уже куплено!",
+                    mood_restored: "Дух +{0}!",
+                    sell_timeout: "Время для продажи продуктов истекло!",
+                    hunger_satisfied: "Голод утолен на {0} минут!",
+                    hunger_reduced_income: "Голод снижает доход!",
+                    item_bonus: "Бонус от {0}: +{1}%!",
+                    social_task_done: "Задание \"{0}\" выполнено! +{1} рун",
+                    social_task_cooldown: "Задание на перезарядке!",
+                    social_invite: "Зови союзников через Telegram!",
+                    food_consumed: "{0} съедено! Голод утолен на {1} минут!",
+                    cannot_eat: "Это нельзя съесть!",
+                    products_sold: "Продукты проданы! +{0} рун!",
+                    products_bought: "Продукты куплены! -{0} рун!",
+                    hungry: "Голоден! Съешь что-нибудь."
                 }
             }
         };
@@ -615,13 +602,6 @@
             buttonRootId: 'ton-connect'
         });
 
-        function generateUUID() {
-            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-                const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
-                return v.toString(16);
-            });
-        }
-
         let state = {
             balance: 0,
             energy: 100,
@@ -639,10 +619,7 @@
             shopPassiveIncome: false,
             lastShopIncome: 0,
             sellWindowActive: false,
-            sellWindowStart: 0,
-            userId: generateUUID(),
-            referredBy: null,
-            referredUsers: []
+            sellWindowStart: 0
         };
 
         const levels = [
@@ -654,53 +631,55 @@
         ];
 
         const tasks = [
-            { id: 1, name: "Chop Tree", pay: 0.5, energy: 10, duration: 60000, image: "chop_tree.png", level: 0 },
-            { id: 2, name: "Clean Island", pay: 0.6, energy: 10, duration: 70000, image: "clean_island.png", level: 0 },
-            { id: 3, name: "Collect Leaves", pay: 0.7, energy: 10, duration: 80000, image: "leaves.png", level: 0 },
-            { id: 4, name: "Build Boat", pay: 0.8, energy: 15, duration: 90000, image: "build_boat.png", level: 1 },
-            { id: 5, name: "Clean Ocean", pay: 0.9, energy: 15, duration: 100000, image: "clean_ocean.png", level: 1 },
-            { id: 6, name: "Fish", pay: 1.0, energy: 15, duration: 110000, image: "fish.png", level: 1 },
-            { id: 7, name: "Recruit", pay: 1.2, energy: 20, duration: 120000, image: "recruit.png", level: 1 },
-            { id: 8, name: "Build Village", pay: 2.0, energy: 25, duration: 150000, image: "village.png", level: 2 },
-            { id: 9, name: "Play Football", pay: 3.0, energy: 20, duration: 140000, image: "football.png", level: 3 },
-            { id: 10, name: "Open Shop", pay: 5.0, energy: 30, duration: 180000, image: "shop.png", level: 4 },
-            { id: 11, name: "Buy Products", pay: -10, energy: 10, duration: 30000, image: "buy_products.png", level: 4 },
-            { id: 12, name: "Sell Products", pay: 15, energy: 10, duration: 10000, image: "sell_products.png", level: 4 }
+            { id: 1, name: "chop_tree", pay: 0.5, energy: 10, duration: 60000, image: "chop_tree.png", level: 0 },
+            { id: 2, name: "clean_island", pay: 0.6, energy: 10, duration: 70000, image: "clean_island.png", level: 0 },
+            { id: 3, name: "collect_leaves", pay: 0.7, energy: 10, duration: 80000, image: "leaves.png", level: 0 },
+            { id: 4, name: "build_boat", pay: 0.8, energy: 15, duration: 90000, image: "build_boat.png", level: 1 },
+            { id: 5, name: "clean_ocean", pay: 0.9, energy: 15, duration: 100000, image: "clean_ocean.png", level: 1 },
+            { id: 6, name: "fish", pay: 1.0, energy: 15, duration: 110000, image: "fish.png", level: 1 },
+            { id: 7, name: "recruit", pay: 1.2, energy: 20, duration: 120000, image: "recruit.png", level: 1 },
+            { id: 8, name: "build_village", pay: 2.0, energy: 25, duration: 150000, image: "village.png", level: 2 },
+            { id: 9, name: "play_football", pay: 3.0, energy: 20, duration: 140000, image: "football.png", level: 3 },
+            { id: 10, name: "open_shop", pay: 5.0, energy: 30, duration: 180000, image: "shop.png", level: 4 },
+            { id: 11, name: "buy_products", pay: -10, energy: 10, duration: 30000, image: "buy_products.png", level: 4 },
+            { id: 12, name: "sell_products", pay: 15, energy: 10, duration: 10000, image: "sell_products.png", level: 4 }
         ];
 
         const socialTasks = [
-            { id: 1, name: "Subscribe", pay: 0.5, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
+            { id: 1, name: "subscribe", pay: 0.5, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
                 if (window.Telegram?.WebApp) {
                     window.Telegram.WebApp.openTelegramLink('https://t.me/Soko_inu');
                 } else {
                     window.open('https://t.me/Soko_inu', '_blank');
                 }
             }},
-            { id: 4, name: "Matrixon Subscribe", pay: 0.5, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
+            { id: 4, name: "matrixon_subscribe", pay: 0.5, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
                 if (window.Telegram?.WebApp) {
                     window.Telegram.WebApp.openTelegramLink('https://t.me/matrixonstd');
                 } else {
                     window.open('https://t.me/matrixonstd', '_blank');
                 }
             }},
-            { id: 2, name: "Share", pay: 1.0, energy: 10, cooldown: 600000, image: "task_icon.png", action: () => {
-                const shareText = `Hello! Join the game Rise to Rich Viking Dog and participate in contests from SOKO where you can win valuable NFTs and more. Enter my referral ID ${state.userId} and get "runes". Good luck!`;
+            { id: 2, name: "share", pay: 1.0, energy: 10, cooldown: 600000, image: "task_icon.png", action: () => {
+                const shareText = `Hello! Join the game Rise to Rich Viking Dog and participate in contests from SOKO where you can win valuable NFTs and more.`;
                 const encodedText = encodeURIComponent(shareText);
                 window.open(`https://t.me/share/url?url=https://t.me/RiseToRichVikingDogBot&text=${encodedText}`, '_blank');
             }},
-            { id: 3, name: "Invite", pay: 2.0, energy: 15, cooldown: 86400000, image: "task_icon.png", action: () => {}}
+            { id: 3, name: "invite", pay: 2.0, energy: 15, cooldown: 86400000, image: "task_icon.png", action: () => {
+                showNotification(t("notifications.social_invite"));
+            }}
         ];
 
         const shopItems = [
-            { name: "Fish", price: 5, desc: "Fish Desc", effect: { hungerSatisfied: 600000 }, image: "fish_item.png", reusable: true, level: 0 },
-            { name: "Meat", price: 10, desc: "Meat Desc", effect: { hungerSatisfied: 900000 }, image: "meat.png", reusable: true, level: 0 },
-            { name: "Honey", price: 15, desc: "Honey Desc", effect: { mood: 30 }, image: "honey.png", reusable: true, level: 0 },
-            { name: "Bread", price: 3, desc: "Bread Desc", effect: { hungerSatisfied: 300000 }, image: "bread.png", reusable: true, level: 0 },
-            { name: "Jam", price: 8, desc: "Jam Desc", effect: { mood: 20 }, image: "jam.png", reusable: true, level: 0 },
-            { name: "Axe", price: 50, desc: "Axe Desc", effect: { payMultiplier: 1.2 }, image: "axe.png", reusable: false, level: 1 },
-            { name: "Hammer", price: 100, desc: "Hammer Desc", effect: { payMultiplier: 1.3 }, image: "hammer.png", reusable: false, level: 2 },
-            { name: "Boat", price: 150, desc: "Boat Desc", effect: { taskSpeed: 0.9 }, image: "boat.png", reusable: false, level: 1 },
-            { name: "Football", price: 120, desc: "Football Desc", effect: { taskSpeed: 0.9 }, image: "football_ball.png", reusable: false, level: 3 }
+            { name: "fish", price: 5, desc: "fish_desc", effect: { hungerSatisfied: 600000 }, image: "fish_item.png", reusable: true, level: 0 },
+            { name: "meat", price: 10, desc: "meat_desc", effect: { hungerSatisfied: 900000 }, image: "meat.png", reusable: true, level: 0 },
+            { name: "honey", price: 15, desc: "honey_desc", effect: { mood: 30 }, image: "honey.png", reusable: true, level: 0 },
+            { name: "bread", price: 3, desc: "bread_desc", effect: { hungerSatisfied: 300000 }, image: "bread.png", reusable: true, level: 0 },
+            { name: "jam", price: 8, desc: "jam_desc", effect: { mood: 20 }, image: "jam.png", reusable: true, level: 0 },
+            { name: "axe", price: 50, desc: "axe_desc", effect: { payMultiplier: 1.2 }, image: "axe.png", reusable: false, level: 1 },
+            { name: "hammer", price: 100, desc: "hammer_desc", effect: { payMultiplier: 1.3 }, image: "hammer.png", reusable: false, level: 2 },
+            { name: "boat", price: 150, desc: "boat_desc", effect: { taskSpeed: 0.9 }, image: "boat.png", reusable: false, level: 1 },
+            { name: "football", price: 120, desc: "football_desc", effect: { taskSpeed: 0.9 }, image: "football_ball.png", reusable: false, level: 3 }
         ];
 
         if (window.Telegram?.WebApp) {
@@ -760,7 +739,7 @@
         }
 
         function showSection(sectionId) {
-            ['mainContainer', 'taskContainer', 'shopContainer', 'inventoryContainer', 'referralContainer', 'transferContainer'].forEach(id => {
+            ['mainContainer', 'taskContainer', 'shopContainer', 'inventoryContainer'].forEach(id => {
                 const section = document.getElementById(id);
                 section.classList.toggle('active', id === sectionId);
                 Array.from(section.querySelectorAll('.tab-button')).forEach(btn => {
@@ -776,17 +755,21 @@
 
         function consumeFood(index) {
             const item = state.inventory[index];
-            if (["Fish", "Meat", "Bread", "Jam"].includes(item.name)) {
+            if (["fish", "meat", "bread", "jam"].includes(item.name)) {
                 if (item.effect.hungerSatisfied) {
                     state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
                     state.hunger = 100;
+                    showNotification(t("notifications.food_consumed", t(`shop_items.${item.name}`), item.effect.hungerSatisfied / 60000));
                 } else if (item.effect.mood) {
                     state.mood = Math.min(state.mood + item.effect.mood, 100);
+                    showNotification(t("notifications.mood_restored", item.effect.mood));
                 }
                 state.inventory.splice(index, 1);
                 playSound("clickSound");
                 saveGame();
                 render();
+            } else {
+                showNotification(t("notifications.cannot_eat"));
             }
         }
 
@@ -795,54 +778,11 @@
             if (item.name === "products" && state.sellWindowActive) {
                 state.balance += 15;
                 state.inventory.splice(index, 1);
+                showNotification(t("notifications.products_sold", 15));
                 playSound("runeSound");
                 saveGame();
                 render();
             }
-        }
-
-        function copyUserId() {
-            navigator.clipboard.writeText(state.userId).then(() => {
-                // Уведомление о копировании ID удалено
-            }).catch(err => {
-                console.warn("Copy error:", err);
-            });
-        }
-
-        function submitReferral() {
-            if (state.referredBy) {
-                return;
-            }
-            const referralId = document.getElementById("referral-id").value.trim();
-            if (referralId === state.userId) {
-                return;
-            }
-            const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
-            if (!uuidRegex.test(referralId)) {
-                return;
-            }
-            state.referredBy = referralId;
-            state.balance += 0.5;
-            state.referredUsers.push(referralId);
-            playSound("runeSound");
-            saveGame();
-            render();
-        }
-
-        function submitTransfer() {
-            const recipientId = document.getElementById("transfer-id").value.trim();
-            const amount = parseFloat(document.getElementById("transfer-amount").value);
-            const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
-            if (recipientId === state.userId || !uuidRegex.test(recipientId) || isNaN(amount) || amount < 0.1) {
-                return;
-            }
-            if (state.balance < amount) {
-                return;
-            }
-            state.balance -= amount;
-            playSound("runeSound");
-            saveGame();
-            render();
         }
 
         function render() {
@@ -853,24 +793,16 @@
             document.getElementById("stat-hunger").innerHTML = t("hunger", Math.floor(state.hunger));
             document.getElementById("stat-mood").innerHTML = t("mood", Math.floor(state.mood));
 
-            const userIdDiv = document.getElementById("user-id");
-            userIdDiv.innerHTML = `${t("user_id", state.userId)} <button onclick="copyUserId()">${t("copy_id")}</button>`;
-            document.getElementById("referral-user-id").textContent = t("user_id", state.userId);
-
             document.querySelectorAll('.tab-button').forEach(btn => {
                 if (btn.onclick.toString().includes('mainContainer')) btn.textContent = t("tab_main");
                 else if (btn.onclick.toString().includes('taskContainer')) btn.textContent = t("tab_tasks");
                 else if (btn.onclick.toString().includes('shopContainer')) btn.textContent = t("tab_shop");
                 else if (btn.onclick.toString().includes('inventoryContainer')) btn.textContent = t("tab_inventory");
-                else if (btn.onclick.toString().includes('referralContainer')) btn.textContent = t("tab_referral");
-                else if (btn.onclick.toString().includes('transferContainer')) btn.textContent = t("tab_transfer");
             });
 
             document.querySelector('#taskContainer h1').textContent = t("tasks_title");
             document.querySelector('#shopContainer h1').textContent = t("shop_title");
             document.querySelector('#inventoryContainer h1').textContent = t("inventory_title");
-            document.querySelector('#referralContainer h1').textContent = t("referral_title");
-            document.querySelector('#transferContainer h1').textContent = t("transfer_title");
 
             const taskList = document.getElementById("taskList");
             taskList.innerHTML = "";
@@ -950,7 +882,7 @@
                     const nameSpan = document.createElement("span");
                     nameSpan.textContent = `${t(`shop_items.${item.name}`)} (${t(`shop_items.${item.desc}`)})`;
                     itemDiv.appendChild(nameSpan);
-                    if (["Fish", "Meat", "Bread", "Jam"].includes(item.name)) {
+                    if (["fish", "meat", "bread", "jam"].includes(item.name)) {
                         const useButton = document.createElement("button");
                         useButton.textContent = t("consume");
                         useButton.onclick = () => consumeFood(index);
@@ -973,6 +905,7 @@
             const newLevel = levels.reduce((acc, l, i) => state.balance >= l.minBalance ? i : acc, 0);
             if (state.level !== newLevel) {
                 state.level = newLevel;
+                showNotification(t("notifications.new_rank", levels[state.level].name));
                 playSound("runeSound");
                 document.body.classList.add('bg-transition');
                 setTimeout(() => document.body.classList.remove('bg-transition'), 1000);
@@ -981,15 +914,19 @@
 
         function startTask(task) {
             if (state.isWorking) {
+                showNotification(t("notifications.task_in_progress"));
                 return;
             }
             if (state.energy < task.energy) {
+                showNotification(t("notifications.low_energy"));
                 return;
             }
             if (state.hunger < 30 && Date.now() > state.hungerSatisfiedUntil) {
+                showNotification(t("notifications.low_hunger"));
                 return;
             }
-            if (task.name === "Sell Products" && !state.sellWindowActive) {
+            if (task.name === "sell_products" && !state.sellWindowActive) {
+                showNotification(t("notifications.sell_timeout"));
                 return;
             }
             state.isWorking = true;
@@ -997,6 +934,7 @@
             state.taskStartTime = Date.now();
             state.energy -= task.energy;
             state.mood = Math.max(0, state.mood - 3);
+            showNotification(t("notifications.task_started", t(`tasks.${task.name}`), Math.floor(task.duration / 1000)));
             playSound("clickSound");
             saveGame();
             render();
@@ -1017,6 +955,7 @@
             state.inventory.forEach(item => {
                 if (item.effect?.payMultiplier && task.pay > 0) {
                     pay *= item.effect.payMultiplier;
+                    showNotification(t("notifications.item_bonus", t(`shop_items.${item.name}`), ((item.effect.payMultiplier - 1) * 100).toFixed(0)));
                 }
                 if (item.effect?.taskSpeed && task.pay > 0) {
                     duration *= item.effect.taskSpeed;
@@ -1025,11 +964,13 @@
 
             if (state.hunger < 50 && Date.now() > state.hungerSatisfiedUntil) {
                 pay *= 0.75;
+                showNotification(t("notifications.hunger_reduced_income"));
             }
             pay = Number(pay.toFixed(3));
 
             if (pay < 0) {
                 if (state.balance < Math.abs(pay)) {
+                    showNotification(t("notifications.not_enough_runes"));
                     state.isWorking = false;
                     state.currentTask = null;
                     state.taskStartTime = 0;
@@ -1039,19 +980,23 @@
                 }
                 state.balance += pay;
                 state.inventory.push({ name: "products", desc: currentLang === 'en' ? "Products for sale" : "Продукты для продажи", reusable: true });
+                showNotification(t("notifications.products_bought", Math.abs(pay)));
             } else {
                 state.balance += pay;
+                showNotification(t("notifications.task_completed", t(`tasks.${task.name}`), pay.toFixed(3)));
             }
 
             playSound("runeSound");
+            createCoinAnimation();
 
-            if (task.name === "Open Shop") {
+            if (task.name === "open_shop") {
                 state.shopPassiveIncome = true;
                 state.lastShopIncome = Date.now();
-            } else if (task.name === "Buy Products") {
+                showNotification(t("notifications.shop_opened"));
+            } else if (task.name === "buy_products") {
                 state.sellWindowActive = true;
                 state.sellWindowStart = Date.now();
-            } else if (task.name === "Sell Products") {
+            } else if (task.name === "sell_products") {
                 state.sellWindowActive = false;
                 state.sellWindowStart = 0;
             }
@@ -1066,9 +1011,11 @@
 
         function doSocialTask(task) {
             if (state.energy < task.energy) {
+                showNotification(t("notifications.low_energy"));
                 return;
             }
             if (state.socialTaskCooldowns[task.id] && Date.now() < state.socialTaskCooldowns[task.id]) {
+                showNotification(t("notifications.social_task_cooldown"));
                 return;
             }
             if (task.action) task.action();
@@ -1076,7 +1023,9 @@
             let pay = task.pay;
             state.balance += pay;
             state.socialTaskCooldowns[task.id] = Date.now() + task.cooldown;
+            showNotification(t("notifications.social_task_done", t(`social_tasks.${task.name}`), pay.toFixed(3)));
             playSound("runeSound");
+            createCoinAnimation();
             updateLevel();
             saveGame();
             render();
@@ -1084,13 +1033,16 @@
 
         function buyItem(item) {
             if (state.balance < item.price) {
+                showNotification(t("notifications.not_enough_runes"));
                 return;
             }
             if (!item.reusable && state.inventory.some(i => i.name === item.name)) {
+                showNotification(t("notifications.item_already_bought"));
                 return;
             }
             state.balance -= item.price;
             state.inventory.push(item);
+            showNotification(t("notifications.item_bought", t(`shop_items.${item.name}`), item.price.toLocaleString()));
             playSound("runeSound");
             const itemDiv = Array.from(document.getElementById("shopList").children)
                 .find(div => div.querySelector("button").textContent.includes(t(`shop_items.${item.name}`)));
@@ -1100,10 +1052,30 @@
             render();
         }
 
+        function showNotification(message) {
+            const notification = document.getElementById("notification");
+            notification.textContent = message;
+            notification.classList.add("show");
+            playSound("notificationSound");
+            setTimeout(() => {
+                notification.classList.remove("show");
+                notification.textContent = "";
+            }, 3000);
+        }
+
         function playSound(soundId) {
             const sound = document.getElementById(soundId);
             sound.currentTime = 0;
             sound.play().catch(() => {});
+        }
+
+        function createCoinAnimation() {
+            const coin = document.createElement("div");
+            coin.className = "coin-animation";
+            coin.style.left = `${Math.random() * (window.innerWidth - 32)}px`;
+            coin.style.top = `${window.innerHeight - 64}px`;
+            document.body.appendChild(coin);
+            setTimeout(() => coin.remove(), 800);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -1134,6 +1106,9 @@
                 if (state.hunger > 0) {
                     state.hunger -= 0.0167 * deltaTime;
                     if (state.hunger < 0) state.hunger = 0;
+                    if (state.hunger < 30) {
+                        showNotification(t("notifications.hungry"));
+                    }
                 }
             } else {
                 state.hunger = 100;
@@ -1160,13 +1135,16 @@
             if (state.shopPassiveIncome && (now - state.lastShopIncome) >= 240000) {
                 state.balance += 10;
                 state.lastShopIncome = now;
+                showNotification(t("notifications.shop_income"));
                 playSound("runeSound");
+                createCoinAnimation();
                 saveGame();
             }
 
             if (state.sellWindowActive && (now - state.sellWindowStart) >= 10000) {
                 state.sellWindowActive = false;
                 state.sellWindowStart = 0;
+                showNotification(t("notifications.sell_timeout"));
                 saveGame();
             }
 
