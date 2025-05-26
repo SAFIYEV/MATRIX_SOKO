@@ -430,18 +430,18 @@
                 consume: "Consume",
                 sell: "Sell",
                 tasks: {
-                    chop_tree: "Chop Tree",
-                    clean_island: "Clean Island",
-                    collect_leaves: "Collect Leaves",
-                    build_boat: "Build Boat",
-                    clean_ocean: "Clean Ocean",
+                    "chop tree": "Chop Tree",
+                    "clean island": "Clean Island",
+                    "collect leaves": "Collect Leaves",
+                    "build boat": "Build Boat",
+                    "clean ocean": "Clean Ocean",
                     fish: "Fish",
                     recruit: "Recruit Residents",
-                    build_village: "Build Village",
-                    play_football: "Help Kids Play Football",
-                    open_shop: "Open Shop",
-                    buy_products: "Buy Products Cheap",
-                    sell_products: "Sell Products High"
+                    "build village": "Build Village",
+                    "play football": "Help Kids Play Football",
+                    "open shop": "Open Shop",
+                    "buy products": "Buy Products Cheap",
+                    "sell products": "Sell Products High"
                 },
                 social_tasks: {
                     subscribe: "Subscribe to Soko Inu",
@@ -518,18 +518,18 @@
                 consume: "Съесть",
                 sell: "Продать",
                 tasks: {
-                    chop_tree: "Рубить дерево",
-                    clean_island: "Почистить остров",
-                    collect_leaves: "Собрать упавшие листья",
-                    build_boat: "Строить лодку",
-                    clean_ocean: "Почистить океан",
+                    "chop tree": "Рубить дерево",
+                    "clean island": "Почистить остров",
+                    "collect leaves": "Собрать упавшие листья",
+                    "build boat": "Строить лодку",
+                    "clean ocean": "Почистить океан",
                     fish: "Рыбачить",
                     recruit: "Привозить новых жителей",
-                    build_village: "Строить деревню",
-                    play_football: "Помогать детям играть в футбол",
-                    open_shop: "Открыть свою лавку",
-                    buy_products: "Купить продукты подешевле",
-                    sell_products: "Продать продукты подороже"
+                    "build village": "Строить деревню",
+                    "play football": "Помогать детям играть в футбол",
+                    "open shop": "Открыть свою лавку",
+                    "buy products": "Купить продукты подешевле",
+                    "sell products": "Продать продукты подороже"
                 },
                 social_tasks: {
                     subscribe: "Подписаться на Soko Inu",
@@ -631,18 +631,18 @@
         ];
 
         const tasks = [
-            { id: 1, name: "chop_tree", pay: 0.5, energy: 10, duration: 60000, image: "chop_tree.png", level: 0 },
-            { id: 2, name: "clean_island", pay: 0.6, energy: 10, duration: 70000, image: "clean_island.png", level: 0 },
-            { id: 3, name: "collect_leaves", pay: 0.7, energy: 10, duration: 80000, image: "leaves.png", level: 0 },
-            { id: 4, name: "build_boat", pay: 0.8, energy: 15, duration: 90000, image: "build_boat.png", level: 1 },
-            { id: 5, name: "clean_ocean", pay: 0.9, energy: 15, duration: 100000, image: "clean_ocean.png", level: 1 },
+            { id: 1, name: "chop tree", pay: 0.5, energy: 10, duration: 60000, image: "chop_tree.png", level: 0 },
+            { id: 2, name: "clean island", pay: 0.6, energy: 10, duration: 70000, image: "clean_island.png", level: 0 },
+            { id: 3, name: "collect leaves", pay: 0.7, energy: 10, duration: 80000, image: "leaves.png", level: 0 },
+            { id: 4, name: "build boat", pay: 0.8, energy: 15, duration: 90000, image: "build_boat.png", level: 1 },
+            { id: 5, name: "clean ocean", pay: 0.9, energy: 15, duration: 100000, image: "clean_ocean.png", level: 1 },
             { id: 6, name: "fish", pay: 1.0, energy: 15, duration: 110000, image: "fish.png", level: 1 },
             { id: 7, name: "recruit", pay: 1.2, energy: 20, duration: 120000, image: "recruit.png", level: 1 },
-            { id: 8, name: "build_village", pay: 2.0, energy: 25, duration: 150000, image: "village.png", level: 2 },
-            { id: 9, name: "play_football", pay: 3.0, energy: 20, duration: 140000, image: "football.png", level: 3 },
-            { id: 10, name: "open_shop", pay: 5.0, energy: 30, duration: 180000, image: "shop.png", level: 4 },
-            { id: 11, name: "buy_products", pay: -10, energy: 10, duration: 30000, image: "buy_products.png", level: 4 },
-            { id: 12, name: "sell_products", pay: 15, energy: 10, duration: 10000, image: "sell_products.png", level: 4 }
+            { id: 8, name: "build village", pay: 2.0, energy: 25, duration: 150000, image: "village.png", level: 2 },
+            { id: 9, name: "play football", pay: 3.0, energy: 20, duration: 140000, image: "football.png", level: 3 },
+            { id: 10, name: "open shop", pay: 5.0, energy: 30, duration: 180000, image: "shop.png", level: 4 },
+            { id: 11, name: "buy products", pay: -10, energy: 10, duration: 30000, image: "buy_products.png", level: 4 },
+            { id: 12, name: "sell products", pay: 15, energy: 10, duration: 10000, image: "sell_products.png", level: 4 }
         ];
 
         const socialTasks = [
@@ -925,7 +925,7 @@
                 showNotification(t("notifications.low_hunger"));
                 return;
             }
-            if (task.name === "sell_products" && !state.sellWindowActive) {
+            if (task.name === "sell products" && !state.sellWindowActive) {
                 showNotification(t("notifications.sell_timeout"));
                 return;
             }
@@ -989,14 +989,14 @@
             playSound("runeSound");
             createCoinAnimation();
 
-            if (task.name === "open_shop") {
+            if (task.name === "open shop") {
                 state.shopPassiveIncome = true;
                 state.lastShopIncome = Date.now();
                 showNotification(t("notifications.shop_opened"));
-            } else if (task.name === "buy_products") {
+            } else if (task.name === "buy products") {
                 state.sellWindowActive = true;
                 state.sellWindowStart = Date.now();
-            } else if (task.name === "sell_products") {
+            } else if (task.name === "sell products") {
                 state.sellWindowActive = false;
                 state.sellWindowStart = 0;
             }
