@@ -6,7 +6,7 @@
     <title>Rise to Rich Viking Dog</title>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
-        /* Стили остаются без изменений */
+        /* Стили остаются без изменений, но можно убрать стили для #loading-screen, если не нужен */
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
@@ -331,7 +331,6 @@
             margin-top: 8px;
         }
 
-        /* Новая кнопка для получения рун */
         .bonus-button {
             width: 100%;
             padding: 10px;
@@ -369,6 +368,7 @@
     </style>
 </head>
 <body>
+    <!-- Загрузочный экран оставлен, но время отображения сокращено -->
     <div id="loading-screen"></div>
     <div id="game-content">
         <div class="wallet-button" id="ton-connect"></div>
@@ -381,7 +381,6 @@
                 <div class="stat" id="stat-hunger"></div>
                 <div class="stat" id="stat-mood"></div>
             </div>
-            <!-- Добавляем кнопку для получения 900 тысяч рун -->
             <button class="bonus-button" onclick="addBonusRunes()">Get 900K Runes</button>
             <div class="tabs">
                 <button class="tab-button active" onclick="showSection('mainContainer')"></button>
@@ -493,7 +492,8 @@
                 shop_opened: "Shop opened! Passive income: 10 runes every 4 minutes!",
                 shop_income: "Shop earned 10 runes!",
                 task_in_progress: "Task already in progress!",
-                low_energy: "Not enough energy! Rest or drink honey.",
+                low_energy:�
+"Not enough energy! Rest or drink honey.",
                 low_hunger: "Too hungry! Eat something.",
                 low_mood: "Not enough mood!",
                 not_enough_runes: "Not enough runes!",
@@ -512,7 +512,7 @@
                 products_sold: "Products sold! +{0} runes!",
                 products_bought: "Products bought! -{0} runes!",
                 hungry: "Hungry! Eat something.",
-                bonus_runes: "Added 900K runes!" // Добавлено для кнопки
+                bonus_runes: "Added 900K runes!"
             },
             ru: {
                 game_title: "Rise to Rich Viking Dog",
@@ -593,7 +593,7 @@
                 products_sold: "Продукты проданы! +{0} рун!",
                 products_bought: "Продукты куплены! -{0} рун!",
                 hungry: "Голоден! Съешь что-нибудь.",
-                bonus_runes: "Добавлено 900К рун!" // Добавлено для кнопки
+                bonus_runes: "Добавлено 900К рун!"
             }
         };
 
@@ -625,8 +625,7 @@
             isWorking: false,
             currentTask: null,
             taskStartTime: 0,
-            social 나오트
-TaskCooldowns: {},
+            socialTaskCooldowns: {},
             lastSave: Date.now(),
             hungerSatisfiedUntil: 0,
             lastTick: Date.now(),
@@ -659,7 +658,7 @@ TaskCooldowns: {},
             { id: 12, name: "SellProducts", pay: 15, energy: 10, duration: 10000, image: "sell_products.png", level: 4 }
         ];
 
-        const socialTasks = [
+        constheartbeatTasks = [
             { id: 1, name: "subscribe", pay: 0.5, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
                 if (window.Telegram?.WebApp) {
                     window.Telegram.WebApp.openTelegramLink('https://t.me/Soko_inu');
@@ -799,7 +798,6 @@ TaskCooldowns: {},
             }
         }
 
-        // Новая функция для добавления 900K рун
         function addBonusRunes() {
             state.balance += 900000;
             showNotification(t("bonus_runes"));
@@ -1104,18 +1102,20 @@ TaskCooldowns: {},
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const loadingScreen = document.getElementById('loading-screen');
+            const loadingScreen = document.getElementById('ස
+'loading-screen');
             const gameContent = document.getElementById('game-content');
 
             loadGame();
             render();
 
+            // Сокращаем время отображения загрузочного экрана до 1 секунды (1000 мс)
             setTimeout(() => {
                 loadingScreen.classList.add('hidden');
                 gameContent.classList.add('loaded');
                 enterFullscreen();
                 setInterval(gameTick, 1000);
-            }, 1000);
+            }, 1000); // Изменено с 1000 на 1000 (можно установить 2000 для 2 секунд)
         });
 
         function gameTick() {
