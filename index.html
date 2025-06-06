@@ -6,6 +6,7 @@
     <title>Rise to Rich Viking Dog</title>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
+        /* Стили остаются без изменений */
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
@@ -330,6 +331,26 @@
             margin-top: 8px;
         }
 
+        /* Новая кнопка для получения рун */
+        .bonus-button {
+            width: 100%;
+            padding: 10px;
+            font-size: 0.9em;
+            background: linear-gradient(135deg, #FF4500, #FF8C00);
+            color: #FFFFFF;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .bonus-button:hover {
+            background: linear-gradient(135deg, #FF6347, #FFA500);
+            transform: scale(1.05);
+        }
+
         @media (max-width: 360px) {
             h1 { font-size: 1.2em; }
             .game-container, .task-container, .shop-container, .inventory-container {
@@ -343,6 +364,7 @@
             .task-list, .shop-list { grid-template-columns: 1fr; }
             .wallet-button { top: 8px; right: 8px; }
             .notification { max-width: 70%; font-size: 0.75em; }
+            .bonus-button { font-size: 0.8em; padding: 8px; }
         }
     </style>
 </head>
@@ -359,6 +381,8 @@
                 <div class="stat" id="stat-hunger"></div>
                 <div class="stat" id="stat-mood"></div>
             </div>
+            <!-- Добавляем кнопку для получения 900 тысяч рун -->
+            <button class="bonus-button" onclick="addBonusRunes()">Get 900K Runes</button>
             <div class="tabs">
                 <button class="tab-button active" onclick="showSection('mainContainer')"></button>
                 <button class="tab-button" onclick="showSection('taskContainer')"></button>
@@ -463,33 +487,32 @@
                 Bread_desc: "Satisfies hunger for 5 minutes",
                 Jam: "Jam",
                 Jam_desc: "Restores 20 mood",
-                notifications: {
-                    new_rank: "New rank: {0}!",
-                    task_started: "Started: {0} ({1}s)",
-                    task_completed: "Completed: {0}! +{1} runes",
-                    shop_opened: "Shop opened! Passive income: 10 runes every 4 minutes!",
-                    shop_income: "Shop earned 10 runes!",
-                    task_in_progress: "Task already in progress!",
-                    low_energy: "Not enough energy! Rest or drink honey.",
-                    low_hunger: "Too hungry! Eat something.",
-                    low_mood: "Not enough mood!",
-                    not_enough_runes: "Not enough runes!",
-                    item_bought: "Bought: {0} for {1} runes!",
-                    item_already_bought: "Already bought!",
-                    mood_restored: "Mood +{0}!",
-                    sell_timeout: "Time to sell products expired!",
-                    hunger_satisfied: "Hunger satisfied for {0} minutes!",
-                    hunger_reduced_income: "Hunger reduces income!",
-                    item_bonus: "Bonus from {0}: +{1}%!",
-                    social_task_done: "Task \"{0}\" completed! +{1} runes",
-                    social_task_cooldown: "Task on cooldown!",
-                    social_invite: "Invite allies via Telegram!",
-                    food_consumed: "{0} consumed! Hunger satisfied for {1} minutes!",
-                    cannot_eat: "Cannot eat this!",
-                    products_sold: "Products sold! +{0} runes!",
-                    products_bought: "Products bought! -{0} runes!",
-                    hungry: "Hungry! Eat something."
-                }
+                new_rank: "New rank: {0}!",
+                task_started: "Started: {0} ({1}s)",
+                task_completed: "Completed: {0}! +{1} runes",
+                shop_opened: "Shop opened! Passive income: 10 runes every 4 minutes!",
+                shop_income: "Shop earned 10 runes!",
+                task_in_progress: "Task already in progress!",
+                low_energy: "Not enough energy! Rest or drink honey.",
+                low_hunger: "Too hungry! Eat something.",
+                low_mood: "Not enough mood!",
+                not_enough_runes: "Not enough runes!",
+                item_bought: "Bought: {0} for {1} runes!",
+                item_already_bought: "Already bought!",
+                mood_restored: "Mood +{0}!",
+                sell_timeout: "Time to sell products expired!",
+                hunger_satisfied: "Hunger satisfied for {0} minutes!",
+                hunger_reduced_income: "Hunger reduces income!",
+                item_bonus: "Bonus from {0}: +{1}%!",
+                social_task_done: "Task \"{0}\" completed! +{1} runes",
+                social_task_cooldown: "Task on cooldown!",
+                social_invite: "Invite allies via Telegram!",
+                food_consumed: "{0} consumed! Hunger satisfied for {1} minutes!",
+                cannot_eat: "Cannot eat this!",
+                products_sold: "Products sold! +{0} runes!",
+                products_bought: "Products bought! -{0} runes!",
+                hungry: "Hungry! Eat something.",
+                bonus_runes: "Added 900K runes!" // Добавлено для кнопки
             },
             ru: {
                 game_title: "Rise to Rich Viking Dog",
@@ -545,33 +568,32 @@
                 Bread_desc: "Утоляет голод на 5 минут",
                 Jam: "Варенье",
                 Jam_desc: "Восстанавливает 20 духа",
-                notifications: {
-                    new_rank: "Новый уровень: {0}!",
-                    task_started: "Начато: {0} ({1}с)",
-                    task_completed: "Завершено: {0}! +{1} рун",
-                    shop_opened: "Лавка открыта! Пассивный доход: 10 рун каждые 4 минуты!",
-                    shop_income: "Лавка принесла 10 рун!",
-                    task_in_progress: "Уже выполняешь задание!",
-                    low_energy: "Недостаточно выносливости! Отдохни или выпей мед.",
-                    low_hunger: "Слишком голоден! Съешь что-нибудь.",
-                    low_mood: "Недостаточно духа!",
-                    not_enough_runes: "Недостаточно рун!",
-                    item_bought: "Куплено: {0} за {1} рун!",
-                    item_already_bought: "Уже куплено!",
-                    mood_restored: "Дух +{0}!",
-                    sell_timeout: "Время для продажи продуктов истекло!",
-                    hunger_satisfied: "Голод утолен на {0} минут!",
-                    hunger_reduced_income: "Голод снижает доход!",
-                    item_bonus: "Бонус от {0}: +{1}%!",
-                    social_task_done: "Задание \"{0}\" выполнено! +{1} рун",
-                    social_task_cooldown: "Задание на перезарядке!",
-                    social_invite: "Зови союзников через Telegram!",
-                    food_consumed: "{0} съедено! Голод утолен на {1} минут!",
-                    cannot_eat: "Это нельзя съесть!",
-                    products_sold: "Продукты проданы! +{0} рун!",
-                    products_bought: "Продукты куплены! -{0} рун!",
-                    hungry: "Голоден! Съешь что-нибудь."
-                }
+                new_rank: "Новый уровень: {0}!",
+                task_started: "Начато: {0} ({1}с)",
+                task_completed: "Завершено: {0}! +{1} рун",
+                shop_opened: "Лавка открыта! Пассивный доход: 10 рун каждые 4 минуты!",
+                shop_income: "Лавка принесла 10 рун!",
+                task_in_progress: "Уже выполняешь задание!",
+                low_energy: "Недостаточно выносливости! Отдохни или выпей мед.",
+                low_hunger: "Слишком голоден! Съешь что-нибудь.",
+                low_mood: "Недостаточно духа!",
+                not_enough_runes: "Недостаточно рун!",
+                item_bought: "Куплено: {0} за {1} рун!",
+                item_already_bought: "Уже куплено!",
+                mood_restored: "Дух +{0}!",
+                sell_timeout: "Время для продажи продуктов истекло!",
+                hunger_satisfied: "Голод утолен на {0} минут!",
+                hunger_reduced_income: "Голод снижает доход!",
+                item_bonus: "Бонус от {0}: +{1}%!",
+                social_task_done: "Задание \"{0}\" выполнено! +{1} рун",
+                social_task_cooldown: "Задание на перезарядке!",
+                social_invite: "Зови союзников через Telegram!",
+                food_consumed: "{0} съедено! Голод утолен на {1} минут!",
+                cannot_eat: "Это нельзя съесть!",
+                products_sold: "Продукты проданы! +{0} рун!",
+                products_bought: "Продукты куплены! -{0} рун!",
+                hungry: "Голоден! Съешь что-нибудь.",
+                bonus_runes: "Добавлено 900К рун!" // Добавлено для кнопки
             }
         };
 
@@ -603,7 +625,8 @@
             isWorking: false,
             currentTask: null,
             taskStartTime: 0,
-            socialTaskCooldowns: {},
+            social 나오트
+TaskCooldowns: {},
             lastSave: Date.now(),
             hungerSatisfiedUntil: 0,
             lastTick: Date.now(),
@@ -657,7 +680,7 @@
                 window.open(`https://t.me/share/url?url=https://t.me/RiseToRichVikingDogBot&text=${encodedText}`, '_blank');
             }},
             { id: 3, name: "invite", pay: 2.0, energy: 15, cooldown: 86400000, image: "task_icon.png", action: () => {
-                showNotification(t("notifications.social_invite"));
+                showNotification(t("social_invite"));
             }}
         ];
 
@@ -750,17 +773,17 @@
                 if (item.effect.hungerSatisfied) {
                     state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
                     state.hunger = 100;
-                    showNotification(t("notifications.food_consumed", t(item.name), item.effect.hungerSatisfied / 60000));
+                    showNotification(t("food_consumed", t(item.name), item.effect.hungerSatisfied / 60000));
                 } else if (item.effect.mood) {
                     state.mood = Math.min(state.mood + item.effect.mood, 100);
-                    showNotification(t("notifications.mood_restored", item.effect.mood));
+                    showNotification(t("mood_restored", item.effect.mood));
                 }
                 state.inventory.splice(index, 1);
                 playSound("clickSound");
                 saveGame();
                 render();
             } else {
-                showNotification(t("notifications.cannot_eat"));
+                showNotification(t("cannot_eat"));
             }
         }
 
@@ -769,11 +792,22 @@
             if (item.name === "products" && state.sellWindowActive) {
                 state.balance += 15;
                 state.inventory.splice(index, 1);
-                showNotification(t("notifications.products_sold", 15));
+                showNotification(t("products_sold", 15));
                 playSound("runeSound");
                 saveGame();
                 render();
             }
+        }
+
+        // Новая функция для добавления 900K рун
+        function addBonusRunes() {
+            state.balance += 900000;
+            showNotification(t("bonus_runes"));
+            playSound("runeSound");
+            createCoinAnimation();
+            updateLevel();
+            saveGame();
+            render();
         }
 
         function render() {
@@ -896,7 +930,7 @@
             const newLevel = levels.reduce((acc, l, i) => state.balance >= l.minBalance ? i : acc, 0);
             if (state.level !== newLevel) {
                 state.level = newLevel;
-                showNotification(t("notifications.new_rank", levels[state.level].name));
+                showNotification(t("new_rank", levels[state.level].name));
                 playSound("runeSound");
                 document.body.classList.add('bg-transition');
                 setTimeout(() => document.body.classList.remove('bg-transition'), 1000);
@@ -905,19 +939,19 @@
 
         function startTask(task) {
             if (state.isWorking) {
-                showNotification(t("notifications.task_in_progress"));
+                showNotification(t("task_in_progress"));
                 return;
             }
             if (state.energy < task.energy) {
-                showNotification(t("notifications.low_energy"));
+                showNotification(t("low_energy"));
                 return;
             }
             if (state.hunger < 30 && Date.now() > state.hungerSatisfiedUntil) {
-                showNotification(t("notifications.low_hunger"));
+                showNotification(t("low_hunger"));
                 return;
             }
             if (task.name === "SellProducts" && !state.sellWindowActive) {
-                showNotification(t("notifications.sell_timeout"));
+                showNotification(t("sell_timeout"));
                 return;
             }
             state.isWorking = true;
@@ -925,7 +959,7 @@
             state.taskStartTime = Date.now();
             state.energy -= task.energy;
             state.mood = Math.max(0, state.mood - 3);
-            showNotification(t("notifications.task_started", t(task.name), Math.floor(task.duration / 1000)));
+            showNotification(t("task_started", t(task.name), Math.floor(task.duration / 1000)));
             playSound("clickSound");
             saveGame();
             render();
@@ -946,7 +980,7 @@
             state.inventory.forEach(item => {
                 if (item.effect?.payMultiplier && task.pay > 0) {
                     pay *= item.effect.payMultiplier;
-                    showNotification(t("notifications.item_bonus", t(item.name), ((item.effect.payMultiplier - 1) * 100).toFixed(0)));
+                    showNotification(t("item_bonus", t(item.name), ((item.effect.payMultiplier - 1) * 100).toFixed(0)));
                 }
                 if (item.effect?.taskSpeed && task.pay > 0) {
                     duration *= item.effect.taskSpeed;
@@ -955,13 +989,13 @@
 
             if (state.hunger < 50 && Date.now() > state.hungerSatisfiedUntil) {
                 pay *= 0.75;
-                showNotification(t("notifications.hunger_reduced_income"));
+                showNotification(t("hunger_reduced_income"));
             }
             pay = Number(pay.toFixed(3));
 
             if (pay < 0) {
                 if (state.balance < Math.abs(pay)) {
-                    showNotification(t("notifications.not_enough_runes"));
+                    showNotification(t("not_enough_runes"));
                     state.isWorking = false;
                     state.currentTask = null;
                     state.taskStartTime = 0;
@@ -971,10 +1005,10 @@
                 }
                 state.balance += pay;
                 state.inventory.push({ name: "products", desc: currentLang === 'en' ? "Products for sale" : "Продукты для продажи", reusable: true });
-                showNotification(t("notifications.products_bought", Math.abs(pay)));
+                showNotification(t("products_bought", Math.abs(pay)));
             } else {
                 state.balance += pay;
-                showNotification(t("notifications.task_completed", t(task.name), pay.toFixed(3)));
+                showNotification(t("task_completed", t(task.name), pay.toFixed(3)));
             }
 
             playSound("runeSound");
@@ -983,7 +1017,7 @@
             if (task.name === "OpenShop") {
                 state.shopPassiveIncome = true;
                 state.lastShopIncome = Date.now();
-                showNotification(t("notifications.shop_opened"));
+                showNotification(t("shop_opened"));
             } else if (task.name === "BuyProducts") {
                 state.sellWindowActive = true;
                 state.sellWindowStart = Date.now();
@@ -1002,11 +1036,11 @@
 
         function doSocialTask(task) {
             if (state.energy < task.energy) {
-                showNotification(t("notifications.low_energy"));
+                showNotification(t("low_energy"));
                 return;
             }
             if (state.socialTaskCooldowns[task.id] && Date.now() < state.socialTaskCooldowns[task.id]) {
-                showNotification(t("notifications.social_task_cooldown"));
+                showNotification(t("social_task_cooldown"));
                 return;
             }
             if (task.action) task.action();
@@ -1014,7 +1048,7 @@
             let pay = task.pay;
             state.balance += pay;
             state.socialTaskCooldowns[task.id] = Date.now() + task.cooldown;
-            showNotification(t("notifications.social_task_done", t(task.name), pay.toFixed(3)));
+            showNotification(t("social_task_done", t(task.name), pay.toFixed(3)));
             playSound("runeSound");
             createCoinAnimation();
             updateLevel();
@@ -1024,16 +1058,16 @@
 
         function buyItem(item) {
             if (state.balance < item.price) {
-                showNotification(t("notifications.not_enough_runes"));
+                showNotification(t("not_enough_runes"));
                 return;
             }
             if (!item.reusable && state.inventory.some(i => i.name === item.name)) {
-                showNotification(t("notifications.item_already_bought"));
+                showNotification(t("item_already_bought"));
                 return;
             }
             state.balance -= item.price;
             state.inventory.push(item);
-            showNotification(t("notifications.item_bought", t(item.name), item.price.toLocaleString()));
+            showNotification(t("item_bought", t(item.name), item.price.toLocaleString()));
             playSound("runeSound");
             const itemDiv = Array.from(document.getElementById("shopList").children)
                 .find(div => div.querySelector("button").textContent.includes(t(item.name)));
@@ -1098,7 +1132,7 @@
                     state.hunger -= 0.0167 * deltaTime;
                     if (state.hunger < 0) state.hunger = 0;
                     if (state.hunger < 30) {
-                        showNotification(t("notifications.hungry"));
+                        showNotification(t("hungry"));
                     }
                 }
             } else {
@@ -1126,7 +1160,7 @@
             if (state.shopPassiveIncome && (now - state.lastShopIncome) >= 240000) {
                 state.balance += 10;
                 state.lastShopIncome = now;
-                showNotification(t("notifications.shop_income"));
+                showNotification(t("shop_income"));
                 playSound("runeSound");
                 createCoinAnimation();
                 saveGame();
@@ -1135,7 +1169,7 @@
             if (state.sellWindowActive && (now - state.sellWindowStart) >= 10000) {
                 state.sellWindowActive = false;
                 state.sellWindowStart = 0;
-                showNotification(t("notifications.sell_timeout"));
+                showNotification(t("sell_timeout"));
                 saveGame();
             }
 
