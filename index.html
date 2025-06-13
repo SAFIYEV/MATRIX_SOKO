@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Rise to Rich Viking Dog</title>
-    <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -291,13 +290,6 @@
             100% { transform: translateY(-80px); opacity: 0; }
         }
 
-        .wallet-button {
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            z-index: 3000;
-        }
-
         .studio-credit {
             font-size: 0.7em;
             text-align: center;
@@ -316,14 +308,12 @@
             .tab-button { font-size: 0.7em; padding: 6px; }
             .task-item img, .shop-item img { width: 48px; height: 48px; }
             .task-list, .shop-list { grid-template-columns: 1fr; }
-            .wallet-button { top: 8px; right: 8px; }
             .notification { max-width: 70%; font-size: 0.75em; }
         }
     </style>
 </head>
 <body>
     <div id="game-content">
-        <div class="wallet-button" id="ton-connect"></div>
         <div class="game-container active" id="mainContainer">
             <h1 id="game-title">Rise to Rich Viking Dog</h1>
             <div class="stats">
@@ -557,13 +547,8 @@
             return str;
         }
 
-        const tonConnectUI = new TON_CONNECT_UI.TonConnectUI({
-            manifestUrl: 'https://safiyev.github.io/manigest/manifest.json',
-            buttonRootId: 'ton-connect'
-        });
-
         let state = {
-            balance: 0,
+            balance: 100, // Added initial balance for gameplay
             energy: 100,
             hunger: 100,
             mood: 100,
@@ -614,11 +599,7 @@
                 cooldown: 300000, 
                 image: "task_icon.png", 
                 action: () => {
-                    if (window.Telegram?.WebApp) {
-                        window.Telegram.WebApp.openTelegramLink('https://t.me/Soko_inu');
-                    } else {
-                        window.open('https://t.me/Soko_inu', '_blank');
-                    }
+                    window.open('https://t.me/Soko_inu', '_blank');
                 }
             },
             { 
@@ -629,11 +610,7 @@
                 cooldown: 300000, 
                 image: "task_icon.png", 
                 action: () => {
-                    if (window.Telegram?.WebApp) {
-                        window.Telegram.WebApp.openTelegramLink('https://t.me/matrixonstd');
-                    } else {
-                        window.open('https://t.me/matrixonstd', '_blank');
-                    }
+                    window.open('https://t.me/matrixonstd', '_blank');
                 }
             },
             { 
@@ -673,13 +650,6 @@
             { name: "Boat", price: 150, desc: "Boat_desc", effect: { taskSpeed: 0.9 }, image: "boat.png", reusable: false, level: 1 },
             { name: "Football", price: 120, desc: "Football_desc", effect: { taskSpeed: 0.9 }, image: "football_ball.png", reusable: false, level: 3 }
         ];
-
-        if (window.Telegram?.WebApp) {
-            window.Telegram.WebApp.expand();
-            window.Telegram.WebApp.enableClosingConfirmation();
-            window.Telegram.WebApp.BackButton.onClick(() => showSection('mainContainer'));
-            window.Telegram.WebApp.BackButton.show();
-        }
 
         function enterFullscreen() {
             if (document.documentElement.requestFullscreen) {
@@ -738,9 +708,6 @@
                     btn.classList.toggle('active', btn.onclick.toString().includes(id));
                 });
             });
-            if (window.Telegram?.WebApp) {
-                window.Telegram.WebApp.BackButton[sectionId === 'mainContainer' ? 'hide' : 'show']();
-            }
             playSound("clickSound");
             render();
         }
