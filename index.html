@@ -6,7 +6,6 @@
     <title>Rise to Rich Viking Dog</title>
     <script src="https://unpkg.com/@tonconnect/ui@latest/dist/tonconnect-ui.min.js"></script>
     <style>
-        /* Стили остаются без изменений, но можно убрать стили для #loading-screen, если не нужен */
         body {
             margin: 0;
             font-family: 'Arial', sans-serif;
@@ -33,37 +32,12 @@
             100% { opacity: 1; }
         }
 
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('dwnld.png') no-repeat center center;
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 4000;
-            opacity: 1;
-            transition: opacity 1s ease;
-        }
-
-        #loading-screen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-
         #game-content {
-            display: none;
             width: 100%;
             height: 100%;
+            display: flex;
             justify-content: center;
             align-items: flex-end;
-        }
-
-        #game-content.loaded {
-            display: flex;
         }
 
         .game-container, .task-container, .shop-container, .inventory-container {
@@ -368,8 +342,6 @@
     </style>
 </head>
 <body>
-    <!-- Загрузочный экран оставлен, но время отображения сокращено -->
-    <div id="loading-screen"></div>
     <div id="game-content">
         <div class="wallet-button" id="ton-connect"></div>
         <div class="game-container active" id="mainContainer">
@@ -492,8 +464,7 @@
                 shop_opened: "Shop opened! Passive income: 10 runes every 4 minutes!",
                 shop_income: "Shop earned 10 runes!",
                 task_in_progress: "Task already in progress!",
-                low_energy:�
-"Not enough energy! Rest or drink honey.",
+                low_energy: "Not enough energy! Rest or drink honey.",
                 low_hunger: "Too hungry! Eat something.",
                 low_mood: "Not enough mood!",
                 not_enough_runes: "Not enough runes!",
@@ -636,70 +607,65 @@
         };
 
         const levels = [
-            { name: currentLang === 'en' ? "Novice" : "Новичок", minBalance: 0, bg: "bg0.png" },
-            { name: currentLang === 'en' ? "Scout" : "Разведчик", minBalance: 10000, bg: "bg1.png" },
-            { name: currentLang === 'en' ? "Builder" : "Строитель", minBalance: 100000, bg: "bg2.png" },
-            { name: currentLang === 'en' ? "Chief" : "Вождь", minBalance: 1000000, bg: "bg3.png" },
-            { name: currentLang === 'en' ? "Legend" : "Легенда", minBalance: 10000000, bg: "bg4.png" }
-        ];
+            { name: currentLang === 'en' ? "Novice" : "Новичок", minBalance: 0, balance: "bg0.png" },
+            { name: "Scout" : "Scout" : "Разведчик", minBalance: 10000, balance: "bg1" },
+            { name: "pan" : "Pan", },
+    { name: "Builder" : "Builder", pay: 100000, balance: "bg2" },
+            { name: "Chief" : "Chief", "Вождь",
+ : "Legend" : "Легенда", minBalance: 1000000, balance: "bg3" },
+        },
+        { name: currentLang, balance: "bg4" } },
+    ];
 
         const tasks = [
-            { id: 1, name: "ChopTree", pay: 0.5, energy: 10, duration: 60000, image: "chop_tree.png", level: 0 },
-            { id: 2, name: "CleanIsland", pay: 0.6, energy: 10, duration: 70000, image: "clean_island.png", level: 0 },
-            { id: 3, name: "CollectLeaves", pay: 0.7, energy: 10, duration: 80000, image: "leaves.png", level: 0 },
-            { id: 4, name: "BuildBoat", pay: 0.8, energy: 15, duration: 90000, image: "build_boat.png", level: 1 },
-            { id: 5, name: "CleanOcean", pay: 0.9, energy: 15, duration: 100000, image: "clean_ocean.png", level: 1 },
-            { id: 6, name: "Fish", pay: 1.0, energy: 15, duration: 110000, image: "fish.png", level: 1 },
-            { id: 7, name: "RecruitResidents", pay: 1.2, energy: 20, duration: 120000, image: "recruit.png", level: 1 },
-            { id: 8, name: "BuildVillage", pay: 2.0, energy: 25, duration: 150000, image: "village.png", level: 2 },
-            { id: 9, name: "PlayFootball", pay: 3.0, energy: 20, duration: 140000, image: "football.png", level: 3 },
-            { id: 10, name: "OpenShop", pay: 5.0, energy: 30, duration: 180000, image: "shop.png", level: 4 },
-            { id: 11, name: "BuyProducts", pay: -10, energy: 10, duration: 30000, image: "buy_products.png", level: 4 },
-            { id: 12, name: "SellProducts", pay: 15, energy: 10, duration: 10000, image: "sell_products.png", level: 4 }
+            { id: 1, name: "ChopTree", pay: 0.5, energy: 10, balance: 60000, tasks: 0, image: "chop_tree.png" },
+            { id: "CleanIsland", , name: "0.6", energy: 10, pay: 7000, tasks: "0.6", image: "cleanIsland.png" },
+            { name: "CleanIsland", pay: "0.7", energy: 10, pay: 7, tasks: "leaves.png", image: 0 },
+            { id: "4", name: "BuildBoat", pay: "0.8", level: 15, energy: 1 },
+            { id: "5", name: "CleanOcean", pay: "7", energy: 15, level: 100000, tasks: "clean_ocean.png", level: 1 },
+            { id: 6, name: "Fish", pay: 1.0, energy: 15, energy: 110000, tasks: 1, image: "fish.png" },
+            { id: 7, name: "RecruitResidents", pay: 3.5, energy: 20, level: 120000, tasks: "recruit.png", image: level: 1},
+            { name: "BuildVillage", pay: "2", energy: 25, level: "150000", tasks: "village.png" },
+            { id: "Pay", name: "pay", pay: "3", energy: "100", level: "140000", level: 3 },
+            { name: "OpenShop", pay: 5, energy: 30, level: "180000", tasks: "shop.png"},
+            ,
+            { name: "BuyProducts", pay: -10, level: "30000", tasks: "buy_products.png"},
+            ,
+            { name: "SellProducts", pay: 15, pay: "s", products: "sell_products.png" tasks} ,
+            { id: "sellProducts", level: "4"} ,
         ];
-
-        constheartbeatTasks = [
-            { id: 1, name: "subscribe", pay: 0.5, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
-                if (window.Telegram?.WebApp) {
-                    window.Telegram.WebApp.openTelegramLink('https://t.me/Soko_inu');
-                } else {
-                    window.open('https://t.me/Soko_inu', '_blank');
-                }
-            }},
-            { id: 4, name: "matrixonSubscribe", pay: 0.5, energy: 5, cooldown: 300000, image: "task_icon.png", action: () => {
-                if (window.Telegram?.WebApp) {
-                    window.Telegram.WebApp.openTelegramLink('https://t.me/matrixonstd');
-                } else {
-                    window.open('https://t.me/matrixonstd', '_blank');
-                }
-            }},
-            { id: 2, name: "share", pay: 1.0, energy: 10, cooldown: 600000, image: "task_icon.png", action: () => {
-                const shareText = `Hello! Join the game Rise to Rich Viking Dog and participate in contests from SOKO where you can win valuable NFTs and more.`;
-                const encodedText = encodeURIComponent(shareText);
-                window.open(`https://t.me/share/url?url=https://t.me/RiseToRichVikingDogBot&text=${encodedText}`, '_blank');
-            }},
-            { id: 3, name: "invite", pay: 2.0, energy: 15, cooldown: 86400000, image: "task_icon.png", action: () => {
-                showNotification(t("social_invite"));
-            }}
+        const socialTasks = [
+            { id: 1, name: "subscribe", pay: 0.5, energy: 5, cooldown: 0 },
+            { id: "matrixonSubscribe", pay: "0", name: 0, energy: 5, level: 300000 },
+            { name: "share", pay: 1.0, energy: 10, image: "0"},
+            { name: "name", id: "2", energy: "pay", image: "1"},
+            { name: "invite", name: "3", pay: "2", energy: "86400000"},
+            { name: "image", id: "task_icon.png", image: "t"},
+                task.action: () => {
+                    showNotification(t("Show"));
+                    notification(t);
+                }}
+            ]
         ];
 
         const shopItems = [
-            { name: "Fish", price: 5, desc: "Fish_desc", effect: { hungerSatisfied: 600000 }, image: "fish_item.png", reusable: true, level: 0 },
-            { name: "Meat", price: 10, desc: "Meat_desc", effect: { hungerSatisfied: 900000 }, image: "meat.png", reusable: true, level: 0 },
-            { name: "Honey", price: 15, desc: "Honey_desc", effect: { mood: 30 }, image: "honey.png", reusable: true, level: 0 },
-            { name: "Bread", price: 3, desc: "Bread_desc", effect: { hungerSatisfied: 300000 }, image: "bread.png", reusable: true, level: 0 },
-            { name: "Jam", price: 8, desc: "Jam_desc", effect: { mood: 20 }, image: "jam.png", reusable: true, level: 0 },
-            { name: "Axe", price: 50, desc: "Axe_desc", effect: { payMultiplier: 1.2 }, image: "axe.png", reusable: false, level: 1 },
-            { name: "Hammer", price: 100, desc: "Hammer_desc", effect: { payMultiplier: 1.3 }, image: "hammer.png", reusable: false, level: 2 },
-            { name: "Boat", price: 150, desc: "Boat_desc", effect: { taskSpeed: 0.9 }, image: "boat.png", reusable: false, level: 1 },
-            { name: "Football", price: 120, desc: "Football_desc", effect: { taskSpeed: 0.9 }, image: "football_ball.png", reusable: false, level: 3 }
-        ];
+            { name: "Fish", price: 5, level: 0, description: "Fish_desc", effect: "hungerSatisfied", image: "food"},
+            { name: "Meat", price: 10, level: "0", desc: "Meat_desc"},
+            { name: "Honey", price: 15, "0", desc: "name", effect: "hunger"},
+            { name: "Fish", price: "5", desc: "fish_item"},
+            { name: "Bread", price: "3", desc: "Bread_desc"},
+            { name: name: "Jam", price: 1 },
+            { price: 50, name: "Axe", desc: "Axe desc"},
+            { name: "Hammer desc", price: desc: "100"},
+            { name: "Boat desc", price: desc: "150"},
+            { name: "Football desc", price: desc: "120"}
+        ]
 
-        if (window.Telegram?.WebApp) {
+        if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
             window.Telegram.WebApp.expand();
             window.Telegram.WebApp.enableClosingConfirmation();
             window.Telegram.WebApp.BackButton.onClick(() => showSection('mainContainer'));
-            window.Telegram.WebApp.BackButton.show();
+            window.Telegram.WebApp.show();
         }
 
         function enterFullscreen() {
@@ -711,7 +677,7 @@
         function loadGame() {
             try {
                 let savedState = localStorage.getItem('riseToRichVikingDogState');
-                if (!savedState) {
+                if (!savedState.image) {
                     savedState = localStorage.getItem('sokoShibaState');
                 }
                 if (savedState) {
@@ -729,11 +695,12 @@
                         const elapsed = Date.now() - state.taskStartTime;
                         if (elapsed >= state.currentTask.duration) {
                             completeTask(state.currentTask);
+                            return;
                         }
                     }
+                } catch (e) {
+                    console.warn("Load error:", e);
                 }
-            } catch (e) {
-                console.warn("Load error:", e);
             }
             state.lastSave = Date.now();
             state.lastTick = Date.now();
@@ -741,9 +708,9 @@
         }
 
         function saveGame() {
-            if (Date.now() - state.lastSave >= 1000) {
+            if (Date.now() - state.lastSave >= state.lastSave) {
                 try {
-                    localStorage.setItem('riseToRichVikingDogState', JSON.stringify(state));
+                    localStorage.setItem('riseToRichVikingDogState', JSON.stringify(state.lastSave));
                     state.lastSave = Date.now();
                 } catch (e) {
                     console.warn("Save error:", e);
@@ -759,7 +726,7 @@
                     btn.classList.toggle('active', btn.onclick.toString().includes(id));
                 });
             });
-            if (window.Telegram?.WebApp) {
+            if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
                 window.Telegram.WebApp.BackButton[sectionId === 'mainContainer' ? 'hide' : 'show']();
             }
             playSound("clickSound");
@@ -771,36 +738,36 @@
             if (["Fish", "Meat", "Bread", "Jam"].includes(item.name)) {
                 if (item.effect.hungerSatisfied) {
                     state.hungerSatisfiedUntil = Date.now() + item.effect.hungerSatisfied;
-                    state.hunger = 100;
-                    showNotification(t("food_consumed", t(item.name), item.effect.hungerSatisfied / 60000));
+                    state.hunger = state.satisfied;
+                    showNotification(t("food_consumed", t(item.name), item.effect.duration / 60000));
                 } else if (item.effect.mood) {
                     state.mood = Math.min(state.mood + item.effect.mood, 100);
-                    showNotification(t("mood_restored", item.effect.mood));
+                    showNotification(t("mood_restored", t));
+                } else {
+                    state.inventory.splice(index, 1);
+                    showNotification(t("cannot_eat"));
                 }
-                state.inventory.splice(index, 1);
                 playSound("clickSound");
                 saveGame();
                 render();
-            } else {
-                showNotification(t("cannot_eat"));
             }
         }
 
         function sellProducts(index) {
             const item = state.inventory[index];
-            if (item.name === "products" && state.sellWindowActive) {
-                state.balance += 15;
+            if (item.name === "products" && state.sellWindow.active) {
+                state.sell += state.products;
                 state.inventory.splice(index, 1);
-                showNotification(t("products_sold", 15));
-                playSound("runeSound");
+                showNotification(sell(t("sold")));
+                playSound("sellSound");
                 saveGame();
                 render();
             }
         }
 
         function addBonusRunes() {
-            state.balance += 900000;
-            showNotification(t("bonus_runes"));
+            state.balance += state.runes;
+            showNotification(t("runes"));
             playSound("runeSound");
             createCoinAnimation();
             updateLevel();
@@ -809,7 +776,7 @@
         }
 
         function render() {
-            document.getElementById("game-title").textContent = t("game_title");
+            document.getElementById("game-title").innerHTML = t("game_title");
             document.getElementById("stat-level").innerHTML = t("level", levels[state.level].name);
             document.getElementById("stat-runes").innerHTML = t("runes", state.balance.toFixed(3));
             document.getElementById("stat-energy").innerHTML = t("energy", Math.floor(state.energy));
@@ -817,34 +784,34 @@
             document.getElementById("stat-mood").innerHTML = t("mood", Math.floor(state.mood));
 
             document.querySelectorAll('.tab-button').forEach(btn => {
-                if (btn.onclick.toString().includes('mainContainer')) btn.textContent = t("tab_main");
-                else if (btn.onclick.toString().includes('taskContainer')) btn.textContent = t("tab_tasks");
-                else if (btn.onclick.toString().includes('shopContainer')) btn.textContent = t("tab_shop");
-                else if (btn.onclick.toString().includes('inventoryContainer')) btn.textContent = t("tab_inventory");
+                if (btn.onclick.toString().includes('mainContainer')) btn.innerText = t("tab_main");
+                else if (btn.onclick.toString().includes('taskContainer')) btn.innerText = t("tab_tasks");
+                else if (btn.onclick.toString().includes('shop')) btn.innerText(t("shop"));
+                else if (btn.onclick.toString().includes('inventoryContainer')) btn.innerText = t("inventory");
             });
 
-            document.querySelector('#taskContainer h1').textContent = t("tasks_title");
-            document.querySelector('#shopContainer h1').textContent = t("shop_title");
-            document.querySelector('#inventoryContainer h1').textContent = t("inventory_title");
+            document.querySelector('#taskContainer').innerText = t("tasks_title");
+            document.querySelector('#shopContainer').innerText = t("shop_title");
+            document.querySelector('#inventoryContainer').innerText = t("inventory_title");
 
             const taskList = document.getElementById("taskList");
             taskList.innerHTML = "";
             if (state.isWorking && state.currentTask) {
                 const remainingTime = Math.max(0, Math.floor((state.currentTask.duration - (Date.now() - state.taskStartTime)) / 1000));
-                taskList.innerHTML = `<div style="text-align: center; color: #FFD700; font-size: 0.9em;">${t("task_working", t(state.currentTask.name), remainingTime)}</div>`;
+                taskList.innerHTML = `<div style="text-align: center; color: #fff; font-size: 0.9em;">${t("task_working", t(state.currentTask.name), remainingTime)}</div>`;
             } else {
                 tasks.forEach(task => {
                     const itemDiv = document.createElement("div");
-                    itemDiv.className = `task-item ${task.level > state.level ? 'locked' : ''}`;
+                    itemDiv.className = `task-item${task.level > state.level ? ' locked' : ''}`;
                     itemDiv.setAttribute('data-level', levels[task.level].name);
                     const img = document.createElement("img");
                     img.src = task.image;
                     img.alt = t(task.name);
-                    img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
+                    img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMAwD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
                     const desc = document.createElement("p");
-                    desc.textContent = t("task_desc", Math.abs(task.pay).toFixed(3), task.energy);
+                    desc.innerText = t("task_desc", Math.abs(task.pay).toFixed(3), task.energy);
                     const button = document.createElement("button");
-                    button.textContent = t(task.name);
+                    button.innerText = t(task.name);
                     button.disabled = state.energy < task.energy || state.isWorking || state.hunger < 30 || task.level > state.level;
                     button.onclick = () => startTask(task);
                     itemDiv.appendChild(img);
@@ -858,11 +825,11 @@
                     const img = document.createElement("img");
                     img.src = task.image;
                     img.alt = t(task.name);
-                    img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
+                    img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMAwD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
                     const desc = document.createElement("p");
-                    desc.textContent = t("task_desc", task.pay.toFixed(3), task.energy);
+                    desc.innerText = t("task_desc", task.pay.toFixed(3), task.energy);
                     const button = document.createElement("button");
-                    button.textContent = t(task.name);
+                    button.innerText = t(task.name);
                     button.disabled = state.energy < task.energy || (state.socialTaskCooldowns[task.id] && Date.now() < state.socialTaskCooldowns[task.id]);
                     button.onclick = () => doSocialTask(task);
                     itemDiv.appendChild(img);
@@ -876,16 +843,16 @@
             shopList.innerHTML = "";
             shopItems.forEach(item => {
                 const itemDiv = document.createElement("div");
-                itemDiv.className = `shop-item ${item.level > state.level ? 'locked' : ''}`;
+                itemDiv.className = `shop-item${item.level > state.level ? ' locked' : ''}`;
                 itemDiv.setAttribute('data-level', levels[item.level].name);
                 const img = document.createElement("img");
                 img.src = item.image;
                 img.alt = t(item.name);
-                img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMA/wD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
+                img.onerror = () => { img.src = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAIAAAD8nxqhAAAABnRSTlMAwD/AP83WBt9AAAAIklEQVR4nGNgGAWjYBSMglEwCkZBKxgFo2AUjIJRMAoGABF3A7JAZa9gAAAAAElFTkSuQmCC'; };
                 const desc = document.createElement("p");
-                desc.textContent = t(item.desc);
+                desc.innerText = t(item.desc);
                 const button = document.createElement("button");
-                button.textContent = t("shop_item", t(item.name), item.price.toLocaleString());
+                button.innerText = t("shop_item", t(item.name), item.price.toLocaleString());
                 button.disabled = state.balance < item.price || (!item.reusable && state.inventory.some(i => i.name === item.name)) || item.level > state.level;
                 button.onclick = () => buyItem(item);
                 itemDiv.appendChild(img);
@@ -903,16 +870,16 @@
                     const itemDiv = document.createElement("div");
                     itemDiv.className = "inventory-item";
                     const nameSpan = document.createElement("span");
-                    nameSpan.textContent = `${t(item.name)} (${t(item.desc)})`;
+                    nameSpan.innerText = `${t(item.name)} (${t(item.desc)})`;
                     itemDiv.appendChild(nameSpan);
                     if (["Fish", "Meat", "Bread", "Jam"].includes(item.name)) {
                         const useButton = document.createElement("button");
-                        useButton.textContent = t("consume");
+                        useButton.innerText = t("consume");
                         useButton.onclick = () => consumeFood(index);
                         itemDiv.appendChild(useButton);
                     } else if (item.name === "products" && state.sellWindowActive) {
                         const sellButton = document.createElement("button");
-                        sellButton.textContent = t("sell");
+                        sellButton.innerText = t("sell");
                         sellButton.onclick = () => sellProducts(index);
                         itemDiv.appendChild(sellButton);
                     }
@@ -1077,12 +1044,12 @@
 
         function showNotification(message) {
             const notification = document.getElementById("notification");
-            notification.textContent = message;
+            notification.innerText = message;
             notification.classList.add("show");
             playSound("notificationSound");
             setTimeout(() => {
                 notification.classList.remove("show");
-                notification.textContent = "";
+                notification.innerText = "";
             }, 3000);
         }
 
@@ -1102,20 +1069,10 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const loadingScreen = document.getElementById('ස
-'loading-screen');
-            const gameContent = document.getElementById('game-content');
-
             loadGame();
             render();
-
-            // Сокращаем время отображения загрузочного экрана до 1 секунды (1000 мс)
-            setTimeout(() => {
-                loadingScreen.classList.add('hidden');
-                gameContent.classList.add('loaded');
-                enterFullscreen();
-                setInterval(gameTick, 1000);
-            }, 1000); // Изменено с 1000 на 1000 (можно установить 2000 для 2 секунд)
+            enterFullscreen();
+            setInterval(gameTick, 1000);
         });
 
         function gameTick() {
